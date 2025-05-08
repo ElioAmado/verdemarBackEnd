@@ -1,10 +1,13 @@
-package com.verdemar.service;
+package com.verdemar.verdemar.service;
 
 import java.util.List;
 
-import com.verdemar.domain.Apartament;
+import org.springframework.stereotype.Service;
 
-public class ApartamentService {
+import com.verdemar.verdemar.domain.Apartament;
+
+@Service
+public class ApatamentServiceImpl implements ApartamentService {
 
     public List<Apartament> getAllApartments() {
         // TODO Auto-generated method stub

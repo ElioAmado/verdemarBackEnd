@@ -1,11 +1,11 @@
-package com.verdemar.controller;
+package com.verdemar.verdemar.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.verdemar.domain.Apartament;
-import com.verdemar.service.ApartamentService;
+import com.verdemar.verdemar.domain.Apartament;
+import com.verdemar.verdemar.service.ApartamentService;
 
 import java.util.List;
 
