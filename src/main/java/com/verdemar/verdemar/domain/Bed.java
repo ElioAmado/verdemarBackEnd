@@ -19,19 +19,24 @@ public class Bed {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bed_id")
+    @Column(name = "bed_id", columnDefinition = "TINYINT")
     private Short id;
 
     @ManyToOne
     @JoinColumn(name = "apartment_id", nullable = false)
     private Apartament apartment;
 
-    private Short amount;
+    @Column(columnDefinition = "TINYINT", nullable = false)
+    private Short amount = 0;
+
+    @Column(columnDefinition = "TINYINT")
     private Short width;
+
+    @Column(columnDefinition = "TINYINT")
     private Short length;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "bed_type")
+    @Column(name = "bed_type", nullable = false)
     private BedType bedType;
 
     // Getters y setters...
@@ -40,3 +45,4 @@ public class Bed {
         SINGLE, DOUBLE, EXTRA
     }
 }
+

@@ -3,16 +3,6 @@ package com.verdemar.verdemar.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import java.util.List;
 
 @Entity
@@ -20,14 +10,22 @@ import java.util.List;
 @Data
 public class Apartament {
 
+    private enum ApartamentType {
+        ONE_BED_ROOM, TWO_BED_ROOM
+    }
+
     @Id
     @Column(name = "apartment_id", columnDefinition = "TINYINT")
     private Short id;
 
-    @Column(columnDefinition = "TINYINT")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    private ApartamentType apartamentType;
+
+    @Column(columnDefinition = "TINYINT", nullable = false)
     private Short capacity;
 
-    @Column(columnDefinition = "TINYINT")
+    @Column(columnDefinition = "TINYINT", nullable = false)
     private Short floor;
 
     @Column(columnDefinition = "TINYINT")

@@ -6,8 +6,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -20,7 +18,6 @@ import lombok.Data;
 public class Booking {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "booking_id")
     private Integer id;
 
@@ -32,10 +29,10 @@ public class Booking {
     @JoinColumn(name = "apartment_id", nullable = false)
     private Apartament apartment;
 
-    @Column(name = "start_date")
+    @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
-    @Column(name = "end_date")
+    @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
     @Column(name = "total_price")
@@ -48,7 +45,7 @@ public class Booking {
     @Column(columnDefinition = "TEXT")
     private String notes;
 
-    public enum Status {
+    private enum Status {
         PENDING,     // 0
         CONFIRMED,   // 1
         CANCELLED,   // 2
