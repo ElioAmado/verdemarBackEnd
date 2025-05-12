@@ -9,6 +9,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import lombok.Data;
 
@@ -29,7 +30,9 @@ public class Price {
     @Column(nullable = false)
     private double price;
 
-    // Getters y setters...
+    @Column(name = "discount", columnDefinition = "DECIMAL(5,2)")
+    private BigDecimal discount;
+
 }
 
 // Clase auxiliar para clave compuesta

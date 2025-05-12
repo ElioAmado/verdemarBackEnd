@@ -22,21 +22,11 @@ public class Client {
 
     private String name;
 
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "type", columnDefinition = "TINYINT", nullable = false)
-    private ClientType type;
-
     @Column(name = "last_name")
     private String lastName;
 
     private String phone;
 
     private String email;
-
-    // Getters y setters...
-
-    public enum ClientType {
-        onebedroom,   // 0
-        twobedrooms   // 1
-    }
+    
 }
