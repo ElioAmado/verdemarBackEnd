@@ -9,9 +9,9 @@ public interface ApartamentService {
     // Define method signatures for the service here
 
     List<Apartament> getAllApartments();
-    Apartament getApartmentById(Long id);
+    Apartament getApartmentById(Short id);
     Apartament createApartment(Apartament apartment);
-    Apartament updateApartment(Long id, Apartament apartment);
-    void deleteApartment(Long id);
+    Apartament updateApartment(Short id, Apartament apartment);
+    void deleteApartment(Short id);
 
 }
