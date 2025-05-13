@@ -12,12 +12,8 @@ import java.util.List;
 @RequestMapping("/api/bookings")
 public class BookingController {
 
-    private final BookingService bookingService;
-
     @Autowired
-    public BookingController(BookingService bookingService) {
-        this.bookingService = bookingService;
-    }
+    private BookingService bookingService;
 
     // Obtener todas las reservas
     @GetMapping

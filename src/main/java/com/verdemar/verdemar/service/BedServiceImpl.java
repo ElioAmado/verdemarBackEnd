@@ -11,12 +11,8 @@ import java.util.Optional;
 @Service
 public class BedServiceImpl implements BedService {
 
-    private final BedRepository bedRepository;
-
     @Autowired
-    public BedServiceImpl(BedRepository bedRepository) {
-        this.bedRepository = bedRepository;
-    }
+    private BedRepository bedRepository;
 
     @Override
     public List<Bed> getAllBeds() {

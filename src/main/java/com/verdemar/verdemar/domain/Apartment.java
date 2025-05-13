@@ -6,11 +6,11 @@ import lombok.Data;
 import java.util.List;
 
 @Entity
-@Table(name = "APARTAMENT")
+@Table(name = "APARTMENT")
 @Data
-public class Apartament {
+public class Apartment {
 
-    private enum ApartamentType {
+    public enum ApartmentType {
         ONE_BED_ROOM, TWO_BED_ROOM
     }
 
@@ -20,7 +20,7 @@ public class Apartament {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
-    private ApartamentType apartamentType;
+    private ApartmentType apartmentType;
 
     @Column(columnDefinition = "TINYINT", nullable = false)
     private Short capacity;

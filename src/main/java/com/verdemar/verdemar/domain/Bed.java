@@ -24,7 +24,7 @@ public class Bed {
 
     @ManyToOne
     @JoinColumn(name = "apartment_id", nullable = false)
-    private Apartament apartment;
+    private Apartment apartment;
 
     @Column(columnDefinition = "TINYINT", nullable = false)
     private Short amount = 0;

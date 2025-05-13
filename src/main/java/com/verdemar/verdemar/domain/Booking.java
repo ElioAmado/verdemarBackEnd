@@ -31,7 +31,7 @@ public class Booking {
 
     @ManyToOne
     @JoinColumn(name = "apartment_id", nullable = false)
-    private Apartament apartment;
+    private Apartment apartment;
 
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
@@ -49,7 +49,7 @@ public class Booking {
     @Column(columnDefinition = "TEXT")
     private String notes;
 
-    private enum Status {
+    public enum Status {
         PENDING,     // 0
         CONFIRMED,   // 1
         CANCELLED,   // 2

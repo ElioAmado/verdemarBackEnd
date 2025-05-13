@@ -11,12 +11,8 @@ import java.util.Optional;
 @Service
 public class BookingServiceImpl implements BookingService {
 
-    private final BookingRepository bookingRepository;
-
     @Autowired
-    public BookingServiceImpl(BookingRepository bookingRepository) {
-        this.bookingRepository = bookingRepository;
-    }
+    private BookingRepository bookingRepository;
 
     @Override
     public List<Booking> getAllBookings() {

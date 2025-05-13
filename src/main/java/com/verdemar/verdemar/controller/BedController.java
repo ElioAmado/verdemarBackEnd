@@ -12,12 +12,8 @@ import java.util.List;
 @RequestMapping("/api/beds")
 public class BedController {
 
-    private final BedService bedService;
-
     @Autowired
-    public BedController(BedService bedService) {
-        this.bedService = bedService;
-    }
+    private BedService bedService;
 
     // Obtener todos los camas
     @GetMapping
