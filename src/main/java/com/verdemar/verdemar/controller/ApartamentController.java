@@ -23,7 +23,7 @@ public class ApartamentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Apartament> getApartmentById(@PathVariable Long id) {
+    public ResponseEntity<Apartament> getApartmentById(@PathVariable Short id) {
         Apartament apartment = apartamentService.getApartmentById(id);
         return ResponseEntity.ok(apartment);
     }
@@ -35,13 +35,13 @@ public class ApartamentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Apartament> updateApartment(@PathVariable Long id, @RequestBody Apartament apartment) {
+    public ResponseEntity<Apartament> updateApartment(@PathVariable Short id, @RequestBody Apartament apartment) {
         Apartament updatedApartment = apartamentService.updateApartment(id, apartment);
         return ResponseEntity.ok(updatedApartment);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteApartment(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteApartment(@PathVariable Short id) {
         apartamentService.deleteApartment(id);
         return ResponseEntity.noContent().build();
     }

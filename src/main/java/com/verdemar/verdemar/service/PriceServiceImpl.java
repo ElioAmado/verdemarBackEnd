@@ -1,13 +1,15 @@
 package com.verdemar.verdemar.service;
 
-import com.verdemar.verdemar.domain.Price;
-import com.verdemar.verdemar.repository.PriceRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.verdemar.verdemar.domain.Price;
+import com.verdemar.verdemar.domain.PriceId;
+import com.verdemar.verdemar.repository.PriceRepository;
 
 @Service
 public class PriceServiceImpl implements PriceService {
@@ -36,14 +38,20 @@ public class PriceServiceImpl implements PriceService {
     }
 
     @Override
-    public Price updatePrice(Short apartment, LocalDate date, Price price) {
-        if (!priceRepository.existsById(new PriceId(apartment, date))) {
-            throw new RuntimeException("Price not found for apartment " + apartment + " and date " + date);
+    public Price updatePrice(Short apartmentId, LocalDate date, Price price) {
+        PriceId priceId = new PriceId(apartmentId, date);
+
+        if (!priceRepository.existsById(priceId)) {
+            throw new RuntimeException("Price not found for apartment " + apartmentId + " and date " + date);
         }
-        price.setApartment(apartment); // Set the existing apartment ID
-        price.setDate(date); // Set the existing date
+
+        if (!price.getApartment().getId().equals(apartmentId) || !price.getDate().equals(date)) {
+            throw new RuntimeException("Mismatched apartment or date in body vs URL");
+        }
+
         return priceRepository.save(price);
     }
+
 
     @Override
     public void deletePrice(Short apartment, LocalDate date) {

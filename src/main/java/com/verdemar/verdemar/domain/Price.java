@@ -32,12 +32,4 @@ public class Price {
 
     @Column(name = "discount", columnDefinition = "DECIMAL(5,2)")
     private BigDecimal discount;
-
 }
-
-// Clase auxiliar para clave compuesta
-class PriceId implements Serializable {
-    private Short apartment;
-    private LocalDate date;
-}
-    // equals y hashCode
