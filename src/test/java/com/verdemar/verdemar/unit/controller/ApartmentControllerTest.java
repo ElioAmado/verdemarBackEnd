@@ -45,7 +45,7 @@ public class ApartmentControllerTest {
     public void setup() {
         sampleApartment = new Apartment();
         sampleApartment.setId((short) 1);
-        sampleApartment.setApartmentType(ApartmentType.ONE_BED_ROOM);
+        sampleApartment.setApartmentType(ApartmentType.ONE_BEDROOM);
         sampleApartment.setCapacity((short) 2);
         sampleApartment.setFloor((short) 1);
         sampleApartment.setBedrooms((short) 1);
