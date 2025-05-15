@@ -12,11 +12,15 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "PRICE")
 @Data
 @IdClass(PriceId.class)
+@NoArgsConstructor
+@AllArgsConstructor
 public class Price {
 
     @Id

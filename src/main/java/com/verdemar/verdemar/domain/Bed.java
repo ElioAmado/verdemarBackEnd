@@ -1,6 +1,8 @@
 package com.verdemar.verdemar.domain;
 
 import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -15,6 +17,8 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "BED")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Bed {
 
     @Id
