@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.verdemar.verdemar.controller.ApartmentController;
 import com.verdemar.verdemar.domain.Apartment;
 import com.verdemar.verdemar.service.ApartmentService;
+import com.verdemar.verdemar.domain.ApartmentType;
+
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +45,7 @@ public class ApartmentControllerTest {
     public void setup() {
         sampleApartment = new Apartment();
         sampleApartment.setId((short) 1);
-        sampleApartment.setApartmentType(Apartment.ApartmentType.ONE_BED_ROOM);
+        sampleApartment.setApartmentType(ApartmentType.ONE_BED_ROOM);
         sampleApartment.setCapacity((short) 2);
         sampleApartment.setFloor((short) 1);
         sampleApartment.setBedrooms((short) 1);

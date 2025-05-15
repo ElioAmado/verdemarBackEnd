@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.verdemar.verdemar.domain.Apartment;
+import com.verdemar.verdemar.domain.ApartmentType;
 import com.verdemar.verdemar.service.ApartmentService;
 
 import java.util.List;
@@ -44,5 +45,11 @@ public class ApartmentController {
     public ResponseEntity<Void> deleteApartment(@PathVariable Short id) {
         apartmentService.deleteApartment(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/types")
+    public ResponseEntity<ApartmentType[]> getApartamentsTypes() {
+        ApartmentType[] apartmentsTypes = apartmentService.getApartamentsTypes();
+        return ResponseEntity.ok(apartmentsTypes);
     }
 }

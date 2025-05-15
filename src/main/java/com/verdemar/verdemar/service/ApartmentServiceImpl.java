@@ -2,6 +2,8 @@ package com.verdemar.verdemar.service;
 
 import com.verdemar.verdemar.domain.Apartment;
 import com.verdemar.verdemar.repository.ApartmentRepository;
+import com.verdemar.verdemar.domain.ApartmentType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,5 +52,11 @@ public class ApartmentServiceImpl implements ApartmentService {
             throw new RuntimeException("Apartment not found with id: " + id);
         }
         apartmentRepository.deleteById(id);
+    }
+
+    @Override
+    public ApartmentType[] getApartamentsTypes() {
+        ApartmentType[] types = ApartmentType.values();
+        return types;
     }
 }

@@ -2,17 +2,13 @@ package com.verdemar.verdemar.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
+import com.verdemar.verdemar.domain.ApartmentType;
 import java.util.List;
 
 @Entity
 @Table(name = "APARTMENT")
 @Data
 public class Apartment {
-
-    public enum ApartmentType {
-        ONE_BED_ROOM, TWO_BED_ROOM
-    }
 
     @Id
     @Column(name = "apartment_id", columnDefinition = "TINYINT")
