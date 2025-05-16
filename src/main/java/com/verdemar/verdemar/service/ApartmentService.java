@@ -14,5 +14,6 @@ public interface ApartmentService {
     Apartment updateApartment(Short id, Apartment apartment);
     void deleteApartment(Short id);
     ApartmentType[] getApartamentsTypes();
+    List<Apartment> getAvailableApartments(Date startDate, Date endDate, ApartmentType type);
 
 }

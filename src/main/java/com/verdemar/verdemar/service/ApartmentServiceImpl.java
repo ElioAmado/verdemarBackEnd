@@ -59,4 +59,10 @@ public class ApartmentServiceImpl implements ApartmentService {
         ApartmentType[] types = ApartmentType.values();
         return types;
     }
+
+    @Override
+    public List<Apartment> getAvailableApartments(Date startDate, Date endDate, List<Apartment> apartments) {
+
+        return apartments
+    }
 }

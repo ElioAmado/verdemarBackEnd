@@ -48,7 +48,6 @@ public class ApartmentControllerTest {
         sampleApartment.setApartmentType(ApartmentType.ONE_BEDROOM);
         sampleApartment.setCapacity((short) 2);
         sampleApartment.setFloor((short) 1);
-        sampleApartment.setBedrooms((short) 1);
         sampleApartment.setDescription("Nice cozy apartment");
         sampleApartment.setBeds(Collections.emptyList());
     }
