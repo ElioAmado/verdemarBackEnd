@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDate;
 
 @Service
 public class ApartmentServiceImpl implements ApartmentService {
@@ -55,14 +56,14 @@ public class ApartmentServiceImpl implements ApartmentService {
     }
 
     @Override
-    public ApartmentType[] getApartamentsTypes() {
-        ApartmentType[] types = ApartmentType.values();
-        return types;
+    public ApartmentType[] getApartmentTypes() {
+        return ApartmentType.values();
     }
 
     @Override
-    public List<Apartment> getAvailableApartments(Date startDate, Date endDate, List<Apartment> apartments) {
-
-        return apartments
+    public List<Apartment> getAvailableApartments(
+        LocalDate startDate, LocalDate endDate, ApartmentType apartmentType) {
+            List<Apartment> apartments = apartmentRepository.findByApartmentType(apartmentType);
+        return apartments;
     }
 }

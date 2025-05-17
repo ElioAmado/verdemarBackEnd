@@ -1,14 +1,24 @@
 package com.verdemar.verdemar.controller;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.verdemar.verdemar.domain.Apartment;
 import com.verdemar.verdemar.domain.ApartmentType;
 import com.verdemar.verdemar.service.ApartmentService;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/apartments")
@@ -48,8 +58,19 @@ public class ApartmentController {
     }
 
     @GetMapping("/types")
-    public ResponseEntity<ApartmentType[]> getApartamentsTypes() {
-        ApartmentType[] apartmentsTypes = apartmentService.getApartamentsTypes();
+    public ResponseEntity<ApartmentType[]> getApartmentTypes() {
+        ApartmentType[] apartmentsTypes = apartmentService.getApartmentTypes();
         return ResponseEntity.ok(apartmentsTypes);
     }
+
+    @GetMapping("/available")
+    public List<Apartment> getAvailableApartments(
+            @RequestParam String type,
+            @RequestParam String startDate,
+            @RequestParam String endDate) {
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+        return apartmentService.getAvailableApartments(start, end, ApartmentType.valueOf(type));
+    }
+    
 }

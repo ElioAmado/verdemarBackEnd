@@ -1,8 +1,10 @@
 package com.verdemar.verdemar.service;
 
+import java.time.LocalDate;
 import java.util.List;
-import com.verdemar.verdemar.domain.ApartmentType;
+
 import com.verdemar.verdemar.domain.Apartment;
+import com.verdemar.verdemar.domain.ApartmentType;
 
 
 public interface ApartmentService {
@@ -13,7 +15,7 @@ public interface ApartmentService {
     Apartment createApartment(Apartment apartment);
     Apartment updateApartment(Short id, Apartment apartment);
     void deleteApartment(Short id);
-    ApartmentType[] getApartamentsTypes();
-    List<Apartment> getAvailableApartments(Date startDate, Date endDate, ApartmentType type);
+    ApartmentType[] getApartmentTypes();
+    List<Apartment> getAvailableApartments(LocalDate startDate, LocalDate endDate, ApartmentType apartmentType);
 
 }
