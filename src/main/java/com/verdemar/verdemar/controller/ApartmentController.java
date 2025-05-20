@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.verdemar.verdemar.domain.Apartment;
 import com.verdemar.verdemar.domain.ApartmentType;
+import com.verdemar.verdemar.exception.ApartmentException;
 import com.verdemar.verdemar.service.ApartmentService;
 
 
@@ -68,9 +69,19 @@ public class ApartmentController {
             @RequestParam String type,
             @RequestParam String startDate,
             @RequestParam String endDate) {
-        LocalDate start = LocalDate.parse(startDate);
-        LocalDate end = LocalDate.parse(endDate);
-        return apartmentService.getAvailableApartments(start, end, ApartmentType.valueOf(type));
+        try {
+            LocalDate start = LocalDate.parse(startDate.trim());
+            LocalDate end = LocalDate.parse(endDate.trim());
+            ApartmentType apartmentType = ApartmentType.valueOf(type.trim().toUpperCase());
+
+            return apartmentService.getAvailableApartments(start, end, apartmentType);
+
+        } catch (IllegalArgumentException e) {
+            throw new ApartmentException("Tipo de apartamento inválido: " + type);
+        } catch (java.time.format.DateTimeParseException e) {
+            throw new ApartmentException("Formato de fecha inválido. Usa yyyy-MM-dd");
+        }
     }
+
     
 }
