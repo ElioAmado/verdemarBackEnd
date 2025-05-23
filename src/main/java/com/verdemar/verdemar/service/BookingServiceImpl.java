@@ -1,8 +1,10 @@
 package com.verdemar.verdemar.service;
 
 import com.verdemar.verdemar.domain.Booking;
+import com.verdemar.verdemar.domain.dto.BookingDto;
 import com.verdemar.verdemar.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,4 +48,15 @@ public class BookingServiceImpl implements BookingService {
         }
         bookingRepository.deleteById(id);
     }
+
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @Override
+    public Booking createBooking(BookingDto dto) {
+        Booking booking = modelMapper.map(dto, Booking.class);
+        return bookingRepository.save(booking);
+    }
+
+
 }

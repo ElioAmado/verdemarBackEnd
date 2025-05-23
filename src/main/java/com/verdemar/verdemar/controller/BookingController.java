@@ -2,6 +2,7 @@ package com.verdemar.verdemar.controller;
 
 import com.verdemar.verdemar.domain.Booking;
 import com.verdemar.verdemar.service.BookingService;
+import com.verdemar.verdemar.domain.dto.BookingDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,5 +49,11 @@ public class BookingController {
     public ResponseEntity<Void> deleteBooking(@PathVariable Integer id) {
         bookingService.deleteBooking(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping
+    public ResponseEntity<Booking> createBooking(@RequestBody BookingDto dto) {
+        Booking created = bookingService.createBooking(dto);
+        return ResponseEntity.ok(created);
     }
 }

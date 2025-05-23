@@ -1,6 +1,7 @@
 package com.verdemar.verdemar.service;
 
 import com.verdemar.verdemar.domain.Booking;
+import com.verdemar.verdemar.domain.dto.BookingDto;
 import java.util.List;
 
 public interface BookingService {
@@ -13,7 +14,7 @@ public interface BookingService {
 
     Booking updateBooking(Integer id, Booking booking);
 
-
+    Booking createBooking(BookingDto bookingDto);
 
     void deleteBooking(Integer id);
 }
