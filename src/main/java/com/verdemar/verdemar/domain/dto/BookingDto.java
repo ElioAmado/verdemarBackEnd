@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class BookingDto {
     private Integer clientId;
-    private Integer apartmentId;
+    private Short apartmentId;
     private LocalDate startDate;
     private LocalDate endDate;
     private double totalPrice;

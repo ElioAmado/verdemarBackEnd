@@ -21,9 +21,9 @@ public class MapperConfig {
         ModelMapper modelMapper = new ModelMapper();
 
         // Conversor de apartmentId -> Apartment
-        modelMapper.addConverter(new AbstractConverter<Integer, Apartment>() {
+        modelMapper.addConverter(new AbstractConverter<Short, Apartment>() {
             @Override
-            protected Apartment convert(Integer source) {
+            protected Apartment convert(Short source) {
                 if (source == null) return null;
                 return apartmentRepo.findById(source)
                     .orElseThrow(() -> new RuntimeException("Apartamento no encontrado"));
@@ -39,15 +39,6 @@ public class MapperConfig {
                     .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
             }
         });
-
-        // Converter para Integer -> Short
-        modelMapper.addConverter(new AbstractConverter<Integer, Short>() {
-            @Override
-            protected Short convert(Integer source) {
-                return source == null ? null : source.shortValue();
-            }
-        });
-
 
         // Define el mapeo personalizado de BookingDto a Booking
         modelMapper.addMappings(new PropertyMap<BookingDto, Booking>() {
