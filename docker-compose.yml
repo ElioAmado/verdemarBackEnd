@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: verdemar-mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: verdemar
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    volumes:
+      - verdemar-db:/var/lib/mysql
+    networks:
+      - verdemar-net
+
+volumes:
+  verdemar-db:
+
+networks:
+  verdemar-net:
