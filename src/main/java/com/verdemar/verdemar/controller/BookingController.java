@@ -1,8 +1,8 @@
 package com.verdemar.verdemar.controller;
 
 import com.verdemar.verdemar.domain.Booking;
-import com.verdemar.verdemar.service.BookingService;
 import com.verdemar.verdemar.domain.dto.BookingDto;
+import com.verdemar.verdemar.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,18 +30,18 @@ public class BookingController {
         return ResponseEntity.ok(booking);
     }
 
-    // Crear una nueva reserva
+    // Crear una nueva reserva (usando BookingDto)
     @PostMapping
-    public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) {
-        Booking createdBooking = bookingService.createBooking(booking);
-        return ResponseEntity.ok(createdBooking);
+    public ResponseEntity<Booking> createBooking(@RequestBody BookingDto dto) {
+        Booking created = bookingService.createBooking(dto);
+        return ResponseEntity.ok(created);
     }
 
     // Actualizar una reserva
     @PutMapping("/{id}")
     public ResponseEntity<Booking> updateBooking(@PathVariable Integer id, @RequestBody Booking booking) {
-        Booking updatedBooking = bookingService.updateBooking(id, booking);
-        return ResponseEntity.ok(updatedBooking);
+        Booking updated = bookingService.updateBooking(id, booking);
+        return ResponseEntity.ok(updated);
     }
 
     // Eliminar una reserva
@@ -49,11 +49,5 @@ public class BookingController {
     public ResponseEntity<Void> deleteBooking(@PathVariable Integer id) {
         bookingService.deleteBooking(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping
-    public ResponseEntity<Booking> createBooking(@RequestBody BookingDto dto) {
-        Booking created = bookingService.createBooking(dto);
-        return ResponseEntity.ok(created);
     }
 }

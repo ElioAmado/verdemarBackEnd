@@ -1,8 +1,10 @@
 package com.verdemar.verdemar;
 
 import com.verdemar.verdemar.domain.ApartmentType;
+import com.verdemar.verdemar.domain.Client;
 import com.verdemar.verdemar.domain.Apartment;
 import com.verdemar.verdemar.repository.ApartmentRepository;
+import com.verdemar.verdemar.repository.ClientRepository;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -14,9 +16,11 @@ import java.util.List;
 public class DataInitializer implements CommandLineRunner {
 
     private final ApartmentRepository apartmentRepository;
+    private final ClientRepository clientRepository;
 
-    public DataInitializer(ApartmentRepository apartmentRepository) {
+    public DataInitializer(ApartmentRepository apartmentRepository, ClientRepository clientRepository) {
         this.apartmentRepository = apartmentRepository;
+        this.clientRepository = clientRepository;
     }
 
     @Override
@@ -33,5 +37,15 @@ public class DataInitializer implements CommandLineRunner {
             apartmentRepository.saveAll(apartments);
             System.out.println("Apartamentos iniciales creados.");
         }
+
+        if (clientRepository.count() == 0) {
+            List<Client> clients = List.of(
+                    new Client(null, "Juan", "Pérez", "123456789", "juan.perez@example.com"),
+                    new Client(null, "Ana", "Gómez", "987654321", "ana.gomez@example.com"),
+                    new Client(null, "Luis", "Martínez", "555123456", "luis.martinez@example.com"));
+            clientRepository.saveAll(clients);
+            System.out.println("Clientes iniciales creados.");
+        }
     }
+
 }
