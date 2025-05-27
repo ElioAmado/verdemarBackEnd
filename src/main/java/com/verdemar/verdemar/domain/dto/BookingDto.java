@@ -13,7 +13,7 @@ import lombok.Setter;
 public class BookingDto {
     private Integer id = null; // ID opcional para actualizaciones
     private Integer clientId;
-    private Integer apartmentId;
+    private Short apartmentId;
     private LocalDate startDate;
     private LocalDate endDate;
     private BigDecimal totalPrice;
