@@ -1,11 +1,11 @@
-package com.verdemar.verdemar.unit.controller;
+package com.verdemar.unit.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.verdemar.verdemar.controller.BookingController;
-import com.verdemar.verdemar.domain.Apartment;
-import com.verdemar.verdemar.domain.Booking;
-import com.verdemar.verdemar.domain.Client;
-import com.verdemar.verdemar.service.BookingService;
+import com.verdemar.controller.BookingController;
+import com.verdemar.domain.Apartment;
+import com.verdemar.domain.Booking;
+import com.verdemar.domain.Client;
+import com.verdemar.service.BookingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
