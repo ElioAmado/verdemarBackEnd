@@ -1,13 +1,17 @@
 package com.verdemar.controller;
 
 import com.verdemar.domain.Booking;
+import com.verdemar.domain.Price;
 import com.verdemar.domain.dto.BookingDto;
 import com.verdemar.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/bookings")
@@ -50,4 +54,16 @@ public class BookingController {
         bookingService.deleteBooking(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/check")
+    public ResponseEntity<Double> checkPrice(
+            @RequestParam("apartmentId") short apartmentId,
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+
+        double totalPrice = bookingService.getTotalPrice(apartmentId, startDate, endDate);
+        return ResponseEntity.ok(totalPrice);
+    }
+
+    
 }

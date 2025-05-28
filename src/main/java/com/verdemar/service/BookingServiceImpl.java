@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired
     private BookingRepository bookingRepository;
+
+    @Autowired
+    private PriceService priceService;
 
     @Override
     public List<Booking> getAllBookings() {
@@ -57,6 +61,36 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = modelMapper.map(dto, Booking.class);
         return bookingRepository.save(booking);
     }
+
+    @Override
+    public double getTotalPrice(short apartmentId, LocalDate startDate, LocalDate endDate) {
+        double totalPrice = 0.0;
+
+        if (startDate.isAfter(endDate)) {
+            throw new IllegalArgumentException("Start date must be before end date");
+        }
+
+        LocalDate currentDate = startDate;
+
+        while (currentDate.isBefore(endDate)) {
+            // Assuming you have a method to get the price for a specific apartment and date
+            double dailyPrice = priceService.getPriceById(apartmentId, currentDate).getPrice();
+            if (dailyPrice <= 0) {
+                throw new IllegalArgumentException("Total price must be greater than zero");
+            }
+            totalPrice += dailyPrice;
+            currentDate = currentDate.plusDays(1); // Increment the date by one day
+        }
+    
+        if (totalPrice <= 0) {
+            throw new IllegalArgumentException("Total price must be greater than zero");
+        }
+    
+        return totalPrice;
+
+    }
+
+
 
 
 }
