@@ -5,6 +5,7 @@ import com.verdemar.controller.BookingController;
 import com.verdemar.domain.Apartment;
 import com.verdemar.domain.Booking;
 import com.verdemar.domain.Client;
+import com.verdemar.domain.dto.BookingDto;
 import com.verdemar.service.BookingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,12 +69,19 @@ public class BookingControllerTest {
 
     @Test
     void testCreateBooking() throws Exception {
-        Mockito.when(bookingService.createBooking(Mockito.any(Booking.class)))
-                .thenReturn(sampleBooking);
+        BookingDto bookingDto = new BookingDto();
+        bookingDto.setClientId(sampleBooking.getClient().getId());
+        bookingDto.setApartmentId(sampleBooking.getApartment().getId());
+        bookingDto.setStartDate(sampleBooking.getStartDate());
+        bookingDto.setEndDate(sampleBooking.getEndDate());
+        bookingDto.setNotes(sampleBooking.getNotes());
+
+        Mockito.when(bookingService.createBooking(Mockito.any(BookingDto.class)))
+            .thenReturn(sampleBooking);
 
         mockMvc.perform(post("/api/bookings")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(sampleBooking)))
+                .content(objectMapper.writeValueAsString(bookingDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(sampleBooking.getId()));
     }

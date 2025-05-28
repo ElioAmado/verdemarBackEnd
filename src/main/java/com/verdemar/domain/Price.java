@@ -8,8 +8,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import lombok.Data;
 import lombok.AllArgsConstructor;
@@ -33,7 +31,4 @@ public class Price {
 
     @Column(nullable = false)
     private double price;
-
-    @Column(name = "discount", columnDefinition = "DECIMAL(5,2)")
-    private BigDecimal discount;
 }
