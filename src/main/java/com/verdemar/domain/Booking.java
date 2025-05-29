@@ -54,9 +54,6 @@ public class Booking {
     @Column(name = "status", columnDefinition = "TINYINT", nullable = false)
     private Status status = Status.PENDING;
 
-    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Child> children = new ArrayList<>();
-
     @Column(columnDefinition = "TEXT")
     private String notes;
 
