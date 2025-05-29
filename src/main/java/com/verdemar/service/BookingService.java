@@ -10,15 +10,15 @@ public interface BookingService {
 
     List<Booking> getAllBookings();
 
-    Booking getBookingById(Integer id);
+    Booking getBookingById(Long id);
 
     Booking createBooking(Booking booking);
 
-    Booking updateBooking(Integer id, Booking booking);
+    Booking updateBooking(Long id, Booking booking);
 
     Booking createBooking(BookingDto bookingDto);
 
-    void deleteBooking(Integer id);
+    void deleteBooking(Long id);
 
     double getTotalPrice(short apartmentId, LocalDate startDate, LocalDate endDate);
 }

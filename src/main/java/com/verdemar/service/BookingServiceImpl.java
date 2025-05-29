@@ -26,7 +26,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking getBookingById(Integer id) {
+    public Booking getBookingById(Long id) {
         Optional<Booking> booking = bookingRepository.findById(id);
         return booking.orElseThrow(() -> new RuntimeException("Booking not found with id: " + id));
     }
@@ -37,7 +37,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking updateBooking(Integer id, Booking booking) {
+    public Booking updateBooking(Long id, Booking booking) {
         if (!bookingRepository.existsById(id)) {
             throw new RuntimeException("Booking not found with id: " + id);
         }
@@ -46,7 +46,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public void deleteBooking(Integer id) {
+    public void deleteBooking(Long id) {
         if (!bookingRepository.existsById(id)) {
             throw new RuntimeException("Booking not found with id: " + id);
         }
