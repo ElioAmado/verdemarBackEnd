@@ -1,6 +1,7 @@
 package com.verdemar.service;
 
 import com.verdemar.domain.Booking;
+import com.verdemar.domain.dto.BookingDateRange;
 import com.verdemar.domain.dto.BookingDto;
 import com.verdemar.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,9 @@ import java.util.Optional;
 
 @Service
 public class BookingServiceImpl implements BookingService {
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     private BookingRepository bookingRepository;
@@ -37,11 +41,12 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking updateBooking(Long id, Booking booking) {
+    public Booking updateBooking(Long id, BookingDto bookingDto) {
         if (!bookingRepository.existsById(id)) {
             throw new RuntimeException("Booking not found with id: " + id);
         }
-        booking.setId(id); // Asegura que se mantiene el mismo ID
+        bookingDto.setId(id); // Asegura que se mantiene el mismo ID
+        Booking booking = modelMapper.map(bookingDto, Booking.class);
         return bookingRepository.save(booking);
     }
 
@@ -53,8 +58,7 @@ public class BookingServiceImpl implements BookingService {
         bookingRepository.deleteById(id);
     }
 
-    @Autowired
-    private ModelMapper modelMapper;
+
 
     @Override
     public Booking createBooking(BookingDto dto) {
@@ -63,7 +67,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public double getTotalPrice(short apartmentId, LocalDate startDate, LocalDate endDate) {
+    public double getTotalPrice(Short apartmentId, LocalDate startDate, LocalDate endDate) {
         double totalPrice = 0.0;
 
         if (startDate.isAfter(endDate)) {
@@ -88,6 +92,11 @@ public class BookingServiceImpl implements BookingService {
     
         return totalPrice;
 
+    }
+
+    @Override
+    public List<BookingDateRange> getAllDatesByApartment(Short apartmentId) {
+        return bookingRepository.findAllDatesByApartment(apartmentId);
     }
 
 

@@ -1,6 +1,7 @@
 package com.verdemar.service;
 
 import com.verdemar.domain.Booking;
+import com.verdemar.domain.dto.BookingDateRange;
 import com.verdemar.domain.dto.BookingDto;
 
 import java.time.LocalDate;
@@ -14,11 +15,13 @@ public interface BookingService {
 
     Booking createBooking(Booking booking);
 
-    Booking updateBooking(Long id, Booking booking);
+    Booking updateBooking(Long id, BookingDto booking);
 
     Booking createBooking(BookingDto bookingDto);
 
     void deleteBooking(Long id);
 
-    double getTotalPrice(short apartmentId, LocalDate startDate, LocalDate endDate);
+    double getTotalPrice(Short apartmentId, LocalDate startDate, LocalDate endDate);
+
+    List<BookingDateRange> getAllDatesByApartment(Short apartmentId);
 }

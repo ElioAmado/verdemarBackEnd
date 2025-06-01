@@ -37,6 +37,8 @@ public class Booking {
     @JoinColumn(name = "client_id")
     private Client client;
 
+    private byte guests;
+
     @ManyToOne
     @JoinColumn(name = "apartment_id", nullable = false)
     private Apartment apartment;

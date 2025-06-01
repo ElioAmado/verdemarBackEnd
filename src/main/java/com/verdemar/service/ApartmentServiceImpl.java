@@ -66,4 +66,10 @@ public class ApartmentServiceImpl implements ApartmentService {
             List<Apartment> apartments = apartmentRepository.findByApartmentType(apartmentType);
         return apartments;
     }
+
+    @Override
+    public List<Short> getAllIds() {
+        // Devuelve una lista de todos los IDs de los apartmentos
+        return apartmentRepository.findAllIds();
+    }
 }

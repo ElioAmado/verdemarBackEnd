@@ -2,6 +2,7 @@ package com.verdemar.controller;
 
 import com.verdemar.domain.Booking;
 import com.verdemar.domain.Price;
+import com.verdemar.domain.dto.BookingDateRange;
 import com.verdemar.domain.dto.BookingDto;
 import com.verdemar.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class BookingController {
 
     // Actualizar una reserva
     @PutMapping("/{id}")
-    public ResponseEntity<Booking> updateBooking(@PathVariable Long id, @RequestBody Booking booking) {
+    public ResponseEntity<Booking> updateBooking(@PathVariable Long id, @RequestBody BookingDto booking) {
         Booking updated = bookingService.updateBooking(id, booking);
         return ResponseEntity.ok(updated);
     }
@@ -65,5 +66,12 @@ public class BookingController {
         return ResponseEntity.ok(totalPrice);
     }
 
+    @GetMapping("/getDates/{apartmentId}")
+    public ResponseEntity<List<BookingDateRange>> getDates(
+            @PathVariable("apartmentId") short apartmentId) {
+
+        List<BookingDateRange> dates = bookingService.getAllDatesByApartment(apartmentId);
+        return ResponseEntity.ok(dates);
+    }    
     
 }

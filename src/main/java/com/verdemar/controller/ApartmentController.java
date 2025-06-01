@@ -83,5 +83,9 @@ public class ApartmentController {
         }
     }
 
+    @GetMapping("/ids")
+    public List<Short> getAllIds() {
+        return apartmentService.getAllIds();
+    }
     
 }
