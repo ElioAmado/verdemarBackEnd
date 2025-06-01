@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.verdemar.domain.Client;
-import com.verdemar.service.ClientService;
+import com.verdemar.service.client.ClientService;
 
 @RestController
 @RequestMapping("/api/clients")

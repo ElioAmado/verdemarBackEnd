@@ -1,4 +1,4 @@
-package com.verdemar.service;
+package com.verdemar.service.bed;
 
 import com.verdemar.domain.Bed;
 import java.util.List;

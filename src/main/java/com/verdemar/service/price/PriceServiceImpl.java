@@ -1,4 +1,4 @@
-package com.verdemar.service;
+package com.verdemar.service.price;
 
 import java.time.LocalDate;
 import java.util.List;

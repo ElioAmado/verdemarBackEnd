@@ -1,10 +1,10 @@
 package com.verdemar.controller;
 
 import com.verdemar.domain.Booking;
-import com.verdemar.domain.Price;
 import com.verdemar.domain.dto.BookingDateRange;
 import com.verdemar.domain.dto.BookingDto;
-import com.verdemar.service.BookingService;
+import com.verdemar.service.booking.BookingService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;

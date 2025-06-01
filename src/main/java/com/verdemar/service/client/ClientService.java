@@ -1,4 +1,4 @@
-package com.verdemar.service;
+package com.verdemar.service.client;
 
 import com.verdemar.domain.Client;
 import java.util.List;

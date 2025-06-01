@@ -1,3 +1,4 @@
+
 package com.verdemar.domain;
 
 public enum ApartmentType {

@@ -1,14 +1,19 @@
-package com.verdemar.service;
+package com.verdemar.service.apartment;
 
 import com.verdemar.domain.Apartment;
 import com.verdemar.repository.ApartmentRepository;
+import com.verdemar.repository.BookingRepository;
 import com.verdemar.domain.ApartmentType;
+import com.verdemar.domain.Booking;
+import com.verdemar.domain.dto.ApartmentAvailabilityDTO;
+import com.verdemar.domain.dto.BookingDateRange;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.time.LocalDate;
 
 @Service
@@ -16,6 +21,9 @@ public class ApartmentServiceImpl implements ApartmentService {
 
     @Autowired
     private ApartmentRepository apartmentRepository;
+
+    @Autowired
+    private BookingRepository bookingRepository;
 
     @Override
     public List<Apartment> getAllApartments() {
@@ -72,4 +80,23 @@ public class ApartmentServiceImpl implements ApartmentService {
         // Devuelve una lista de todos los IDs de los apartmentos
         return apartmentRepository.findAllIds();
     }
+@Override
+public List<ApartmentAvailabilityDTO> getAvailabilityList(
+        LocalDate startDate, LocalDate endDate, ApartmentType apartmentType) {
+
+    List<Apartment> apartments = apartmentRepository.findByApartmentType(apartmentType);
+
+    return apartments.stream()
+            .map(apartment -> {
+                List<BookingDateRange> bookings = bookingRepository.findAllDatesByApartment(apartment.getId());
+                boolean isAvailable = bookings.stream()
+                    .noneMatch(b -> 
+                        !startDate.isAfter(b.getTo()) && !endDate.isBefore(b.getFrom())
+                    );
+                return new ApartmentAvailabilityDTO(apartment, isAvailable);
+            })
+            .collect(Collectors.toList());
+}
+
+
 }

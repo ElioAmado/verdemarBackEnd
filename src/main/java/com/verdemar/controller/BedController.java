@@ -1,7 +1,8 @@
 package com.verdemar.controller;
 
 import com.verdemar.domain.Bed;
-import com.verdemar.service.BedService;
+import com.verdemar.service.bed.BedService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

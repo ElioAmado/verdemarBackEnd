@@ -6,7 +6,8 @@ import com.verdemar.domain.Apartment;
 import com.verdemar.domain.Booking;
 import com.verdemar.domain.Client;
 import com.verdemar.domain.dto.BookingDto;
-import com.verdemar.service.BookingService;
+import com.verdemar.service.booking.BookingService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

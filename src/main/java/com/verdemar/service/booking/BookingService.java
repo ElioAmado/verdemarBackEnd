@@ -1,4 +1,4 @@
-package com.verdemar.service;
+package com.verdemar.service.booking;
 
 import com.verdemar.domain.Booking;
 import com.verdemar.domain.dto.BookingDateRange;

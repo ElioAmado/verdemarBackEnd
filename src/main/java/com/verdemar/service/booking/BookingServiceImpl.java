@@ -1,9 +1,11 @@
-package com.verdemar.service;
+package com.verdemar.service.booking;
 
 import com.verdemar.domain.Booking;
 import com.verdemar.domain.dto.BookingDateRange;
 import com.verdemar.domain.dto.BookingDto;
 import com.verdemar.repository.BookingRepository;
+import com.verdemar.service.price.PriceService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.verdemar.domain.Price;
-import com.verdemar.service.PriceService;
+import com.verdemar.service.price.PriceService;
 
 @RestController
 @RequestMapping("/api/prices")

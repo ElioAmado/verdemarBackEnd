@@ -3,7 +3,7 @@ package com.verdemar.unit.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.verdemar.controller.ClientController;
 import com.verdemar.domain.Client;
-import com.verdemar.service.ClientService;
+import com.verdemar.service.client.ClientService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
