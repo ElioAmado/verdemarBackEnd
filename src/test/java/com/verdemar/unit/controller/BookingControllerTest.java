@@ -48,7 +48,7 @@ public class BookingControllerTest {
         apartment.setId((short) 1);
 
         sampleBooking = new Booking();
-        sampleBooking.setId(1);
+        sampleBooking.setId(1L);
         sampleBooking.setClient(client);
         sampleBooking.setApartment(apartment);
         sampleBooking.setStartDate(LocalDate.of(2025, 6, 1));
@@ -89,7 +89,7 @@ public class BookingControllerTest {
 
     @Test
     void testGetBookingById() throws Exception {
-        Mockito.when(bookingService.getBookingById(1)).thenReturn(sampleBooking);
+        Mockito.when(bookingService.getBookingById(1L)).thenReturn(sampleBooking);
 
         mockMvc.perform(get("/api/bookings/1"))
                 .andExpect(status().isOk())
@@ -100,7 +100,7 @@ public class BookingControllerTest {
     void testUpdateBooking() throws Exception {
         sampleBooking.setNotes("Updated note");
 
-        Mockito.when(bookingService.updateBooking(Mockito.eq(1), Mockito.any(Booking.class)))
+        Mockito.when(bookingService.updateBooking(Mockito.eq(1L), Mockito.any(BookingDto.class)))
                 .thenReturn(sampleBooking);
 
         mockMvc.perform(put("/api/bookings/1")

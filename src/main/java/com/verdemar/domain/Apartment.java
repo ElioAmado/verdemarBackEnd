@@ -20,17 +20,20 @@ public class Apartment {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
-    private ApartmentType apartmentType;
+    private ApartmentType apartmentType; // Cambiar a type
+
+
 
     @Column(columnDefinition = "TINYINT", nullable = false)
-    private Short capacity;
+    private Short capacity; // Cambiar a byte
 
     @Column(columnDefinition = "TINYINT", nullable = false)
-    private Short floor;
+    private Short floor; // Cambiar a byte
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
     @OneToMany(mappedBy = "apartment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Bed> beds;
+
 }

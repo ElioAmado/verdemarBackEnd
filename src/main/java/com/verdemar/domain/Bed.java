@@ -24,7 +24,7 @@ public class Bed {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bed_id", columnDefinition = "TINYINT")
-    private Short id;
+    private short id; // Cambiar a byte
 
     @ManyToOne
     @JoinColumn(name = "apartment_id", nullable = false)
@@ -33,10 +33,10 @@ public class Bed {
     @Column(columnDefinition = "TINYINT", nullable = false)
     private Short amount = 0;
 
-    @Column(columnDefinition = "TINYINT")
+    @Column(columnDefinition = "SMALLINT") // Añadir nota que es cm
     private Short width;
 
-    @Column(columnDefinition = "TINYINT")
+    @Column(columnDefinition = "SMALLINT") // Añadir nota que es cm
     private Short length;
 
     @Enumerated(EnumType.STRING)

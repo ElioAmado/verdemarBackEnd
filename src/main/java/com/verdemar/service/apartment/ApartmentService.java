@@ -17,6 +17,8 @@ public interface ApartmentService {
     Apartment updateApartment(Short id, Apartment apartment);
     void deleteApartment(Short id);
     ApartmentType[] getApartmentTypes();
+
+    // Additional methods for availability and filtering
     List<Apartment> getAvailableApartments(LocalDate startDate, LocalDate endDate, ApartmentType apartmentType);
     List<Short> getAllIds();
     List<ApartmentAvailabilityDTO> getAvailabilityList(
