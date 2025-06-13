@@ -1,40 +1,13 @@
 package com.verdemar.domain.dto;
 
-import java.util.List;
-
 public class CheckoutRequest {
+    private double amount;
 
-    private List<Item> items;
-
-    public static class Item {
-        private String id;
-        private int quantity;
-
-        // Getters y setters
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public int getQuantity() {
-            return quantity;
-        }
-
-        public void setQuantity(int quantity) {
-            this.quantity = quantity;
-        }
+    public double getAmount() {
+        return amount;
     }
 
-    // Getters y setters
-    public List<Item> getItems() {
-        return items;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 }
-

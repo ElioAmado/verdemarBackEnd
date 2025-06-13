@@ -4,6 +4,7 @@ import com.verdemar.domain.Booking;
 import com.verdemar.domain.dto.BookingDateRange;
 import com.verdemar.domain.dto.BookingDto;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public interface BookingService {
 
     void deleteBooking(Long id);
 
-    double getTotalPrice(Short apartmentId, LocalDate startDate, LocalDate endDate);
+    BigDecimal getTotalPrice(Short apartmentId, LocalDate startDate, LocalDate endDate);
 
     List<BookingDateRange> getAllDatesByApartment(Short apartmentId);
 }

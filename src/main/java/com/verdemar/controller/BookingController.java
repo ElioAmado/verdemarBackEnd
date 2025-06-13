@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -57,12 +58,12 @@ public class BookingController {
     }
 
     @GetMapping("/check")
-    public ResponseEntity<Double> checkPrice(
+    public ResponseEntity<BigDecimal> checkPrice(
             @RequestParam("apartmentId") short apartmentId,
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
 
-        double totalPrice = bookingService.getTotalPrice(apartmentId, startDate, endDate);
+        BigDecimal totalPrice = bookingService.getTotalPrice(apartmentId, startDate, endDate);
         return ResponseEntity.ok(totalPrice);
     }
 

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -69,32 +70,32 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public double getTotalPrice(Short apartmentId, LocalDate startDate, LocalDate endDate) {
-        double totalPrice = 0.0;
-
+    public BigDecimal getTotalPrice(Short apartmentId, LocalDate startDate, LocalDate endDate) {
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("Start date must be before end date");
         }
 
+        BigDecimal totalPrice = BigDecimal.ZERO;
         LocalDate currentDate = startDate;
 
         while (currentDate.isBefore(endDate)) {
-            // Assuming you have a method to get the price for a specific apartment and date
-            double dailyPrice = priceService.getPriceById(apartmentId, currentDate).getPrice();
-            if (dailyPrice <= 0) {
-                throw new IllegalArgumentException("Total price must be greater than zero");
+            // Suponemos que getPriceById nunca devuelve null
+            BigDecimal dailyPrice = priceService.getPriceById(apartmentId, currentDate).getPrice();
+
+            if (dailyPrice.compareTo(BigDecimal.ZERO) <= 0) {
+                throw new IllegalArgumentException("Daily price must be greater than zero");
             }
-            totalPrice += dailyPrice;
-            currentDate = currentDate.plusDays(1); // Increment the date by one day
+
+            totalPrice = totalPrice.add(dailyPrice);
+            currentDate = currentDate.plusDays(1);
         }
-    
-        if (totalPrice <= 0) {
+
+        if (totalPrice.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Total price must be greater than zero");
         }
-    
-        return totalPrice;
 
-    }
+        return totalPrice;
+    }    
 
     @Override
     public List<BookingDateRange> getAllDatesByApartment(Short apartmentId) {

@@ -8,6 +8,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import lombok.Data;
 import lombok.AllArgsConstructor;
@@ -29,6 +30,6 @@ public class Price {
     @Id
     private LocalDate date;
 
-    @Column(nullable = false)
-    private double price;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal price;
 }

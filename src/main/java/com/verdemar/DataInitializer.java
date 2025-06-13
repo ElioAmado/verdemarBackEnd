@@ -11,6 +11,8 @@ import com.verdemar.repository.ClientRepository;
 import com.verdemar.repository.PriceRepository;
 
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -56,15 +58,17 @@ public class DataInitializer implements CommandLineRunner {
                 LocalDate endDate = LocalDate.of(2025, 10, 28);
                 LocalDate currentDate = startDate;
                 
-                while (currentDate.isBefore(endDate)) {
-                    double priceValue = ThreadLocalRandom.current().nextDouble(100, 500); // Random price between 100 and 500
-                    priceValue = Math.round(priceValue * 100.0) / 100.0;
-                    Apartment apartment = apartmentRepository.findById((short) i).get();
-                    Price price = new Price(apartment, currentDate, priceValue);
-                    priceRepository.save(price);
-                    currentDate = currentDate.plusDays(1); // Increment the date by one day
-                    
-                }
+while (currentDate.isBefore(endDate)) {
+    double randomValue = ThreadLocalRandom.current().nextDouble(100, 500); // Random price between 100 and 500
+    BigDecimal priceValue = BigDecimal.valueOf(randomValue).setScale(2, RoundingMode.HALF_UP);
+
+    Apartment apartment = apartmentRepository.findById((short) i).get();
+    Price price = new Price(apartment, currentDate, priceValue);
+    priceRepository.save(price);
+
+    currentDate = currentDate.plusDays(1); // Increment the date by one day
+}
+
 
             }
     }
