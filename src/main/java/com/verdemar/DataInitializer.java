@@ -103,19 +103,32 @@ while (currentDate.isBefore(endDate)) {
 
     private void createInitialApartments() {
         if (apartmentRepository.count() == 0) {
-            List<Apartment> apartments = List.of(
-                    new Apartment((short) 1, ApartmentType.TWO_BEDROOM, (short) 4, (short) 0, "Test pls delete",
-                            Collections.emptyList()),
-                    new Apartment((short) 2, ApartmentType.TWO_BEDROOM, (short) 4, (short) 0, "Test pls delete",
-                            Collections.emptyList()),
-                    new Apartment((short) 3, ApartmentType.TWO_BEDROOM, (short) 4, (short) 1, "Test pls delete",
-                            Collections.emptyList()),
-                    new Apartment((short) 4, ApartmentType.TWO_BEDROOM, (short) 4, (short) 1, "Test pls delete",
-                            Collections.emptyList()),
-                    new Apartment((short) 5, ApartmentType.ONE_BEDROOM, (short) 3, (short) 0, "Test pls delete",
-                            Collections.emptyList()),
-                    new Apartment((short) 6, ApartmentType.ONE_BEDROOM, (short) 3, (short) 1, "Test pls delete",
-                            Collections.emptyList()));
+            List<Apartment> apartments  = List.of(
+                new Apartment((short) 1, ApartmentType.TWO_BEDROOM, (short) 4, (short) 0,
+                    "Disfruta de un espacioso apartamento de dos dormitorios en planta baja, ideal para familias o grupos de hasta 4 personas. Su ubicación facilita el acceso sin escaleras, perfecto para todas las edades.",
+                    Collections.emptyList()),
+            
+                new Apartment((short) 2, ApartmentType.TWO_BEDROOM, (short) 4, (short) 0,
+                    "Confort y funcionalidad se combinan en este acogedor apartamento de dos dormitorios situado en planta baja. Apto para hasta 4 huéspedes, es una excelente opción para unas vacaciones tranquilas y cómodas.",
+                    Collections.emptyList()),
+            
+                new Apartment((short) 3, ApartmentType.TWO_BEDROOM, (short) 4, (short) 1,
+                    "Este apartamento de dos dormitorios en primera planta ofrece vistas elevadas y un ambiente luminoso. Con capacidad para 4 personas, es ideal para quienes buscan un espacio acogedor y tranquilo.",
+                    Collections.emptyList()),
+            
+                new Apartment((short) 4, ApartmentType.TWO_BEDROOM, (short) 4, (short) 1,
+                    "Ubicado en la primera planta, este apartamento de dos dormitorios es perfecto para familias o grupos de amigos que deseen privacidad y comodidad durante su estancia. Acomoda hasta 4 personas.",
+                    Collections.emptyList()),
+            
+                new Apartment((short) 5, ApartmentType.ONE_BEDROOM, (short) 2, (short) 0,
+                    "Este encantador apartamento de un dormitorio en planta baja es ideal para parejas o viajeros individuales. Cómodo y accesible, es una opción perfecta para una escapada relajante.",
+                    Collections.emptyList()),
+            
+                new Apartment((short) 6, ApartmentType.ONE_BEDROOM, (short) 2, (short) 1,
+                    "Disfruta de un ambiente íntimo y acogedor en este apartamento de un dormitorio en primera planta. Con capacidad para 2 personas, es ideal para una estancia tranquila en pareja.",
+                    Collections.emptyList())
+            );
+            
             apartmentRepository.saveAll(apartments);
             System.out.println("Apartamentos iniciales creados.");
         }
