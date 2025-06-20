@@ -1,32 +1,50 @@
 services:
   app:
     build: .
+    image: verdemar-app
     container_name: verdemar-app
+    networks:
+      - lan
+      - dwcs
+    depends_on:
+      mysql:
+        condition: service_healthy # Espera a que o servizo mysql estea lanzado e funcione correctamente
     ports:
       - "8080:8080"
     env_file:
       - .env
-    depends_on:
-      - mysql
-    networks:
-      - verdemar-net
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/verdemar
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
 
   mysql:
-    image: mysql:8
+    image: mysql:latest
     container_name: verdemar-mysql
     restart: always
     ports:
       - "3306:3306"
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - verdemar-db:/var/lib/mysql
     networks:
-      - verdemar-net
+      - lan
 
 volumes:
   verdemar-db:
 
 networks:
-  verdemar-net:
+  lan:
+    internal: true
+  dwcs:
+    driver: bridge
