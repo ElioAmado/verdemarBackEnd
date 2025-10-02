@@ -41,11 +41,11 @@ public class ApartmentController {
         return ResponseEntity.ok(apartment);
     }
 
-    @PostMapping
-    public ResponseEntity<Apartment> createApartment(@RequestBody Apartment apartment) {
-        Apartment createdApartment = apartmentService.createApartment(apartment);
-        return ResponseEntity.ok(createdApartment);
-    }
+    // @PostMapping
+    // public ResponseEntity<Apartment> createApartment(@RequestBody Apartment apartment) {
+    //     Apartment createdApartment = apartmentService.createApartment(apartment);
+    //     return ResponseEntity.ok(createdApartment);
+    // }
 
     @PutMapping("/{id}")
     public ResponseEntity<Apartment> updateApartment(@PathVariable Short id, @RequestBody Apartment apartment) {
@@ -53,11 +53,11 @@ public class ApartmentController {
         return ResponseEntity.ok(updatedApartment);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteApartment(@PathVariable Short id) {
-        apartmentService.deleteApartment(id);
-        return ResponseEntity.noContent().build();
-    }
+    // @DeleteMapping("/{id}")
+    // public ResponseEntity<Void> deleteApartment(@PathVariable Short id) {
+    //     apartmentService.deleteApartment(id);
+    //     return ResponseEntity.noContent().build();
+    // }
 
     @GetMapping("/types")
     public ResponseEntity<ApartmentType[]> getApartmentTypes() {

@@ -1,6 +1,6 @@
 package com.verdemar.repository;
 
-import com.verdemar.domain.Booking;
+import com.verdemar.domain.booking.Booking;
 import com.verdemar.domain.dto.BookingDateRange;
 
 import java.time.LocalDate;

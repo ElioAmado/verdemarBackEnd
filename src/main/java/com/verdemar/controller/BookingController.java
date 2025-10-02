@@ -1,8 +1,8 @@
 package com.verdemar.controller;
 
-import com.verdemar.domain.Booking;
+import com.verdemar.domain.booking.Booking;
+import com.verdemar.domain.booking.BookingDto;
 import com.verdemar.domain.dto.BookingDateRange;
-import com.verdemar.domain.dto.BookingDto;
 import com.verdemar.service.booking.BookingService;
 
 import org.springframework.beans.factory.annotation.Autowired;

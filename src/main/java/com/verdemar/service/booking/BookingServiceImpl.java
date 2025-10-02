@@ -1,8 +1,8 @@
 package com.verdemar.service.booking;
 
-import com.verdemar.domain.Booking;
+import com.verdemar.domain.booking.Booking;
+import com.verdemar.domain.booking.BookingDto;
 import com.verdemar.domain.dto.BookingDateRange;
-import com.verdemar.domain.dto.BookingDto;
 import com.verdemar.repository.BookingRepository;
 import com.verdemar.service.price.PriceService;
 

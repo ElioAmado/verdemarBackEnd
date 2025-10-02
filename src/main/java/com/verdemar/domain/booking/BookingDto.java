@@ -1,9 +1,9 @@
-package com.verdemar.domain.dto;
+package com.verdemar.domain.booking;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import com.verdemar.domain.Booking.Status;
+import com.verdemar.domain.booking.Booking.Status;
 
 import lombok.Getter;
 import lombok.Setter;

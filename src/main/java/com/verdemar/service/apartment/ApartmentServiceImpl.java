@@ -4,7 +4,6 @@ import com.verdemar.domain.Apartment;
 import com.verdemar.repository.ApartmentRepository;
 import com.verdemar.repository.BookingRepository;
 import com.verdemar.domain.ApartmentType;
-import com.verdemar.domain.Booking;
 import com.verdemar.domain.dto.ApartmentAvailabilityDTO;
 import com.verdemar.domain.dto.BookingDateRange;
 
