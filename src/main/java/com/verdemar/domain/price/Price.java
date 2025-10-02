@@ -1,4 +1,4 @@
-package com.verdemar.domain;
+package com.verdemar.domain.price;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
@@ -10,6 +10,9 @@ import jakarta.persistence.Column;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+
+import com.verdemar.domain.Apartment;
+
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

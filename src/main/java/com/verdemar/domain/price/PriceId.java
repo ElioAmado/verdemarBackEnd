@@ -1,4 +1,4 @@
-package com.verdemar.domain;
+package com.verdemar.domain.price;
 
 import java.io.Serializable;
 import java.time.LocalDate;

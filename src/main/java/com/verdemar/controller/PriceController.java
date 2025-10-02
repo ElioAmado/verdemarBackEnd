@@ -8,13 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.verdemar.domain.Price;
+import com.verdemar.domain.price.Price;
+import com.verdemar.domain.price.PriceRequestDTO;
 import com.verdemar.service.price.PriceService;
 
 @RestController
@@ -41,18 +41,18 @@ public class PriceController {
     }
 
     // Crear un nuevo precio
-    @PostMapping
-    public ResponseEntity<Price> createPrice(@RequestBody Price price) {
-        Price createdPrice = priceService.createPrice(price);
-        return ResponseEntity.ok(createdPrice);
-    }
+    // @PostMapping
+    // public ResponseEntity<Price> createPrice(@RequestBody Price price) {
+    //     Price createdPrice = priceService.createPrice(price);
+    //     return ResponseEntity.ok(createdPrice);
+    // }
 
     // Actualizar un precio
     @PutMapping("/{apartment}/{date}")
     public ResponseEntity<Price> updatePrice(
             @PathVariable Short apartment,
-            @PathVariable LocalDate date, @RequestBody Price price) {
-        Price updatedPrice = priceService.updatePrice(apartment, date, price);
+            @PathVariable LocalDate date, @RequestBody PriceRequestDTO priceDto) {
+        Price updatedPrice = priceService.updatePrice(apartment, date, priceDto);
         return ResponseEntity.ok(updatedPrice);
     }
 
