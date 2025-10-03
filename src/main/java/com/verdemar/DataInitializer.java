@@ -1,11 +1,11 @@
 package com.verdemar;
 
-import com.verdemar.domain.ApartmentType;
 import com.verdemar.domain.Client;
+import com.verdemar.domain.apartment.Apartment;
+import com.verdemar.domain.apartment.ApartmentType;
 import com.verdemar.domain.csv.PriceRow;
 import com.verdemar.domain.price.Price;
 import com.opencsv.bean.CsvToBeanBuilder;
-import com.verdemar.domain.Apartment;
 import com.verdemar.repository.ApartmentRepository;
 import com.verdemar.repository.ClientRepository;
 import com.verdemar.repository.PriceRepository;

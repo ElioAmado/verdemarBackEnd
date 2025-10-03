@@ -2,8 +2,8 @@ package com.verdemar.unit.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.verdemar.controller.BookingController;
-import com.verdemar.domain.Apartment;
 import com.verdemar.domain.Client;
+import com.verdemar.domain.apartment.Apartment;
 import com.verdemar.domain.booking.Booking;
 import com.verdemar.domain.booking.BookingDto;
 import com.verdemar.service.booking.BookingService;

@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.verdemar.domain.Apartment;
-import com.verdemar.domain.ApartmentType;
+import com.verdemar.domain.apartment.Apartment;
+import com.verdemar.domain.apartment.ApartmentType;
 
 public interface ApartmentRepository extends JpaRepository<Apartment, Short> {
     public List<Apartment> findByApartmentType(ApartmentType apartmentType);

@@ -5,9 +5,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-
-import com.verdemar.domain.Apartment;
 import com.verdemar.domain.Client;
+import com.verdemar.domain.apartment.Apartment;
 import com.verdemar.repository.ApartmentRepository;
 import com.verdemar.repository.ClientRepository;
 

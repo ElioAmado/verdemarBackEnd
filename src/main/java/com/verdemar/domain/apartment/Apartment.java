@@ -1,10 +1,12 @@
-package com.verdemar.domain;
+package com.verdemar.domain.apartment;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import java.util.List;
+
+import com.verdemar.domain.Bed;
 
 @Entity
 @Table(name = "APARTMENT")

@@ -15,14 +15,8 @@ import com.verdemar.repository.PriceRepository;
 @Service
 public class PriceServiceImpl implements PriceService {
 
-    private final ModelMapper modelMapper;
-
     @Autowired
     private  PriceRepository priceRepository;
-
-    PriceServiceImpl(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-    }
 
     @Override
     public List<Price> getAllPrices() {

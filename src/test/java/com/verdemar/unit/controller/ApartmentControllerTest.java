@@ -2,8 +2,8 @@ package com.verdemar.unit.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.verdemar.controller.ApartmentController;
-import com.verdemar.domain.Apartment;
-import com.verdemar.domain.ApartmentType;
+import com.verdemar.domain.apartment.Apartment;
+import com.verdemar.domain.apartment.ApartmentType;
 import com.verdemar.service.apartment.ApartmentService;
 
 import org.junit.jupiter.api.BeforeEach;

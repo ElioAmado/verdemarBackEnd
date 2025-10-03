@@ -3,8 +3,8 @@ package com.verdemar.service.apartment;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.verdemar.domain.Apartment;
-import com.verdemar.domain.ApartmentType;
+import com.verdemar.domain.apartment.Apartment;
+import com.verdemar.domain.apartment.ApartmentType;
 import com.verdemar.domain.dto.ApartmentAvailabilityDTO;
 
 

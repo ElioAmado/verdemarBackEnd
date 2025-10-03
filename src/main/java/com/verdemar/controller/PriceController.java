@@ -43,8 +43,8 @@ public class PriceController {
     // Crear un nuevo precio
     // @PostMapping
     // public ResponseEntity<Price> createPrice(@RequestBody Price price) {
-    //     Price createdPrice = priceService.createPrice(price);
-    //     return ResponseEntity.ok(createdPrice);
+    // Price createdPrice = priceService.createPrice(price);
+    // return ResponseEntity.ok(createdPrice);
     // }
 
     // Actualizar un precio
@@ -57,11 +57,11 @@ public class PriceController {
     }
 
     // Eliminar un precio
-    @DeleteMapping("/{apartment}/{date}")
-    public ResponseEntity<Void> deletePrice(
-            @PathVariable Short apartment,
-            @PathVariable LocalDate date) {
-        priceService.deletePrice(apartment, date);
-        return ResponseEntity.noContent().build();
-    }
+    // @DeleteMapping("/{apartment}/{date}")
+    // public ResponseEntity<Void> deletePrice(
+    // @PathVariable Short apartment,
+    // @PathVariable LocalDate date) {
+    // priceService.deletePrice(apartment, date);
+    // return ResponseEntity.noContent().build();
+    // }
 }

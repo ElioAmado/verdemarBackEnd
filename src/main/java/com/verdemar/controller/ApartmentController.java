@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.verdemar.domain.Apartment;
-import com.verdemar.domain.ApartmentType;
+import com.verdemar.domain.apartment.Apartment;
+import com.verdemar.domain.apartment.ApartmentType;
 import com.verdemar.domain.dto.ApartmentAvailabilityDTO;
 import com.verdemar.exception.ApartmentException;
 import com.verdemar.service.apartment.ApartmentService;

@@ -1,5 +1,5 @@
 package com.verdemar.domain.dto;
-import com.verdemar.domain.Apartment;
+import com.verdemar.domain.apartment.Apartment;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

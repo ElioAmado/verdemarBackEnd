@@ -11,7 +11,7 @@ import jakarta.persistence.Column;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import com.verdemar.domain.Apartment;
+import com.verdemar.domain.apartment.Apartment;
 
 import lombok.Data;
 import lombok.AllArgsConstructor;
