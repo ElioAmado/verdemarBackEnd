@@ -10,15 +10,15 @@ import java.util.List;
 
 public interface BookingService {
 
-    List<Booking> getAllBookings();
+    List<BookingDto> getAllBookings();
 
-    Booking getBookingById(Long id);
+    BookingDto getBookingById(Long id);
 
     Booking createBooking(Booking booking);
 
-    Booking updateBooking(Long id, BookingDto booking);
+    BookingDto updateBooking(Long id, BookingDto booking);
 
-    Booking createBooking(BookingDto bookingDto);
+    BookingDto createBooking(BookingDto bookingDto);
 
     void deleteBooking(Long id);
 

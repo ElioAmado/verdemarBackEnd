@@ -28,14 +28,20 @@ public class BookingServiceImpl implements BookingService {
     private PriceService priceService;
 
     @Override
-    public List<Booking> getAllBookings() {
-        return bookingRepository.findAll();
+    public List<BookingDto> getAllBookings() {
+        List<Booking> bookings = bookingRepository.findAll();
+
+        return bookings.stream()
+                .map(booking -> modelMapper.map(booking, BookingDto.class))
+                .toList();
     }
 
     @Override
-    public Booking getBookingById(Long id) {
+    public BookingDto getBookingById(Long id) {
         Optional<Booking> booking = bookingRepository.findById(id);
-        return booking.orElseThrow(() -> new RuntimeException("Booking not found with id: " + id));
+
+        booking.orElseThrow(() -> new RuntimeException("Booking not found with id: " + id));
+        return modelMapper.map(booking.get(), BookingDto.class);
     }
 
     @Override
@@ -44,13 +50,15 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking updateBooking(Long id, BookingDto bookingDto) {
+    public BookingDto updateBooking(Long id, BookingDto bookingDto) {
         if (!bookingRepository.existsById(id)) {
             throw new RuntimeException("Booking not found with id: " + id);
         }
         bookingDto.setId(id); // Asegura que se mantiene el mismo ID
         Booking booking = modelMapper.map(bookingDto, Booking.class);
-        return bookingRepository.save(booking);
+        bookingRepository.save(booking);
+        
+        return bookingDto;
     }
 
     @Override
@@ -64,9 +72,10 @@ public class BookingServiceImpl implements BookingService {
 
 
     @Override
-    public Booking createBooking(BookingDto dto) {
+    public BookingDto createBooking(BookingDto dto) {
         Booking booking = modelMapper.map(dto, Booking.class);
-        return bookingRepository.save(booking);
+        bookingRepository.save(booking);
+        return dto;
     }
 
     @Override

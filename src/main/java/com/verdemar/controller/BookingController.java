@@ -24,29 +24,29 @@ public class BookingController {
 
     // Obtener todas las reservas
     @GetMapping
-    public ResponseEntity<List<Booking>> getAllBookings() {
-        List<Booking> bookings = bookingService.getAllBookings();
+    public ResponseEntity<List<BookingDto>> getAllBookings() {
+        List<BookingDto> bookings = bookingService.getAllBookings();
         return ResponseEntity.ok(bookings);
     }
 
     // Obtener una reserva por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Booking> getBookingById(@PathVariable Long id) {
-        Booking booking = bookingService.getBookingById(id);
+    public ResponseEntity<BookingDto> getBookingById(@PathVariable Long id) {
+        BookingDto booking = bookingService.getBookingById(id);
         return ResponseEntity.ok(booking);
     }
 
     // Crear una nueva reserva (usando BookingDto)
     @PostMapping
-    public ResponseEntity<Booking> createBooking(@RequestBody BookingDto dto) {
-        Booking created = bookingService.createBooking(dto);
+    public ResponseEntity<BookingDto> createBooking(@RequestBody BookingDto dto) {
+        BookingDto created = bookingService.createBooking(dto);
         return ResponseEntity.ok(created);
     }
 
     // Actualizar una reserva
     @PutMapping("/{id}")
-    public ResponseEntity<Booking> updateBooking(@PathVariable Long id, @RequestBody BookingDto booking) {
-        Booking updated = bookingService.updateBooking(id, booking);
+    public ResponseEntity<BookingDto> updateBooking(@PathVariable Long id, @RequestBody BookingDto booking) {
+        BookingDto updated = bookingService.updateBooking(id, booking);
         return ResponseEntity.ok(updated);
     }
 

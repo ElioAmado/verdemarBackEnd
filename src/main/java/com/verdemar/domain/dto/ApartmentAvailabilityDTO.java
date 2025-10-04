@@ -9,4 +9,10 @@ import lombok.Setter;
 public class ApartmentAvailabilityDTO {
     private Apartment apartment;
     private boolean available;
+
+    public ApartmentAvailabilityDTO(short apartmentId, boolean available) {
+        this.apartment = new Apartment();
+        this.apartment.setId(apartmentId);
+        this.available = available;
+    }
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.verdemar.domain.price.Price;
 import com.verdemar.domain.price.PriceRequestDTO;
+import com.verdemar.domain.price.PriceResponseDTO;
 import com.verdemar.service.price.PriceService;
 
 @RestController
@@ -28,6 +29,12 @@ public class PriceController {
     @GetMapping
     public ResponseEntity<List<Price>> getAllPrices() {
         List<Price> prices = priceService.getAllPrices();
+        return ResponseEntity.ok(prices);
+    }
+
+    @GetMapping("/dto")
+    public ResponseEntity<List<PriceResponseDTO>> getAllPricesDto() {
+        List<PriceResponseDTO> prices = priceService.getAllPriceDto();
         return ResponseEntity.ok(prices);
     }
 

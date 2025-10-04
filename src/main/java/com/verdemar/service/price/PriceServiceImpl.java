@@ -10,17 +10,30 @@ import org.springframework.stereotype.Service;
 import com.verdemar.domain.price.Price;
 import com.verdemar.domain.price.PriceId;
 import com.verdemar.domain.price.PriceRequestDTO;
+import com.verdemar.domain.price.PriceResponseDTO;
 import com.verdemar.repository.PriceRepository;
 
 @Service
 public class PriceServiceImpl implements PriceService {
 
+    private final ModelMapper modelMapper;
+
     @Autowired
     private  PriceRepository priceRepository;
+
+    PriceServiceImpl(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public List<Price> getAllPrices() {
         return priceRepository.findAll();
+    }
+
+    @Override
+    public List<PriceResponseDTO> getAllPriceDto() {
+        List<Price> prices = priceRepository.findAll();
+        return prices.stream().map(price -> modelMapper.map(price, PriceResponseDTO.class)).toList();
     }
 
     @Override

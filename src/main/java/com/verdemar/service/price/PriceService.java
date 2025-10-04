@@ -5,10 +5,13 @@ import java.util.List;
 
 import com.verdemar.domain.price.Price;
 import com.verdemar.domain.price.PriceRequestDTO;
+import com.verdemar.domain.price.PriceResponseDTO;
 
 public interface PriceService {
 
     List<Price> getAllPrices();
+
+    List<PriceResponseDTO> getAllPriceDto();
 
     Price getPriceById(Short apartment, LocalDate date);
 
