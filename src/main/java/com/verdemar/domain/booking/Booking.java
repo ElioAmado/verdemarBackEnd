@@ -59,10 +59,10 @@ public class Booking {
     private String notes;
 
     public enum Status {
-        PENDING,     // 0
-        CONFIRMED,   // 1
-        CANCELLED,   // 2
-        COMPLETED    // 3
+        PENDING,     // 0 Creando la reserva
+        CONFIRMED,   // 1 Reserva ya pagada
+        CANCELLED,   // 2 Reserva cancelada
+        COMPLETED    // 3 Reserva finalizada
     }
 
     // Getters y setters...

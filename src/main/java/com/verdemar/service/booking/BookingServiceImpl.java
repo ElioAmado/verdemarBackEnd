@@ -1,9 +1,13 @@
 package com.verdemar.service.booking;
 
+import com.verdemar.domain.apartment.Apartment;
 import com.verdemar.domain.booking.Booking;
 import com.verdemar.domain.booking.BookingDto;
 import com.verdemar.domain.dto.BookingDateRange;
+import com.verdemar.repository.ApartmentRepository;
 import com.verdemar.repository.BookingRepository;
+import com.verdemar.service.apartment.ApartmentService;
+import com.verdemar.service.apartment.ApartmentServiceImpl;
 import com.verdemar.service.price.PriceService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,12 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired
     private PriceService priceService;
+
+    @Autowired
+    private ApartmentService apartmentService;
+
+    @Autowired
+    private ApartmentRepository apartmentRepository;
 
     @Override
     public List<BookingDto> getAllBookings() {
@@ -50,6 +60,19 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public BookingDto changeStatusBooking(Long id, Booking.Status status) {
+        Optional<Booking> bookingOpt = bookingRepository.findById(id);
+        if (bookingOpt.isEmpty()) {
+            throw new RuntimeException("Booking not found with id: " + id);
+        }
+        Booking booking = bookingOpt.get();
+        booking.setStatus(status);
+        bookingRepository.save(booking);
+
+        return modelMapper.map(booking, BookingDto.class);
+    }
+
+    @Override
     public BookingDto updateBooking(Long id, BookingDto bookingDto) {
         if (!bookingRepository.existsById(id)) {
             throw new RuntimeException("Booking not found with id: " + id);
@@ -57,7 +80,7 @@ public class BookingServiceImpl implements BookingService {
         bookingDto.setId(id); // Asegura que se mantiene el mismo ID
         Booking booking = modelMapper.map(bookingDto, Booking.class);
         bookingRepository.save(booking);
-        
+
         return bookingDto;
     }
 
@@ -69,13 +92,35 @@ public class BookingServiceImpl implements BookingService {
         bookingRepository.deleteById(id);
     }
 
-
-
     @Override
     public BookingDto createBooking(BookingDto dto) {
+        if (isValidBooking(dto)) {
+            throw new IllegalArgumentException("Invalid booking: dates overlap or apartment does not exist");
+        }
         Booking booking = modelMapper.map(dto, Booking.class);
         bookingRepository.save(booking);
+        
         return dto;
+    }
+
+    @Override
+    public Boolean isValidBooking(BookingDto bookingDto) {
+        Optional<Apartment> apartment = apartmentRepository.findById(bookingDto.getApartmentId());
+
+        if (apartment.isEmpty()) {
+            return false;
+        }
+
+        List<BookingDateRange> existingBookings = bookingRepository.findAllDatesByApartment(bookingDto.getApartmentId());
+
+            for (BookingDateRange existingBooking : existingBookings) {
+                if (bookingDto.getStartDate().isBefore(existingBooking.getFrom()) &&
+                    bookingDto.getEndDate().isAfter(existingBooking.getTo())) {
+                    return false; // Hay un solapamiento
+                }
+            }
+
+        return true; // Placeholder
     }
 
     @Override
@@ -104,14 +149,11 @@ public class BookingServiceImpl implements BookingService {
         }
 
         return totalPrice;
-    }    
+    }
 
     @Override
     public List<BookingDateRange> getAllDatesByApartment(Short apartmentId) {
         return bookingRepository.findAllDatesByApartment(apartmentId);
     }
-
-
-
 
 }

@@ -1,6 +1,7 @@
 package com.verdemar.service.booking;
 
 import com.verdemar.domain.booking.Booking;
+import com.verdemar.domain.booking.Booking.Status;
 import com.verdemar.domain.booking.BookingDto;
 import com.verdemar.domain.dto.BookingDateRange;
 
@@ -19,6 +20,10 @@ public interface BookingService {
     BookingDto updateBooking(Long id, BookingDto booking);
 
     BookingDto createBooking(BookingDto bookingDto);
+
+    Boolean isValidBooking(BookingDto bookingDto);
+
+    BookingDto changeStatusBooking(Long id, Status status);
 
     void deleteBooking(Long id);
 

@@ -69,8 +69,8 @@ public class ApartmentServiceImpl implements ApartmentService {
 
     @Override
     public List<Apartment> getAvailableApartments(
-        LocalDate startDate, LocalDate endDate, ApartmentType apartmentType) {
-            List<Apartment> apartments = apartmentRepository.findByApartmentType(apartmentType);
+            LocalDate startDate, LocalDate endDate, ApartmentType apartmentType) {
+        List<Apartment> apartments = apartmentRepository.findByApartmentType(apartmentType);
         return apartments;
     }
 
@@ -79,23 +79,21 @@ public class ApartmentServiceImpl implements ApartmentService {
         // Devuelve una lista de todos los IDs de los apartmentos
         return apartmentRepository.findAllIds();
     }
-@Override
-public List<ApartmentAvailabilityDTO> getAvailabilityList(
-        LocalDate startDate, LocalDate endDate, ApartmentType apartmentType) {
 
-    List<Apartment> apartments = apartmentRepository.findByApartmentType(apartmentType);
+    @Override
+    public List<ApartmentAvailabilityDTO> getAvailabilityList(
+            LocalDate startDate, LocalDate endDate, ApartmentType apartmentType) {
 
-    return apartments.stream()
-            .map(apartment -> {
-                List<BookingDateRange> bookings = bookingRepository.findAllDatesByApartment(apartment.getId());
-                boolean isAvailable = bookings.stream()
-                    .noneMatch(b -> 
-                        !startDate.isAfter(b.getTo()) && !endDate.isBefore(b.getFrom())
-                    );
-                return new ApartmentAvailabilityDTO(apartment, isAvailable);
-            })
-            .collect(Collectors.toList());
-}
+        List<Apartment> apartments = apartmentRepository.findByApartmentType(apartmentType);
 
+        return apartments.stream()
+                .map(apartment -> {
+                    List<BookingDateRange> bookings = bookingRepository.findAllDatesByApartment(apartment.getId());
+                    boolean isAvailable = bookings.stream()
+                            .noneMatch(b -> !startDate.isAfter(b.getTo()) && !endDate.isBefore(b.getFrom()));
+                    return new ApartmentAvailabilityDTO(apartment, isAvailable);
+                })
+                .collect(Collectors.toList());
+    }
 
 }

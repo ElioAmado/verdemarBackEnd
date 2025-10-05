@@ -16,7 +16,7 @@ public class BookingDto {
     private Short apartmentId;
     private LocalDate startDate;
     private LocalDate endDate;
-    private BigDecimal totalPrice;
+    private BigDecimal totalPrice; // Se genera al crear la reserva
     private Status status;
     private String notes;
     // getters y setters
