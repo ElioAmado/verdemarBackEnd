@@ -54,7 +54,7 @@ public class DataInitializer implements CommandLineRunner {
 
             // List<Price> priceList;
             for (int i = 1; i <= 6; i++) {
-                LocalDate startDate = LocalDate.of(2026, 6, 14);
+                LocalDate startDate = LocalDate.of(2026, 4, 14);
                 LocalDate endDate = LocalDate.of(2026, 10, 28);
                 LocalDate currentDate = startDate;
 
