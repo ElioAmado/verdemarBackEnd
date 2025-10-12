@@ -55,6 +55,15 @@ public class Booking {
     @Column(name = "status", columnDefinition = "TINYINT", nullable = false)
     private Status status = Status.PENDING;
 
+    @Column(name = "created_at", nullable = false)
+    private LocalDate createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private LocalDate updatedAt;
+
+    @Column(name = "method_payment", length = 50)
+    private String methodPayment;
+
     @Column(columnDefinition = "TEXT")
     private String notes;
 
