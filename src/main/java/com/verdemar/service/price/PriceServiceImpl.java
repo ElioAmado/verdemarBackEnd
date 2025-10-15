@@ -1,5 +1,10 @@
 package com.verdemar.service.price;
 
+import com.verdemar.domain.price.Price;
+import com.verdemar.domain.price.PriceId;
+import com.verdemar.domain.price.PriceRequestDTO;
+import com.verdemar.domain.price.PriceResponseDTO;
+import com.verdemar.repository.PriceRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -7,67 +12,65 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.verdemar.domain.price.Price;
-import com.verdemar.domain.price.PriceId;
-import com.verdemar.domain.price.PriceRequestDTO;
-import com.verdemar.domain.price.PriceResponseDTO;
-import com.verdemar.repository.PriceRepository;
-
 @Service
 public class PriceServiceImpl implements PriceService {
 
-    private final ModelMapper modelMapper;
+  private final ModelMapper modelMapper;
 
-    @Autowired
-    private  PriceRepository priceRepository;
+  @Autowired private PriceRepository priceRepository;
 
-    PriceServiceImpl(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-    }
+  PriceServiceImpl(ModelMapper modelMapper) {
+    this.modelMapper = modelMapper;
+  }
 
-    @Override
-    public List<Price> getAllPrices() {
-        return priceRepository.findAll();
-    }
+  @Override
+  public List<Price> getAllPrices() {
+    return priceRepository.findAll();
+  }
 
-    @Override
-    public List<PriceResponseDTO> getAllPriceDto() {
-        List<Price> prices = priceRepository.findAll();
-        return prices.stream().map(price -> modelMapper.map(price, PriceResponseDTO.class)).toList();
-    }
+  @Override
+  public List<PriceResponseDTO> getAllPriceDto() {
+    List<Price> prices = priceRepository.findAll();
+    return prices.stream().map(price -> modelMapper.map(price, PriceResponseDTO.class)).toList();
+  }
 
-    @Override
-    public Price getPriceById(Short apartment, LocalDate date) {
-        Optional<Price> price = priceRepository.findById(new PriceId(apartment, date));
-        return price.orElseThrow(() -> new RuntimeException("Price not found for apartment " + apartment + " and date " + date));
-    }
+  @Override
+  public Price getPriceById(Short apartment, LocalDate date) {
+    Optional<Price> price = priceRepository.findById(new PriceId(apartment, date));
+    return price.orElseThrow(
+        () ->
+            new RuntimeException(
+                "Price not found for apartment " + apartment + " and date " + date));
+  }
 
-    @Override
-    public Price createPrice(Price price) {
-        return priceRepository.save(price);
-    }
+  @Override
+  public Price createPrice(Price price) {
+    return priceRepository.save(price);
+  }
 
-    @Override
-    public Price updatePrice(Short apartmentId, LocalDate date, PriceRequestDTO priceDto) {
-        PriceId priceId = new PriceId(apartmentId, date);
+  @Override
+  public Price updatePrice(Short apartmentId, LocalDate date, PriceRequestDTO priceDto) {
+    PriceId priceId = new PriceId(apartmentId, date);
 
-
-        Price price = priceRepository.findById(priceId)
-                .orElseThrow(() -> new RuntimeException(
+    Price price =
+        priceRepository
+            .findById(priceId)
+            .orElseThrow(
+                () ->
+                    new RuntimeException(
                         "Price not found for apartment " + apartmentId + " and date " + date));
 
+    price.setPrice(priceDto.getPrice());
 
-        price.setPrice(priceDto.getPrice());
+    return priceRepository.save(price);
+  }
 
-        return priceRepository.save(price);
+  @Override
+  public void deletePrice(Short apartment, LocalDate date) {
+    if (!priceRepository.existsById(new PriceId(apartment, date))) {
+      throw new RuntimeException(
+          "Price not found for apartment " + apartment + " and date " + date);
     }
-
-
-    @Override
-    public void deletePrice(Short apartment, LocalDate date) {
-        if (!priceRepository.existsById(new PriceId(apartment, date))) {
-            throw new RuntimeException("Price not found for apartment " + apartment + " and date " + date);
-        }
-        priceRepository.deleteById(new PriceId(apartment, date));
-    }
+    priceRepository.deleteById(new PriceId(apartment, date));
+  }
 }

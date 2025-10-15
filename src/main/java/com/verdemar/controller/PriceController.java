@@ -1,11 +1,13 @@
 package com.verdemar.controller;
 
+import com.verdemar.domain.price.Price;
+import com.verdemar.domain.price.PriceRequestDTO;
+import com.verdemar.domain.price.PriceResponseDTO;
+import com.verdemar.service.price.PriceService;
 import java.time.LocalDate;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -13,62 +15,56 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.verdemar.domain.price.Price;
-import com.verdemar.domain.price.PriceRequestDTO;
-import com.verdemar.domain.price.PriceResponseDTO;
-import com.verdemar.service.price.PriceService;
-
 @RestController
 @RequestMapping("/api/prices")
 public class PriceController {
 
-    @Autowired
-    private PriceService priceService;
+  @Autowired private PriceService priceService;
 
-    // Obtener todos los precios
-    @GetMapping
-    public ResponseEntity<List<Price>> getAllPrices() {
-        List<Price> prices = priceService.getAllPrices();
-        return ResponseEntity.ok(prices);
-    }
+  // Obtener todos los precios
+  @GetMapping
+  public ResponseEntity<List<Price>> getAllPrices() {
+    List<Price> prices = priceService.getAllPrices();
+    return ResponseEntity.ok(prices);
+  }
 
-    @GetMapping("/dto")
-    public ResponseEntity<List<PriceResponseDTO>> getAllPricesDto() {
-        List<PriceResponseDTO> prices = priceService.getAllPriceDto();
-        return ResponseEntity.ok(prices);
-    }
+  @GetMapping("/dto")
+  public ResponseEntity<List<PriceResponseDTO>> getAllPricesDto() {
+    List<PriceResponseDTO> prices = priceService.getAllPriceDto();
+    return ResponseEntity.ok(prices);
+  }
 
-    // Obtener un precio por ID (apartment, date)
-    @GetMapping("/{apartment}/{date}")
-    public ResponseEntity<Price> getPriceById(
-            @PathVariable Short apartment,
-            @PathVariable LocalDate date) {
-        Price price = priceService.getPriceById(apartment, date);
-        return ResponseEntity.ok(price);
-    }
+  // Obtener un precio por ID (apartment, date)
+  @GetMapping("/{apartment}/{date}")
+  public ResponseEntity<Price> getPriceById(
+      @PathVariable Short apartment, @PathVariable LocalDate date) {
+    Price price = priceService.getPriceById(apartment, date);
+    return ResponseEntity.ok(price);
+  }
 
-    // Crear un nuevo precio
-    // @PostMapping
-    // public ResponseEntity<Price> createPrice(@RequestBody Price price) {
-    // Price createdPrice = priceService.createPrice(price);
-    // return ResponseEntity.ok(createdPrice);
-    // }
+  // Crear un nuevo precio
+  // @PostMapping
+  // public ResponseEntity<Price> createPrice(@RequestBody Price price) {
+  // Price createdPrice = priceService.createPrice(price);
+  // return ResponseEntity.ok(createdPrice);
+  // }
 
-    // Actualizar un precio
-    @PutMapping("/{apartment}/{date}")
-    public ResponseEntity<Price> updatePrice(
-            @PathVariable Short apartment,
-            @PathVariable LocalDate date, @RequestBody PriceRequestDTO priceDto) {
-        Price updatedPrice = priceService.updatePrice(apartment, date, priceDto);
-        return ResponseEntity.ok(updatedPrice);
-    }
+  // Actualizar un precio
+  @PutMapping("/{apartment}/{date}")
+  public ResponseEntity<Price> updatePrice(
+      @PathVariable Short apartment,
+      @PathVariable LocalDate date,
+      @RequestBody PriceRequestDTO priceDto) {
+    Price updatedPrice = priceService.updatePrice(apartment, date, priceDto);
+    return ResponseEntity.ok(updatedPrice);
+  }
 
-    // Eliminar un precio
-    // @DeleteMapping("/{apartment}/{date}")
-    // public ResponseEntity<Void> deletePrice(
-    // @PathVariable Short apartment,
-    // @PathVariable LocalDate date) {
-    // priceService.deletePrice(apartment, date);
-    // return ResponseEntity.noContent().build();
-    // }
+  // Eliminar un precio
+  // @DeleteMapping("/{apartment}/{date}")
+  // public ResponseEntity<Void> deletePrice(
+  // @PathVariable Short apartment,
+  // @PathVariable LocalDate date) {
+  // priceService.deletePrice(apartment, date);
+  // return ResponseEntity.noContent().build();
+  // }
 }

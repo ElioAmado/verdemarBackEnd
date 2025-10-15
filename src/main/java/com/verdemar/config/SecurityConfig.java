@@ -10,14 +10,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable()); // opcional, según tu caso
-        http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/beds/**", "/api/beds").denyAll() 
-                .anyRequest().permitAll() 
-        );
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http.csrf(csrf -> csrf.disable()); // opcional, según tu caso
+    http.authorizeHttpRequests(
+        auth ->
+            auth.requestMatchers("/api/beds/**", "/api/beds").denyAll().anyRequest().permitAll());
 
-        return http.build();
-    }
+    return http.build();
+  }
 }

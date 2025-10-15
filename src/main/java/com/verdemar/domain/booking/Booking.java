@@ -1,11 +1,7 @@
 package com.verdemar.domain.booking;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
 import com.verdemar.domain.Client;
 import com.verdemar.domain.apartment.Apartment;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,8 +12,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Data;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -27,52 +25,52 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Booking {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "booking_id")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "booking_id")
+  private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "client_id")
-    private Client client;
+  @ManyToOne
+  @JoinColumn(name = "client_id")
+  private Client client;
 
-    private byte guests;
+  private byte guests;
 
-    @ManyToOne
-    @JoinColumn(name = "apartment_id", nullable = false)
-    private Apartment apartment;
+  @ManyToOne
+  @JoinColumn(name = "apartment_id", nullable = false)
+  private Apartment apartment;
 
-    @Column(name = "start_date", nullable = false)
-    private LocalDate startDate;
+  @Column(name = "start_date", nullable = false)
+  private LocalDate startDate;
 
-    @Column(name = "end_date", nullable = false)
-    private LocalDate endDate;
+  @Column(name = "end_date", nullable = false)
+  private LocalDate endDate;
 
-    @Column(name = "total_price", precision = 10, scale = 2)
-    private BigDecimal totalPrice;
+  @Column(name = "total_price", precision = 10, scale = 2)
+  private BigDecimal totalPrice;
 
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "status", columnDefinition = "TINYINT", nullable = false)
-    private Status status = Status.PENDING;
+  @Enumerated(EnumType.ORDINAL)
+  @Column(name = "status", columnDefinition = "TINYINT", nullable = false)
+  private Status status = Status.PENDING;
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDate createdAt;
+  @Column(name = "created_at", nullable = false)
+  private LocalDate createdAt;
 
-    @Column(name = "updated_at", nullable = false)
-    private LocalDate updatedAt;
+  @Column(name = "updated_at", nullable = false)
+  private LocalDate updatedAt;
 
-    @Column(name = "method_payment", length = 50)
-    private String methodPayment;
+  @Column(name = "method_payment", length = 50)
+  private String methodPayment;
 
-    @Column(columnDefinition = "TEXT")
-    private String notes;
+  @Column(columnDefinition = "TEXT")
+  private String notes;
 
-    public enum Status {
-        PENDING,     // 0 Creando la reserva
-        CONFIRMED,   // 1 Reserva ya pagada
-        CANCELLED,   // 2 Reserva cancelada
-        COMPLETED    // 3 Reserva finalizada
-    }
+  public enum Status {
+    PENDING, // 0 Creando la reserva
+    CONFIRMED, // 1 Reserva ya pagada
+    CANCELLED, // 2 Reserva cancelada
+    COMPLETED // 3 Reserva finalizada
+  }
 
-    // Getters y setters...
+  // Getters y setters...
 }

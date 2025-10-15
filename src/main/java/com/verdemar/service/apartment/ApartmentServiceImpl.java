@@ -1,99 +1,98 @@
 package com.verdemar.service.apartment;
 
-import com.verdemar.repository.ApartmentRepository;
-import com.verdemar.repository.BookingRepository;
 import com.verdemar.domain.apartment.Apartment;
 import com.verdemar.domain.apartment.ApartmentType;
 import com.verdemar.domain.dto.ApartmentAvailabilityDTO;
 import com.verdemar.domain.dto.BookingDateRange;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.verdemar.repository.ApartmentRepository;
+import com.verdemar.repository.BookingRepository;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.time.LocalDate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ApartmentServiceImpl implements ApartmentService {
 
-    @Autowired
-    private ApartmentRepository apartmentRepository;
+  @Autowired private ApartmentRepository apartmentRepository;
 
-    @Autowired
-    private BookingRepository bookingRepository;
+  @Autowired private BookingRepository bookingRepository;
 
-    @Override
-    public List<Apartment> getAllApartments() {
-        // Devuelve todos los apartmentos
-        return apartmentRepository.findAll();
+  @Override
+  public List<Apartment> getAllApartments() {
+    // Devuelve todos los apartmentos
+    return apartmentRepository.findAll();
+  }
+
+  @Override
+  public Apartment getApartmentById(Short id) {
+    // Obtiene un apartmento por ID
+    Optional<Apartment> apartment = apartmentRepository.findById(id);
+    return apartment.orElseThrow(() -> new RuntimeException("Apartment not found with id: " + id));
+  }
+
+  @Override
+  public Apartment createApartment(Apartment apartment) {
+    // Crea un nuevo apartmento
+    return apartmentRepository.save(apartment);
+  }
+
+  @Override
+  public Apartment updateApartment(Short id, Apartment apartment) {
+    // Verifica si el apartmento existe antes de actualizar
+    if (!apartmentRepository.existsById(id)) {
+      throw new RuntimeException("Apartment not found with id: " + id);
     }
+    apartment.setId(id); // Aseguramos que se mantiene el mismo ID
+    return apartmentRepository.save(apartment);
+  }
 
-    @Override
-    public Apartment getApartmentById(Short id) {
-        // Obtiene un apartmento por ID
-        Optional<Apartment> apartment = apartmentRepository.findById(id);
-        return apartment.orElseThrow(() -> new RuntimeException("Apartment not found with id: " + id));
+  @Override
+  public void deleteApartment(Short id) {
+    // Elimina un apartmento por ID
+    if (!apartmentRepository.existsById(id)) {
+      throw new RuntimeException("Apartment not found with id: " + id);
     }
+    apartmentRepository.deleteById(id);
+  }
 
-    @Override
-    public Apartment createApartment(Apartment apartment) {
-        // Crea un nuevo apartmento
-        return apartmentRepository.save(apartment);
-    }
+  @Override
+  public ApartmentType[] getApartmentTypes() {
+    return ApartmentType.values();
+  }
 
-    @Override
-    public Apartment updateApartment(Short id, Apartment apartment) {
-        // Verifica si el apartmento existe antes de actualizar
-        if (!apartmentRepository.existsById(id)) {
-            throw new RuntimeException("Apartment not found with id: " + id);
-        }
-        apartment.setId(id); // Aseguramos que se mantiene el mismo ID
-        return apartmentRepository.save(apartment);
-    }
+  @Override
+  public List<Apartment> getAvailableApartments(
+      LocalDate startDate, LocalDate endDate, ApartmentType apartmentType) {
+    List<Apartment> apartments = apartmentRepository.findByApartmentType(apartmentType);
+    return apartments;
+  }
 
-    @Override
-    public void deleteApartment(Short id) {
-        // Elimina un apartmento por ID
-        if (!apartmentRepository.existsById(id)) {
-            throw new RuntimeException("Apartment not found with id: " + id);
-        }
-        apartmentRepository.deleteById(id);
-    }
+  @Override
+  public List<Short> getAllIds() {
+    // Devuelve una lista de todos los IDs de los apartmentos
+    return apartmentRepository.findAllIds();
+  }
 
-    @Override
-    public ApartmentType[] getApartmentTypes() {
-        return ApartmentType.values();
-    }
+  @Override
+  public List<ApartmentAvailabilityDTO> getAvailabilityList(
+      LocalDate startDate, LocalDate endDate, ApartmentType apartmentType) {
 
-    @Override
-    public List<Apartment> getAvailableApartments(
-            LocalDate startDate, LocalDate endDate, ApartmentType apartmentType) {
-        List<Apartment> apartments = apartmentRepository.findByApartmentType(apartmentType);
-        return apartments;
-    }
+    List<Apartment> apartments = apartmentRepository.findByApartmentType(apartmentType);
 
-    @Override
-    public List<Short> getAllIds() {
-        // Devuelve una lista de todos los IDs de los apartmentos
-        return apartmentRepository.findAllIds();
-    }
-
-    @Override
-    public List<ApartmentAvailabilityDTO> getAvailabilityList(
-            LocalDate startDate, LocalDate endDate, ApartmentType apartmentType) {
-
-        List<Apartment> apartments = apartmentRepository.findByApartmentType(apartmentType);
-
-        return apartments.stream()
-                .map(apartment -> {
-                    List<BookingDateRange> bookings = bookingRepository.findAllDatesByApartment(apartment.getId());
-                    boolean isAvailable = bookings.stream()
-                            .noneMatch(b -> !startDate.isAfter(b.getTo()) && !endDate.isBefore(b.getFrom()));
-                    return new ApartmentAvailabilityDTO(apartment, isAvailable);
-                })
-                .collect(Collectors.toList());
-    }
-
+    return apartments.stream()
+        .map(
+            apartment -> {
+              List<BookingDateRange> bookings =
+                  bookingRepository.findAllDatesByApartment(apartment.getId());
+              boolean isAvailable =
+                  bookings.stream()
+                      .noneMatch(
+                          b -> !startDate.isAfter(b.getTo()) && !endDate.isBefore(b.getFrom()));
+              return new ApartmentAvailabilityDTO(apartment, isAvailable);
+            })
+        .collect(Collectors.toList());
+  }
 }

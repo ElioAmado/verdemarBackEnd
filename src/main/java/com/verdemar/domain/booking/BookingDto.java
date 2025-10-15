@@ -1,23 +1,22 @@
 package com.verdemar.domain.booking;
 
+import com.verdemar.domain.booking.Booking.Status;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
-import com.verdemar.domain.booking.Booking.Status;
-
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter
+@Setter
 public class BookingDto {
-    private Long id = null; // ID opcional para actualizaciones
-    private Integer clientId;
-    private byte guests;
-    private Short apartmentId;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private BigDecimal totalPrice; // Se genera al crear la reserva
-    private Status status;
-    private String notes;
-    // getters y setters
+  private Long id = null; // ID opcional para actualizaciones
+  private Integer clientId;
+  private byte guests;
+  private Short apartmentId;
+  private LocalDate startDate;
+  private LocalDate endDate;
+  private BigDecimal totalPrice; // Se genera al crear la reserva
+  private Status status;
+  private String notes;
+  // getters y setters
 }

@@ -5,13 +5,13 @@ import java.util.List;
 
 public interface BedService {
 
-    List<Bed> getAllBeds();
+  List<Bed> getAllBeds();
 
-    Bed getBedById(Short id);
+  Bed getBedById(Short id);
 
-    Bed createBed(Bed bed);
+  Bed createBed(Bed bed);
 
-    Bed updateBed(Short id, Bed bed);
+  Bed updateBed(Short id, Bed bed);
 
-    void deleteBed(Short id);
+  void deleteBed(Short id);
 }

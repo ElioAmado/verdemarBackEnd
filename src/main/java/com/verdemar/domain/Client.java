@@ -6,8 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -17,18 +17,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Client {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "client_id")
-    private Integer id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "client_id")
+  private Integer id;
 
-    private String name;
+  private String name;
 
-    @Column(name = "last_name")
-    private String lastName;
+  @Column(name = "last_name")
+  private String lastName;
 
-    private String phone;
+  private String phone;
 
-    private String email;
-    
+  private String email;
 }

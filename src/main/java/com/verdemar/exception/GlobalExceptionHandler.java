@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ApartmentException.class)
-    public ResponseEntity<String> handleApartmentException(ApartmentException ex) {
-        // Puedes personalizar la respuesta, aquí solo devuelvo el mensaje
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-    }
+  @ExceptionHandler(ApartmentException.class)
+  public ResponseEntity<String> handleApartmentException(ApartmentException ex) {
+    // Puedes personalizar la respuesta, aquí solo devuelvo el mensaje
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+  }
 
-    // Otros manejadores de excepción si quieres...
+  // Otros manejadores de excepción si quieres...
 }
