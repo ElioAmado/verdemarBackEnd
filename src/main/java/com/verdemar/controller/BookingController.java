@@ -17,6 +17,8 @@ public class BookingController {
 
   @Autowired private BookingService bookingService;
 
+  // Gets
+
   // Obtener todas las reservas
   @GetMapping
   public ResponseEntity<List<BookingDto>> getAllBookings() {
@@ -29,28 +31,6 @@ public class BookingController {
   public ResponseEntity<BookingDto> getBookingById(@PathVariable Long id) {
     BookingDto booking = bookingService.getBookingById(id);
     return ResponseEntity.ok(booking);
-  }
-
-  // Crear una nueva reserva (usando BookingDto)
-  @PostMapping
-  public ResponseEntity<BookingDto> createBooking(@RequestBody BookingDto dto) {
-    BookingDto created = bookingService.createBooking(dto);
-    return ResponseEntity.ok(created);
-  }
-
-  // Actualizar una reserva
-  @PutMapping("/{id}")
-  public ResponseEntity<BookingDto> updateBooking(
-      @PathVariable Long id, @RequestBody BookingDto booking) {
-    BookingDto updated = bookingService.updateBooking(id, booking);
-    return ResponseEntity.ok(updated);
-  }
-
-  // Eliminar una reserva
-  @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
-    bookingService.deleteBooking(id);
-    return ResponseEntity.noContent().build();
   }
 
   @GetMapping("/check")
@@ -69,5 +49,33 @@ public class BookingController {
 
     List<BookingDateRange> dates = bookingService.getAllDatesByApartment(apartmentId);
     return ResponseEntity.ok(dates);
+  }
+
+  // Posts
+
+  // Crear una nueva reserva (usando BookingDto)
+  @PostMapping
+  public ResponseEntity<BookingDto> createBooking(@RequestBody BookingDto dto) {
+    BookingDto created = bookingService.createBooking(dto);
+    return ResponseEntity.ok(created);
+  }
+
+  // Puts
+
+  // Actualizar una reserva
+  @PutMapping("/{id}")
+  public ResponseEntity<BookingDto> updateBooking(
+      @PathVariable Long id, @RequestBody BookingDto booking) {
+    BookingDto updated = bookingService.updateBooking(id, booking);
+    return ResponseEntity.ok(updated);
+  }
+
+  // Deletes
+
+  // Eliminar una reserva
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
+    bookingService.deleteBooking(id);
+    return ResponseEntity.noContent().build();
   }
 }

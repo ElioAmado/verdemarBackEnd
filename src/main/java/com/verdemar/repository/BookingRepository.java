@@ -9,10 +9,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
+  // Encuentra todas las fechas de reserva para un apartmento específico
   @Query(
       "SELECT new com.verdemar.domain.dto.BookingDateRange(b.startDate, b.endDate) FROM Booking b WHERE b.apartment.id = :apartmentId")
   List<BookingDateRange> findAllDatesByApartment(@Param("apartmentId") Short apartmentId);
-
+  
+  // Encuentra reservas que se solapan con un rango de fechas dado
   @Query("SELECT b FROM Booking b WHERE b.startDate < :endDate AND b.endDate > :startDate")
   List<Booking> findByDateRange(
       @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);

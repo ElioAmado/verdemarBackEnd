@@ -20,6 +20,8 @@ public class ClientController {
 
   @Autowired private ClientService clientService;
 
+  // Gets
+
   // Obtener todos los clientes
   @GetMapping
   public ResponseEntity<List<Client>> getAllClients() {
@@ -34,6 +36,8 @@ public class ClientController {
     return ResponseEntity.ok(client);
   }
 
+  // Posts
+
   // Crear un nuevo cliente
   @PostMapping
   public ResponseEntity<Client> createClient(@RequestBody Client client) {
@@ -41,12 +45,16 @@ public class ClientController {
     return ResponseEntity.ok(createdClient);
   }
 
+  // Puts
+
   // Actualizar un cliente
   @PutMapping("/{id}")
   public ResponseEntity<Client> updateClient(@PathVariable Integer id, @RequestBody Client client) {
     Client updatedClient = clientService.updateClient(id, client);
     return ResponseEntity.ok(updatedClient);
   }
+
+  // Deletes
 
   // Eliminar un cliente
   @DeleteMapping("/{id}")

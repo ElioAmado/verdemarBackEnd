@@ -13,6 +13,8 @@ public class BedController {
 
   @Autowired private BedService bedService;
 
+  // Gets
+
   // Obtener todos los camas
   @GetMapping
   public ResponseEntity<List<Bed>> getAllBeds() {
@@ -26,6 +28,8 @@ public class BedController {
     Bed bed = bedService.getBedById(id);
     return ResponseEntity.ok(bed);
   }
+
+  // Posts
 
   // Crear una nueva cama
   @PostMapping

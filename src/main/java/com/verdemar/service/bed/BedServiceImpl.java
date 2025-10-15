@@ -12,17 +12,20 @@ public class BedServiceImpl implements BedService {
 
   @Autowired private BedRepository bedRepository;
 
+  // Devuelve todos los camas
   @Override
   public List<Bed> getAllBeds() {
     return bedRepository.findAll();
   }
 
+  // Devuelve una cama por su ID
   @Override
   public Bed getBedById(Short id) {
     Optional<Bed> bed = bedRepository.findById(id);
     return bed.orElseThrow(() -> new RuntimeException("Bed not found with id: " + id));
   }
 
+  // Crea una nueva cama
   @Override
   public Bed createBed(Bed bed) {
     return bedRepository.save(bed);

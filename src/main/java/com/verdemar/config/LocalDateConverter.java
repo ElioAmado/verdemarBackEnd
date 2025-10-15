@@ -4,6 +4,7 @@ import com.opencsv.bean.AbstractBeanField;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+// Convierte una cadena de texto en formato "yyyy-MM-dd" a un objeto LocalDate
 public class LocalDateConverter extends AbstractBeanField<LocalDate, String> {
   private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 

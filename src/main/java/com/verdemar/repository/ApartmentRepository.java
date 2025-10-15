@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface ApartmentRepository extends JpaRepository<Apartment, Short> {
+  // Encuentra apartamentos por su tipo
   public List<Apartment> findByApartmentType(ApartmentType apartmentType);
 
   @Query("SELECT a.id FROM Apartment a")

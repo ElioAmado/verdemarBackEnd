@@ -12,22 +12,26 @@ public class ClientServiceImpl implements ClientService {
 
   @Autowired private ClientRepository clientRepository;
 
+  // Devuelve todos los clientes
   @Override
   public List<Client> getAllClients() {
     return clientRepository.findAll();
   }
 
+  // Devuelve un cliente por su ID
   @Override
   public Client getClientById(Integer id) {
     Optional<Client> client = clientRepository.findById(id);
     return client.orElseThrow(() -> new RuntimeException("Client not found with id: " + id));
   }
 
+  // Crea un nuevo cliente
   @Override
   public Client createClient(Client client) {
     return clientRepository.save(client);
   }
 
+  // Actualiza un cliente existente
   @Override
   public Client updateClient(Integer id, Client client) {
     if (!clientRepository.existsById(id)) {
@@ -37,6 +41,7 @@ public class ClientServiceImpl implements ClientService {
     return clientRepository.save(client);
   }
 
+  // Elimina un cliente por su ID
   @Override
   public void deleteClient(Integer id) {
     if (!clientRepository.existsById(id)) {

@@ -21,6 +21,8 @@ public class PriceController {
 
   @Autowired private PriceService priceService;
 
+  // Gets
+
   // Obtener todos los precios
   @GetMapping
   public ResponseEntity<List<Price>> getAllPrices() {
@@ -48,6 +50,8 @@ public class PriceController {
   // Price createdPrice = priceService.createPrice(price);
   // return ResponseEntity.ok(createdPrice);
   // }
+
+  // Puts
 
   // Actualizar un precio
   @PutMapping("/{apartment}/{date}")

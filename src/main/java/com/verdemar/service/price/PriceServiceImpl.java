@@ -15,25 +15,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class PriceServiceImpl implements PriceService {
 
-  private final ModelMapper modelMapper;
+  @Autowired private ModelMapper modelMapper;
 
   @Autowired private PriceRepository priceRepository;
 
-  PriceServiceImpl(ModelMapper modelMapper) {
-    this.modelMapper = modelMapper;
-  }
-
+  // Devuelve todos los precios
   @Override
   public List<Price> getAllPrices() {
     return priceRepository.findAll();
   }
 
+  // Devuelve todos los precios en formato DTO
   @Override
   public List<PriceResponseDTO> getAllPriceDto() {
     List<Price> prices = priceRepository.findAll();
     return prices.stream().map(price -> modelMapper.map(price, PriceResponseDTO.class)).toList();
   }
 
+  // Devuelve un precio por su ID (apartment, date)
   @Override
   public Price getPriceById(Short apartment, LocalDate date) {
     Optional<Price> price = priceRepository.findById(new PriceId(apartment, date));
@@ -43,11 +42,13 @@ public class PriceServiceImpl implements PriceService {
                 "Price not found for apartment " + apartment + " and date " + date));
   }
 
+  // Crea un nuevo precio
   @Override
   public Price createPrice(Price price) {
     return priceRepository.save(price);
   }
 
+  // Actualiza un precio existente
   @Override
   public Price updatePrice(Short apartmentId, LocalDate date, PriceRequestDTO priceDto) {
     PriceId priceId = new PriceId(apartmentId, date);
@@ -65,6 +66,7 @@ public class PriceServiceImpl implements PriceService {
     return priceRepository.save(price);
   }
 
+  // Elimina un precio por su ID (apartment, date)
   @Override
   public void deletePrice(Short apartment, LocalDate date) {
     if (!priceRepository.existsById(new PriceId(apartment, date))) {

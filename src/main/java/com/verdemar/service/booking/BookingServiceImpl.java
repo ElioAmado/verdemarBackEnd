@@ -29,6 +29,7 @@ public class BookingServiceImpl implements BookingService {
 
   @Autowired private ApartmentRepository apartmentRepository;
 
+  // Devuelve todos los bookings
   @Override
   public List<BookingDto> getAllBookings() {
     List<Booking> bookings = bookingRepository.findAll();
@@ -36,6 +37,7 @@ public class BookingServiceImpl implements BookingService {
     return bookings.stream().map(booking -> modelMapper.map(booking, BookingDto.class)).toList();
   }
 
+  // Devuelve un booking por su ID
   @Override
   public BookingDto getBookingById(Long id) {
     Optional<Booking> booking = bookingRepository.findById(id);
@@ -44,11 +46,13 @@ public class BookingServiceImpl implements BookingService {
     return modelMapper.map(booking.get(), BookingDto.class);
   }
 
+  // Crea un nuevo booking
   @Override
   public Booking createBooking(Booking booking) {
     return bookingRepository.save(booking);
   }
 
+  // Cambia el estado de una reserva
   @Override
   public BookingDto changeStatusBooking(Long id, Booking.Status status) {
     Optional<Booking> bookingOpt = bookingRepository.findById(id);
@@ -62,6 +66,7 @@ public class BookingServiceImpl implements BookingService {
     return modelMapper.map(booking, BookingDto.class);
   }
 
+  // Actualiza un booking existente
   @Override
   public BookingDto updateBooking(Long id, BookingDto bookingDto) {
     if (!bookingRepository.existsById(id)) {
@@ -74,6 +79,7 @@ public class BookingServiceImpl implements BookingService {
     return bookingDto;
   }
 
+  // Elimina un booking por su ID
   @Override
   public void deleteBooking(Long id) {
     if (!bookingRepository.existsById(id)) {
@@ -82,6 +88,7 @@ public class BookingServiceImpl implements BookingService {
     bookingRepository.deleteById(id);
   }
 
+  // Crea un nuevo booking (usando BookingDto)
   @Override
   public BookingDto createBooking(BookingDto dto) {
     if (isValidBooking(dto)) {
@@ -94,6 +101,7 @@ public class BookingServiceImpl implements BookingService {
     return dto;
   }
 
+  // Verifica si una reserva es válida (comprueba que no se solapa con otras reservas)
   @Override
   public Boolean isValidBooking(BookingDto bookingDto) {
     Optional<Apartment> apartment = apartmentRepository.findById(bookingDto.getApartmentId());
@@ -115,6 +123,7 @@ public class BookingServiceImpl implements BookingService {
     return true; // Placeholder
   }
 
+  // Calcula el precio total de una reserva
   @Override
   public BigDecimal getTotalPrice(Short apartmentId, LocalDate startDate, LocalDate endDate) {
     if (startDate.isAfter(endDate)) {
@@ -127,7 +136,6 @@ public class BookingServiceImpl implements BookingService {
     while (currentDate.isBefore(endDate)) {
       // Suponemos que getPriceById nunca devuelve null
       BigDecimal dailyPrice = priceService.getPriceById(apartmentId, currentDate).getPrice();
-
       if (dailyPrice.compareTo(BigDecimal.ZERO) <= 0) {
         throw new IllegalArgumentException("Daily price must be greater than zero");
       }
@@ -143,6 +151,7 @@ public class BookingServiceImpl implements BookingService {
     return totalPrice;
   }
 
+  // Devuelve todas las fechas de reserva para un apartamento específico
   @Override
   public List<BookingDateRange> getAllDatesByApartment(Short apartmentId) {
     return bookingRepository.findAllDatesByApartment(apartmentId);
