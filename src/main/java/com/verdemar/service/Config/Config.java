@@ -8,9 +8,10 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 import java.io.File;
 import java.io.IOException;
 
-public class EjemploConfig {
+public class Config {
     public static void main(String[] args) {
-        String filePath = "config.properties"; // nombre del archivo
+        
+        String filePath = "src\\main\\resources\\config.properties"; // nombre del archivo
         File configFile = new File(filePath);
 
         // Si no existe, lo crea vacío
