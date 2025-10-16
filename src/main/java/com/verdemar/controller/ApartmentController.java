@@ -3,7 +3,7 @@ package com.verdemar.controller;
 import com.verdemar.domain.apartment.Apartment;
 import com.verdemar.domain.apartment.ApartmentType;
 import com.verdemar.domain.dto.ApartmentAvailabilityDTO;
-import com.verdemar.exception.ApartmentException;
+import com.verdemar.exception.apartment.ApartmentException;
 import com.verdemar.service.apartment.ApartmentService;
 import java.time.LocalDate;
 import java.util.List;

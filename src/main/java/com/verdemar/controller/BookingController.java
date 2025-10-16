@@ -1,5 +1,6 @@
 package com.verdemar.controller;
 
+import com.verdemar.domain.booking.Booking;
 import com.verdemar.domain.booking.BookingDto;
 import com.verdemar.domain.dto.BookingDateRange;
 import com.verdemar.service.booking.BookingService;
@@ -21,8 +22,15 @@ public class BookingController {
 
   // Obtener todas las reservas
   @GetMapping
-  public ResponseEntity<List<BookingDto>> getAllBookings() {
-    List<BookingDto> bookings = bookingService.getAllBookings();
+  public ResponseEntity<List<Booking>> getAllBookings() {
+    List<Booking> bookings = bookingService.getAllBookings();
+    return ResponseEntity.ok(bookings);
+  }
+
+  // Obtener todas las reservas (DTO)
+  @GetMapping("/dto")
+  public ResponseEntity<List<BookingDto>> getAllBookingsDto() {
+    List<BookingDto> bookings = bookingService.getAllBookingsDto();
     return ResponseEntity.ok(bookings);
   }
 

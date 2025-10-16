@@ -40,7 +40,7 @@ class BookingControllerTest {
     dto.setGuests((byte) 2);
     dto.setNotes("Reserva test");
 
-    Mockito.when(bookingService.getAllBookings()).thenReturn(List.of(dto));
+    Mockito.when(bookingService.getAllBookings()).thenReturn(List.of());
 
     mockMvc
         .perform(get("/api/bookings"))

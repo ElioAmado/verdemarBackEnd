@@ -4,15 +4,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+
+import com.verdemar.exception.apartment.ApartmentNotFoundException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-  @ExceptionHandler(ApartmentException.class)
-  public ResponseEntity<String> handleApartmentException(ApartmentException ex) {
-    // Puedes personalizar la respuesta, aquí solo devuelvo el mensaje
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-  }
+    @ExceptionHandler(ApartmentNotFoundException.class)
+    public ResponseEntity<?> handleApartmentNotFoundException(ApartmentNotFoundException ex , WebRequest request){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage()); 
+    }
+    
+    @ExceptionHandler(DiscountNotFoundException.class)
+    public ResponseEntity<String> handleDiscountNotFound(DiscountNotFoundException ex) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 
   // Otros manejadores de excepción si quieres...
 }

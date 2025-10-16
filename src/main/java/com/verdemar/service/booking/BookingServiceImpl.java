@@ -1,12 +1,12 @@
 package com.verdemar.service.booking;
 
-import com.verdemar.domain.apartment.Apartment;
 import com.verdemar.domain.booking.Booking;
 import com.verdemar.domain.booking.BookingDto;
 import com.verdemar.domain.dto.BookingDateRange;
+import com.verdemar.exception.apartment.ApartmentNotFoundException;
+import com.verdemar.exception.booking.BookingException;
 import com.verdemar.repository.ApartmentRepository;
 import com.verdemar.repository.BookingRepository;
-import com.verdemar.service.apartment.ApartmentService;
 import com.verdemar.service.price.PriceService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -25,13 +25,18 @@ public class BookingServiceImpl implements BookingService {
 
   @Autowired private PriceService priceService;
 
-  @Autowired private ApartmentService apartmentService;
-
   @Autowired private ApartmentRepository apartmentRepository;
 
   // Devuelve todos los bookings
   @Override
-  public List<BookingDto> getAllBookings() {
+  public List<Booking> getAllBookings() {
+    List<Booking> bookings = bookingRepository.findAll();
+
+    return bookings;
+  }
+
+  @Override
+  public List<BookingDto> getAllBookingsDto() {
     List<Booking> bookings = bookingRepository.findAll();
 
     return bookings.stream().map(booking -> modelMapper.map(booking, BookingDto.class)).toList();
@@ -91,37 +96,47 @@ public class BookingServiceImpl implements BookingService {
   // Crea un nuevo booking (usando BookingDto)
   @Override
   public BookingDto createBooking(BookingDto dto) {
-    if (isValidBooking(dto)) {
-      throw new IllegalArgumentException(
-          "Invalid booking: dates overlap or apartment does not exist");
+
+    try {
+      isValidBooking(dto);
+      
+    } catch (Exception e) {
+      throw new BookingException("Invalid booking: dates overlap or apartment does not exist, cause:" + e.getMessage());
     }
+
     Booking booking = modelMapper.map(dto, Booking.class);
+    booking.setCreatedAt(LocalDate.now());
+    booking.setUpdatedAt(booking.getCreatedAt());
     bookingRepository.save(booking);
 
     return dto;
   }
 
   // Verifica si una reserva es válida (comprueba que no se solapa con otras reservas)
-  @Override
-  public Boolean isValidBooking(BookingDto bookingDto) {
-    Optional<Apartment> apartment = apartmentRepository.findById(bookingDto.getApartmentId());
-
-    if (apartment.isEmpty()) {
-      return false;
-    }
+@Override
+public Boolean isValidBooking(BookingDto bookingDto) {
+    apartmentRepository.findById(bookingDto.getApartmentId())
+        .orElseThrow(() -> new ApartmentNotFoundException(
+            bookingDto.getApartmentId()));
 
     List<BookingDateRange> existingBookings =
         bookingRepository.findAllDatesByApartment(bookingDto.getApartmentId());
 
     for (BookingDateRange existingBooking : existingBookings) {
-      if (bookingDto.getStartDate().isBefore(existingBooking.getFrom())
-          && bookingDto.getEndDate().isAfter(existingBooking.getTo())) {
-        return false; // Hay un solapamiento
-      }
+        boolean overlaps =
+            !(bookingDto.getEndDate().isBefore(existingBooking.getFrom()) ||
+              bookingDto.getStartDate().isAfter(existingBooking.getTo()));
+
+        if (overlaps) {
+            throw new BookingException(
+                "The requested booking dates overlap with an existing booking from "
+                + existingBooking.getFrom() + " to " + existingBooking.getTo() + ".");
+        }
     }
 
-    return true; // Placeholder
-  }
+    return true;
+}
+
 
   // Calcula el precio total de una reserva
   @Override

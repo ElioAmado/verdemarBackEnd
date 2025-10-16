@@ -1,4 +1,4 @@
-package com.verdemar.exception;
+package com.verdemar.exception.apartment;
 
 public class ApartmentException extends RuntimeException {
 

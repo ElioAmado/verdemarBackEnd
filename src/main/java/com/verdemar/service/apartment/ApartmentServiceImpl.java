@@ -4,6 +4,7 @@ import com.verdemar.domain.apartment.Apartment;
 import com.verdemar.domain.apartment.ApartmentType;
 import com.verdemar.domain.dto.ApartmentAvailabilityDTO;
 import com.verdemar.domain.dto.BookingDateRange;
+import com.verdemar.exception.apartment.ApartmentNotFoundException;
 import com.verdemar.repository.ApartmentRepository;
 import com.verdemar.repository.BookingRepository;
 import java.time.LocalDate;
@@ -32,7 +33,7 @@ public class ApartmentServiceImpl implements ApartmentService {
   public Apartment getApartmentById(Short id) {
     // Obtiene un apartmento por ID
     Optional<Apartment> apartment = apartmentRepository.findById(id);
-    return apartment.orElseThrow(() -> new RuntimeException("Apartment not found with id: " + id));
+    return apartment.orElseThrow(() -> new ApartmentNotFoundException(id));
   }
 
   // Crea un nuevo apartmento
