@@ -1,7 +1,7 @@
 package com.verdemar.domain.discount;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 import com.verdemar.domain.apartment.Apartment;
 
@@ -35,6 +35,6 @@ public class Discount {
         joinColumns = @JoinColumn(name = "discount_id"),
         inverseJoinColumns = @JoinColumn(name = "apartment_id")
     )
-    private List<Apartment> apartments;
+    private Set<Apartment> apartments;
     
 }

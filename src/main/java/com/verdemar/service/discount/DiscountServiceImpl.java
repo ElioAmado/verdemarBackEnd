@@ -1,9 +1,11 @@
 package com.verdemar.service.discount;
 
+import com.verdemar.domain.apartment.Apartment;
 import com.verdemar.domain.discount.Discount;
 import com.verdemar.domain.discount.DiscountRequestDto;
 import com.verdemar.exception.DiscountNotFoundException;
 import com.verdemar.repository.DiscountRepository;
+import com.verdemar.service.apartment.ApartmentService;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Implementation of the DiscountService interface.
@@ -21,6 +24,9 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Autowired 
     private DiscountRepository discountRepository;
+
+    @Autowired
+    private ApartmentService apartmentService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -57,7 +63,15 @@ public class DiscountServiceImpl implements DiscountService {
      */
     @Override
     public Discount createDiscount(DiscountRequestDto discountDto) {
+        
+        Set<Apartment> apartments = new java.util.HashSet<>();
+        for (Short apartmentId : discountDto.getApartmentIds()) {
+            apartments.add(apartmentService.getApartmentById(apartmentId.shortValue()));
+            
+        }
+        
         Discount discount = modelMapper.map(discountDto, Discount.class);
+        discount.setApartments(apartments);
         return discountRepository.save(discount);
     }
 
