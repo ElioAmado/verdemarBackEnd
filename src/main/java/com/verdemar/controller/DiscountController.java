@@ -13,7 +13,7 @@ import java.util.List;
  * REST controller for managing Discount entities.
  */
 @RestController
-@RequestMapping("/api/discounts")
+@RequestMapping("/api/discount")
 public class DiscountController {
 
     private final DiscountService discountService;

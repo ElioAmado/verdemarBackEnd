@@ -42,7 +42,7 @@ class ApartmentControllerTest {
     Mockito.when(apartmentService.getAllApartments()).thenReturn(List.of(apt));
 
     mockMvc
-        .perform(get("/api/apartments"))
+        .perform(get("/api/apartment"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].id").value(1))
         .andExpect(jsonPath("$[0].apartmentType").value("ONE_BEDROOM"))
@@ -61,7 +61,7 @@ class ApartmentControllerTest {
     Mockito.when(apartmentService.getApartmentById((short) 2)).thenReturn(apt);
 
     mockMvc
-        .perform(get("/api/apartments/2"))
+        .perform(get("/api/apartment/2"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(2))
         .andExpect(jsonPath("$.apartmentType").value("ONE_BEDROOM"))
@@ -83,7 +83,7 @@ class ApartmentControllerTest {
 
     mockMvc
         .perform(
-            put("/api/apartments/3")
+            put("/api/apartment/3")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                     "{\"id\":3,\"apartmentType\":\"ONE_BEDROOM\",\"capacity\":3,\"floor\":1,\"description\":\"Suite reformada\"}"))

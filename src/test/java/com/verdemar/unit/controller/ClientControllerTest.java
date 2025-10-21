@@ -36,7 +36,7 @@ class ClientControllerTest {
     Mockito.when(clientService.getAllClients()).thenReturn(List.of(client));
 
     mockMvc
-        .perform(get("/api/clients"))
+        .perform(get("/api/client"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].id").value(1))
         .andExpect(jsonPath("$[0].name").value("Elio"))
@@ -53,7 +53,7 @@ class ClientControllerTest {
     Mockito.when(clientService.getClientById(2)).thenReturn(client);
 
     mockMvc
-        .perform(get("/api/clients/2"))
+        .perform(get("/api/client/2"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(2))
         .andExpect(jsonPath("$.name").value("Maria"))
@@ -71,7 +71,7 @@ class ClientControllerTest {
 
     mockMvc
         .perform(
-            post("/api/clients")
+            post("/api/client")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                     "{\"name\":\"Pedro\",\"lastName\":\"Martínez\",\"phone\":\"123456789\",\"email\":\"pedro@correo.com\"}"))
@@ -92,7 +92,7 @@ class ClientControllerTest {
 
     mockMvc
         .perform(
-            put("/api/clients/4")
+            put("/api/client/4")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                     "{\"name\":\"Ana\",\"lastName\":\"López\",\"phone\":\"654987321\",\"email\":\"ana@correo.com\"}"))
@@ -105,7 +105,7 @@ class ClientControllerTest {
   }
 
   @Test
-  @DisplayName("DELETE /api/clients/{id} should delete client")
+  @DisplayName("DELETE /api/client/{id} should delete client")
   void testDeleteClient() throws Exception {
     mockMvc.perform(delete("/api/clients/5")).andExpect(status().isNoContent());
 

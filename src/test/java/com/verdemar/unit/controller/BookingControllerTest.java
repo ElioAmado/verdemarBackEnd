@@ -43,7 +43,7 @@ class BookingControllerTest {
     Mockito.when(bookingService.getAllBookings()).thenReturn(List.of());
 
     mockMvc
-        .perform(get("/api/bookings"))
+        .perform(get("/api/booking"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].id").value(1))
         .andExpect(jsonPath("$[0].guests").value(2))
@@ -60,7 +60,7 @@ class BookingControllerTest {
     Mockito.when(bookingService.getBookingById(2L)).thenReturn(dto);
 
     mockMvc
-        .perform(get("/api/bookings/2"))
+        .perform(get("/api/booking/2"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(2))
         .andExpect(jsonPath("$.guests").value(3));
@@ -97,7 +97,7 @@ class BookingControllerTest {
 
     mockMvc
         .perform(
-            put("/api/bookings/4")
+            put("/api/booking/4")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"guests\":5,\"notes\":\"Actualizada\"}"))
         .andExpect(status().isOk())
@@ -109,7 +109,7 @@ class BookingControllerTest {
   @Test
   @DisplayName("DELETE /api/bookings/{id} should delete booking")
   void testDeleteBooking() throws Exception {
-    mockMvc.perform(delete("/api/bookings/5")).andExpect(status().isNoContent());
+    mockMvc.perform(delete("/api/booking/5")).andExpect(status().isNoContent());
 
     Mockito.verify(bookingService).deleteBooking(5L);
   }
@@ -126,7 +126,7 @@ class BookingControllerTest {
 
     mockMvc
         .perform(
-            get("/api/bookings/check")
+            get("/api/booking/check")
                 .param("apartmentId", "1")
                 .param("startDate", "2025-10-01")
                 .param("endDate", "2025-10-05"))
@@ -135,7 +135,7 @@ class BookingControllerTest {
   }
 
   @Test
-  @DisplayName("GET /api/bookings/getDates/{apartmentId} should return booking date ranges")
+  @DisplayName("GET /api/booking/getDates/{apartmentId} should return booking date ranges")
   void testGetDates() throws Exception {
     BookingDateRange range =
         new BookingDateRange(LocalDate.parse("2025-10-01"), LocalDate.parse("2025-10-10"));

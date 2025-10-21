@@ -44,7 +44,7 @@ class PriceControllerTest {
     Mockito.when(priceService.getAllPrices()).thenReturn(List.of(price));
 
     mockMvc
-        .perform(get("/api/prices"))
+        .perform(get("/api/price"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].apartment.id").value(1))
         .andExpect(jsonPath("$[0].date").value("2025-01-01"))
@@ -73,7 +73,7 @@ class PriceControllerTest {
     Mockito.when(priceService.getPriceById((short) 3, LocalDate.of(2025, 3, 1))).thenReturn(price);
 
     mockMvc
-        .perform(get("/api/prices/3/2025-03-01"))
+        .perform(get("/api/price/3/2025-03-01"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.apartment.id").value(3))
         .andExpect(jsonPath("$.date").value("2025-03-01"))
@@ -95,7 +95,7 @@ class PriceControllerTest {
 
     mockMvc
         .perform(
-            put("/api/prices/4/2025-04-01")
+            put("/api/price/4/2025-04-01")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"price\":220.00}"))
         .andExpect(status().isOk())

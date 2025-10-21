@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/bookings")
+@RequestMapping("/api/booking")
 public class BookingController {
 
   @Autowired private BookingService bookingService;
