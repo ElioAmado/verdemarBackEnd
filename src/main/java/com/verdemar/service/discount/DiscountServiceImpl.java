@@ -62,7 +62,7 @@ public class DiscountServiceImpl implements DiscountService {
      * @return the created Discount
      */
     @Override
-    public Discount createDiscount(DiscountRequestDto discountDto) {
+    public Discount createDiscount(DiscountRequestDto discountDto) { //Tiene que comprobat que esten disponibles els apartaments
         
         Set<Apartment> apartments = new java.util.HashSet<>();
         for (Short apartmentId : discountDto.getApartmentIds()) {
@@ -75,6 +75,11 @@ public class DiscountServiceImpl implements DiscountService {
         return discountRepository.save(discount);
     }
 
+    @Override
+    public List<Discount> getDiscountsByApartmentId(Short apartmentId) {
+        return discountRepository.findByApartmentsId(apartmentId);
+    }
+
     /**
      * Updates an existing discount.
      *
@@ -84,7 +89,7 @@ public class DiscountServiceImpl implements DiscountService {
      * @throws DiscountNotFoundException if the discount is not found
      */
     @Override
-    public Discount updateDiscount(Long id, Discount updatedDiscount) {
+    public Discount updateDiscount(Long id, Discount updatedDiscount) { //Tiene que comprobat que esten disponibles els apartaments
         Discount existingDiscount = discountRepository.findById(id)
                 .orElseThrow(() -> new DiscountNotFoundException(id));
 

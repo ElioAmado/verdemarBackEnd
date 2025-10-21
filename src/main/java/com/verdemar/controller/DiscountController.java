@@ -42,6 +42,12 @@ public class DiscountController {
         return ResponseEntity.ok(discount);
     }
 
+    @GetMapping("/apartment/{apartmentId}")
+    public ResponseEntity<List<Discount>> getDiscountsByApartmentId(@PathVariable Short apartmentId) {
+        List<Discount> discounts = discountService.getDiscountsByApartmentId(apartmentId);
+        return ResponseEntity.ok(discounts);
+    }
+
     /**
      * POST /api/discounts
      * Creates a new discount.
