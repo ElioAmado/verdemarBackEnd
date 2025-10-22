@@ -1,9 +1,11 @@
 package com.verdemar.service.price;
 
+import com.verdemar.domain.apartment.Apartment;
 import com.verdemar.domain.price.Price;
 import com.verdemar.domain.price.PriceId;
 import com.verdemar.domain.price.PriceRequestDTO;
 import com.verdemar.domain.price.PriceResponseDTO;
+import com.verdemar.exception.apartment.ApartmentNotAvailable;
 import com.verdemar.repository.PriceRepository;
 import java.time.LocalDate;
 import java.util.List;
@@ -36,10 +38,7 @@ public class PriceServiceImpl implements PriceService {
   @Override
   public Price getPriceById(Short apartment, LocalDate date) {
     Optional<Price> price = priceRepository.findById(new PriceId(apartment, date));
-    return price.orElseThrow(
-        () ->
-            new RuntimeException(
-                "Price not found for apartment " + apartment + " and date " + date));
+    return price.orElseThrow(() -> new ApartmentNotAvailable(apartment));
   }
 
   // Crea un nuevo precio

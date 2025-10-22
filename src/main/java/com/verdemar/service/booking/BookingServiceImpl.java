@@ -57,6 +57,27 @@ public class BookingServiceImpl implements BookingService {
     return bookingRepository.save(booking);
   }
 
+  // Crea un nuevo booking (usando BookingDto)
+  @Override
+  public BookingDto createBooking(BookingDto dto) {
+    try {
+      isValidBooking(dto);
+    } catch (Exception e) {
+      throw new BookingException("Invalid booking: dates overlap or apartment does not exist, cause:" + e.getMessage());
+    }
+
+    // Map DTO to entity
+    Booking booking = modelMapper.map(dto, Booking.class);
+    booking.setCreatedAt(LocalDate.now());
+    booking.setUpdatedAt(booking.getCreatedAt());
+
+    // Save entity and get the persisted version (with ID)
+    Booking savedBooking = bookingRepository.save(booking);
+
+    // Map back to DTO so it includes the generated ID
+    return modelMapper.map(savedBooking, BookingDto.class);
+  }
+
   // Cambia el estado de una reserva
   @Override
   public BookingDto changeStatusBooking(Long id, Booking.Status status) {
@@ -93,24 +114,6 @@ public class BookingServiceImpl implements BookingService {
     bookingRepository.deleteById(id);
   }
 
-  // Crea un nuevo booking (usando BookingDto)
-  @Override
-  public BookingDto createBooking(BookingDto dto) {
-
-    try {
-      isValidBooking(dto);
-      
-    } catch (Exception e) {
-      throw new BookingException("Invalid booking: dates overlap or apartment does not exist, cause:" + e.getMessage());
-    }
-
-    Booking booking = modelMapper.map(dto, Booking.class);
-    booking.setCreatedAt(LocalDate.now());
-    booking.setUpdatedAt(booking.getCreatedAt());
-    bookingRepository.save(booking);
-
-    return dto;
-  }
 
   // Verifica si una reserva es válida (comprueba que no se solapa con otras reservas)
 @Override
