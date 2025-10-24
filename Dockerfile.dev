@@ -1,0 +1,21 @@
+# ------------------------
+# Imagen base
+# ------------------------
+FROM maven:3.9.2-eclipse-temurin-17
+
+WORKDIR /app
+
+# Copiar solo pom.xml primero (cache-friendly)
+COPY pom.xml ./
+
+# Instalar dependencias
+RUN mvn dependency:go-offline
+
+# Copiar todo el código
+COPY . .
+
+# Exponer puerto
+EXPOSE 8080
+
+# Arrancar en modo desarrollo (live reload)
+CMD ["mvn", "spring-boot:run"]

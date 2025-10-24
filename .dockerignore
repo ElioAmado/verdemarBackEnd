@@ -1,0 +1,48 @@
+# --- Maven & Build ---
+target
+!.mvn/wrapper/maven-wrapper.jar
+*.class
+*.jar
+*.war
+*.ear
+
+# --- Archivos de entorno ---
+.env
+.env.*
+application-*.yml
+application-*.properties
+
+# # --- Control de versiones ---
+# .git
+# .gitignore
+# .gitattributes
+
+# --- Configuración local / IDE ---
+.vscode
+.idea
+*.iml
+
+# --- Scripts y archivos de sistema ---
+mvnw
+mvnw.cmd
+# run.sh
+Dockerfile
+Dockerfile.dev
+docker-compose.yml
+
+# --- Logs y cachés ---
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# --- Archivos del sistema operativo ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Documentación ---
+README.md
+*.md
+*.txt
