@@ -2,14 +2,18 @@ package com.verdemar.service.booking;
 
 import com.verdemar.domain.booking.Booking;
 import com.verdemar.domain.booking.BookingDto;
+import com.verdemar.domain.booking.BookingInfo;
 import com.verdemar.domain.dto.BookingDateRange;
 import com.verdemar.exception.apartment.ApartmentNotFoundException;
 import com.verdemar.exception.booking.BookingException;
 import com.verdemar.repository.ApartmentRepository;
 import com.verdemar.repository.BookingRepository;
 import com.verdemar.service.price.PriceService;
+
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.modelmapper.ModelMapper;
@@ -68,10 +72,8 @@ public class BookingServiceImpl implements BookingService {
 
     // Map DTO to entity
     Booking booking = modelMapper.map(dto, Booking.class);
-    booking.setCreatedAt(LocalDate.now());
-    booking.setUpdatedAt(booking.getCreatedAt());
 
-    // Save entity and get the persisted version (with ID)
+    // Save entity; createdAt y updatedAt se asignarán automáticamente
     Booking savedBooking = bookingRepository.save(booking);
 
     // Map back to DTO so it includes the generated ID
@@ -173,5 +175,18 @@ public Boolean isValidBooking(BookingDto bookingDto) {
   @Override
   public List<BookingDateRange> getAllDatesByApartment(Short apartmentId) {
     return bookingRepository.findAllDatesByApartment(apartmentId);
+  }
+
+  @Override
+  public List<BookingInfo> getBookingInfosByMounthAndAparment(short apartmentId, int mounth, int year) {
+    // Obtener bookings desde el repositorio
+    List<Booking> bookings = bookingRepository.findBookingsByApartmentAndMonth(apartmentId, mounth, year);
+
+    // Mapear cada Booking a BookingInfo
+    List<BookingInfo> bookingsInfo = bookings.stream()
+        .map(booking -> modelMapper.map(booking, BookingInfo.class))
+        .toList();
+
+    return bookingsInfo;
   }
 }

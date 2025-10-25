@@ -3,6 +3,7 @@ package com.verdemar.service.booking;
 import com.verdemar.domain.booking.Booking;
 import com.verdemar.domain.booking.Booking.Status;
 import com.verdemar.domain.booking.BookingDto;
+import com.verdemar.domain.booking.BookingInfo;
 import com.verdemar.domain.dto.BookingDateRange;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -31,4 +32,6 @@ public interface BookingService {
   BigDecimal getTotalPrice(Short apartmentId, LocalDate startDate, LocalDate endDate);
 
   List<BookingDateRange> getAllDatesByApartment(Short apartmentId);
+
+  List<BookingInfo> getBookingInfosByMounthAndAparment(short apartmentId, int mounth, int year);
 }

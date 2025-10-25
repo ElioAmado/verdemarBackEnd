@@ -19,5 +19,19 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
   List<Booking> findByDateRange(
       @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
-  // Aquí puedes agregar métodos personalizados si lo necesitas
+  @Query("""
+      SELECT b
+      FROM Booking b
+      WHERE b.apartment.id = :apartmentId
+        AND (
+          (MONTH(b.startDate) = :month AND YEAR(b.startDate) = :year)
+          OR (MONTH(b.endDate) = :month AND YEAR(b.endDate) = :year)
+        )
+      ORDER BY b.startDate
+      """)
+  List<Booking> findBookingsByApartmentAndMonth(
+      @Param("apartmentId") Short apartmentId,
+      @Param("month") int month,
+      @Param("year") int year);
+
 }

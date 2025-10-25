@@ -2,6 +2,7 @@ package com.verdemar.controller;
 
 import com.verdemar.domain.booking.Booking;
 import com.verdemar.domain.booking.BookingDto;
+import com.verdemar.domain.booking.BookingInfo;
 import com.verdemar.domain.dto.BookingDateRange;
 import com.verdemar.service.booking.BookingService;
 import java.math.BigDecimal;
@@ -58,6 +59,16 @@ public class BookingController {
     List<BookingDateRange> dates = bookingService.getAllDatesByApartment(apartmentId);
     return ResponseEntity.ok(dates);
   }
+
+  // Devuelve las reservas de un mes
+  @GetMapping("/getDates/{apartmentId}/{mounth}/{year}")
+  public ResponseEntity<List<BookingInfo>> getDatesByMounth(
+    @PathVariable("apartmentId") short apartmentId,
+    @PathVariable("mounth") int mounth,
+    @PathVariable("year") int year) {
+      return ResponseEntity.ok(bookingService.getBookingInfosByMounthAndAparment(apartmentId, mounth, year));
+    }
+
 
   // Posts
 

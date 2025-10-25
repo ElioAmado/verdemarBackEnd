@@ -41,6 +41,12 @@ public class ApartmentController {
     return ResponseEntity.ok(apartment);
   }
 
+    // Devuelve todos los IDs de los apartamentos
+  @GetMapping("/ids")
+  public List<Short> getAllIds() {
+    return apartmentService.getAllIds();
+  }
+
   // Devuelve los tipos de apartamentos disponibles
   @GetMapping("/types")
   public ResponseEntity<ApartmentType[]> getApartmentTypes() {
@@ -64,12 +70,6 @@ public class ApartmentController {
     } catch (java.time.format.DateTimeParseException e) {
       throw new ApartmentException("Formato de fecha inválido. Usa yyyy-MM-dd");
     }
-  }
-
-  // Devuelve todos los IDs de los apartamentos
-  @GetMapping("/ids")
-  public List<Short> getAllIds() {
-    return apartmentService.getAllIds();
   }
 
   // Posts

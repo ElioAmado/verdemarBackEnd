@@ -11,9 +11,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -53,11 +57,21 @@ public class Booking {
   @Column(name = "status", columnDefinition = "TINYINT", nullable = false)
   private Status status = Status.PENDING;
 
-  @Column(name = "created_at", nullable = false)
-  private LocalDate createdAt;
+  @Column(name = "created_at", nullable = false, updatable = false)
+  private LocalDateTime createdAt;
 
   @Column(name = "updated_at", nullable = false)
-  private LocalDate updatedAt;
+  private LocalDateTime updatedAt;
+
+  @PrePersist
+  protected void onCreate() {
+      createdAt = updatedAt = LocalDateTime.now();
+  }
+
+  @PreUpdate
+  protected void onUpdate() {
+      updatedAt = LocalDateTime.now();
+  }
 
   @Column(name = "method_payment", length = 50)
   private String methodPayment;
