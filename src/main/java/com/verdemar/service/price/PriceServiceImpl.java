@@ -26,8 +26,8 @@ public class PriceServiceImpl implements PriceService {
 
   // Devuelve todos los precios
   @Override
-  public Page<Price> getAllPrices(Pageable pageable) {
-    return priceRepository.findAll(pageable);
+  public List<Price> getAllPrices(Pageable pageable) {
+    return priceRepository.findAll(pageable).getContent();
   }
 
   // Devuelve todos los precios en formato DTO

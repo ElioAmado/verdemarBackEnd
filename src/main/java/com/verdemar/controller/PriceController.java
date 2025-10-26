@@ -35,10 +35,10 @@ public class PriceController {
 
   // Obtener todos los precios
   @GetMapping
-  public ResponseEntity<Page<Price>> getAllPrices(Pageable pageable) {
+  public ResponseEntity<List<Price>> getAllPrices(Pageable pageable) {
 
       // Pageable pageable = PageRequest.of(page, size);
-      Page<Price> prices = priceService.getAllPrices(pageable);
+      List<Price> prices = priceService.getAllPrices(pageable);
       return ResponseEntity.ok(prices);
   }
 

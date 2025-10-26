@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface PriceService {
 
-  Page<Price> getAllPrices(Pageable pageable);
+  List<Price> getAllPrices(Pageable pageable);
 
   List<PriceResponseDTO> getAllPriceDto();
 
