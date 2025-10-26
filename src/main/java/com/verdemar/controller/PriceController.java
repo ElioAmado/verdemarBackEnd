@@ -29,10 +29,8 @@ import org.springframework.data.domain.Sort;
 public class PriceController {
 
   @Autowired private PriceService priceService;
-
-  @Autowired private PriceRepository repositoryPrice;
+  
   // Gets
-
   // Obtener todos los precios
   @GetMapping
   public ResponseEntity<List<Price>> getAllPrices(Pageable pageable) {
