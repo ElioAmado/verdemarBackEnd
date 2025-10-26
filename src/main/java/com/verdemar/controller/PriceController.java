@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -34,11 +35,11 @@ public class PriceController {
 
   // Obtener todos los precios
   @GetMapping
-  public ResponseEntity<Page<Price>> getAllPrices(@RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "10") int size) {
-    // Page<Price> prices = priceService.getAllPrices(Pageable.ofSize(size).withPage(page));
-    Page<Price> prices = repositoryPrice.findAll(Pageable.ofSize(size).withPage(page));
-    return ResponseEntity.ok(prices);
+  public ResponseEntity<Page<Price>> getAllPrices(Pageable pageable) {
+
+      // Pageable pageable = PageRequest.of(page, size);
+      Page<Price> prices = priceService.getAllPrices(pageable);
+      return ResponseEntity.ok(prices);
   }
 
   @GetMapping("/dto")
