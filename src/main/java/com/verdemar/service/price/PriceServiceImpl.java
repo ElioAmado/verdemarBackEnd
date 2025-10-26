@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,8 +26,8 @@ public class PriceServiceImpl implements PriceService {
 
   // Devuelve todos los precios
   @Override
-  public List<Price> getAllPrices() {
-    return priceRepository.findAll();
+  public Page<Price> getAllPrices(Pageable pageable) {
+    return priceRepository.findAll(pageable);
   }
 
   // Devuelve todos los precios en formato DTO

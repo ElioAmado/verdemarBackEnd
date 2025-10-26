@@ -6,9 +6,12 @@ import com.verdemar.domain.price.PriceResponseDTO;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 public interface PriceService {
 
-  List<Price> getAllPrices();
+  Page<Price> getAllPrices(Pageable pageable);
 
   List<PriceResponseDTO> getAllPriceDto();
 
