@@ -44,6 +44,13 @@ public class PriceServiceImpl implements PriceService {
     return price.orElseThrow(() -> new ApartmentNotAvailable(apartment));
   }
 
+  @Override
+  public List<Price> getPricesByMounth(short apartmentId , int month, int year) {
+    LocalDate startDate = LocalDate.of(year, month, 1);
+    LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
+    return priceRepository.findByApartmentIdAndDateBetween(apartmentId, startDate, endDate);
+  }
+
   // Crea un nuevo precio
   @Override
   public Price createPrice(Price price) {

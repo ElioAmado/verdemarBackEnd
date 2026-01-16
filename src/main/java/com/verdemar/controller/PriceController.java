@@ -54,6 +54,14 @@ public class PriceController {
     return ResponseEntity.ok(price);
   }
 
+  @GetMapping("/bymonth")
+  public ResponseEntity<List<Price>> getPricesByMounth(
+    @RequestParam short apartmentId,
+      @RequestParam int month, @RequestParam int year) {
+    List<Price> prices = priceService.getPricesByMounth(apartmentId, month, year);
+    return ResponseEntity.ok(prices);
+  }
+
   // Crear un nuevo precio
   // @PostMapping
   // public ResponseEntity<Price> createPrice(@RequestBody Price price) {
