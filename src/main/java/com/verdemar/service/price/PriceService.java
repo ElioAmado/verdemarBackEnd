@@ -19,7 +19,9 @@ public interface PriceService {
 
   List<Price> getPricesByMounth(short apartmentId, int month, int year);
 
-  Price createPrice(Price price);
+  Price createPrice(PriceResponseDTO price);
+
+  List<Price> createPrice(List<PriceResponseDTO> prices);
 
   Price updatePrice(Short apartment, LocalDate date, PriceRequestDTO price);
 

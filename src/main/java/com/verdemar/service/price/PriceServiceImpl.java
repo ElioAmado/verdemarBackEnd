@@ -53,8 +53,18 @@ public class PriceServiceImpl implements PriceService {
 
   // Crea un nuevo precio
   @Override
-  public Price createPrice(Price price) {
-    return priceRepository.save(price);
+  public Price createPrice(PriceResponseDTO price) {
+    Price newPrice = modelMapper.map(price, Price.class);
+    return priceRepository.save(newPrice);
+  }
+
+  @Override
+  public List<Price> createPrice(List<PriceResponseDTO> prices) {
+    List<Price> newPrices = prices.stream()
+        .map(priceDto -> modelMapper.map(priceDto, Price.class))
+        .toList();
+    List<Price> savedPrices = priceRepository.saveAll(newPrices);
+    return savedPrices; // Devuelve el primer precio guardado como ejemplo
   }
 
   // Actualiza un precio existente
