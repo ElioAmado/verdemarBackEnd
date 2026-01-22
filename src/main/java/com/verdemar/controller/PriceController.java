@@ -81,6 +81,12 @@ public class PriceController {
     return ResponseEntity.ok(updatedPrice);
   }
 
+  @PutMapping("/bulk")
+  public ResponseEntity<List<Price>> bulkUpdatePrices(
+      @RequestBody List<PriceResponseDTO> prices) {
+    List<Price> updatedPrices = priceService.bulkUpdatePrices(prices);
+    return ResponseEntity.ok(updatedPrices);
+  }
   // Deletes
 
   // Eliminar un precio

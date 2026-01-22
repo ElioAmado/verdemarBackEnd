@@ -23,5 +23,7 @@ public interface PriceService {
 
   Price updatePrice(Short apartment, LocalDate date, PriceRequestDTO price);
 
+  List<Price> bulkUpdatePrices(List<PriceResponseDTO> prices);
+
   void deletePrice(Short apartment, LocalDate date);
 }

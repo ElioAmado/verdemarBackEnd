@@ -75,6 +75,24 @@ public class PriceServiceImpl implements PriceService {
     return priceRepository.save(price);
   }
 
+  @Override
+  public List<Price> bulkUpdatePrices(List<PriceResponseDTO> prices) {
+    List<Price> updatedPrices = prices.stream().map(priceDto -> {
+      PriceId priceId = new PriceId(priceDto.getApartmentId(), priceDto.getDate());
+      Price price =
+          priceRepository
+              .findById(priceId)
+              .orElseThrow(
+                  () ->
+                      new RuntimeException(
+                          "Price not found for apartment " + priceDto.getApartmentId() + " and date " + priceDto.getDate()));
+      price.setPrice(priceDto.getPrice());
+      return price;
+    }).toList();
+
+    return priceRepository.saveAll(updatedPrices);
+  }
+
   // Elimina un precio por su ID (apartment, date)
   @Override
   public void deletePrice(Short apartment, LocalDate date) {
