@@ -2,31 +2,31 @@ services:
   # ---------------------
   # Backend (Spring Boot)
   # ---------------------
-  backend:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    container_name: verdemar-backend-dev
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./src:/app/src
-      - ./pom.xml:/app/pom.xml
-      - ./mvnw:/app/mvnw
-    env_file:
-      - .env
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/verdemar
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
-      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}   # ← Asegúrate de definirlo en tu .env
+  # backend:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.dev
+  #   container_name: verdemar-backend-dev
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - ./src:/app/src
+  #     - ./pom.xml:/app/pom.xml
+  #     - ./mvnw:/app/mvnw
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/verdemar
+  #     SPRING_DATASOURCE_USERNAME: root
+  #     SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+  #     STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}   # ← Asegúrate de definirlo en tu .env
 
-    depends_on:
-      mysql:
-        condition: service_healthy
-    networks:
-      - verdemar
-    restart: on-failure
+  #   depends_on:
+  #     mysql:
+  #       condition: service_healthy
+  #   networks:
+  #     - verdemar
+  #   restart: on-failure
 
 
   # ---------------------

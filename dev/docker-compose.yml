@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  # ---------------------
+  # NoSQL (MongoDB)
+  # ---------------------
+  mongodb:
+    image: mongo:latest
+    container_name: verdemar-mongodb
+    restart: on-failure
+    ports:
+      - "27017:27017"
+    env_file:
+      - .env
+    environment:
+      - MONGO_INITDB_DATABASE=verdemar_logs
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+    volumes:
+      - verdemar-mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--username", "${MONGO_INITDB_ROOT_USERNAME}", "--password", "${MONGO_INITDB_ROOT_PASSWORD}", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - verdemar
+
+  # ---------------------
+  # Base de datos (MySQL)
+  # ---------------------
+  mysql:
+    image: mysql:latest
+    container_name: verdemar-mysql
+    restart: on-failure
+    ports:
+      - "3306:3306"
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - verdemar-db-dev:/var/lib/mysql
+    networks:
+      - verdemar
+
+  # ---------------------
+  # Frontend (Opcional - Descomentar cuando lo necesites)
+  # ---------------------
+  # frontend:
+  #   image: verdemar-app-frontend
+  #   container_name: verdemar-frontend-dev
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - NODE_ENV=development
+  #     - NEXT_PUBLIC_API_URL=http://localhost:8080
+  #   networks:
+  #     - verdemar
+  #   restart: on-failure
+
+# ---------------------
+# Volúmenes persistentes
+# ---------------------
+volumes:
+  verdemar-db-dev:
+  verdemar-mongo-data:
+
+# ---------------------
+# Redes
+# ---------------------
+networks:
+  verdemar:
+    driver: bridge
