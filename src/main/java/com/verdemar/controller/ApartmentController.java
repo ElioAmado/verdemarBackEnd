@@ -72,6 +72,20 @@ public class ApartmentController {
     }
   }
 
+  // Devuelve la disponibilidad de apartamentos para un rango de fechas y tipo
+  @GetMapping("/availableWithoutType")
+  public List<ApartmentAvailabilityDTO> getAvailableApartmentsWithoutType( @RequestParam String startDate, @RequestParam String endDate) {
+      try {
+      LocalDate start = LocalDate.parse(startDate.trim());
+      LocalDate end = LocalDate.parse(endDate.trim());
+
+      return apartmentService.getAvailabilityListWithoutType(start, end);
+
+    } catch (java.time.format.DateTimeParseException e) {
+      throw new ApartmentException("Formato de fecha inválido. Usa yyyy-MM-dd");
+    }
+  }
+
   // Posts
 
   // @PostMapping

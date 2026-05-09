@@ -29,4 +29,6 @@ public interface ApartmentService {
 
   List<ApartmentAvailabilityDTO> getAvailabilityList(
       LocalDate startDate, LocalDate endDate, ApartmentType apartmentType);
+
+  List<ApartmentAvailabilityDTO> getAvailabilityListWithoutType(LocalDate start, LocalDate end);
 }

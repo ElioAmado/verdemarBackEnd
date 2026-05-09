@@ -105,4 +105,24 @@ public class ApartmentServiceImpl implements ApartmentService {
             })
         .collect(Collectors.toList());
   }
+
+  @Override
+  public List<ApartmentAvailabilityDTO> getAvailabilityListWithoutType(
+      LocalDate startDate, LocalDate endDate) {
+
+    List<Apartment> apartments = apartmentRepository.findAll();
+
+    return apartments.stream()
+        .map(
+            apartment -> {
+              List<BookingDateRange> bookings =
+                  bookingRepository.findAllDatesByApartment(apartment.getId());
+              boolean isAvailable =
+                  bookings.stream()
+                      .noneMatch(
+                          b -> !startDate.isAfter(b.getTo()) && !endDate.isBefore(b.getFrom()));
+              return new ApartmentAvailabilityDTO(apartment, isAvailable);
+            })
+        .collect(Collectors.toList());
+  }
 }
