@@ -77,28 +77,28 @@ services:
   # ---------------------
   # Base de datos (MongoDB)
   # ---------------------
-  mongo:
-    image: mongo:latest
-    container_name: verdemar-mongo
-    restart: on-failure
-    ports:
-      - "27017:27017"
-    env_file:
-      - .env
-    environment:
-      MONGO_INITDB_DATABASE: verdemar
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
-    healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    volumes:
-      - verdemar-mongo-dev:/data/db
-    networks:
-      - verdemar
+  # mongo:
+  #   image: mongo:latest
+  #   container_name: verdemar-mongo
+  #   restart: on-failure
+  #   ports:
+  #     - "27017:27017"
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     MONGO_INITDB_DATABASE: verdemar
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+  #   healthcheck:
+  #     test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #     start_period: 30s
+  #   volumes:
+  #     - verdemar-mongo-dev:/data/db
+  #   networks:
+  #     - verdemar
 
 # ---------------------
 # Volúmenes persistentes
