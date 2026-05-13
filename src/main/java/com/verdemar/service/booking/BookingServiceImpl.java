@@ -1,6 +1,8 @@
 package com.verdemar.service.booking;
 
+import com.verdemar.domain.apartment.Apartment;
 import com.verdemar.domain.booking.Booking;
+import com.verdemar.domain.booking.BookingChatbotDto;
 import com.verdemar.domain.booking.BookingDto;
 import com.verdemar.domain.booking.BookingInfo;
 import com.verdemar.domain.dto.BookingDateRange;
@@ -10,10 +12,10 @@ import com.verdemar.repository.ApartmentRepository;
 import com.verdemar.repository.BookingRepository;
 import com.verdemar.service.price.PriceService;
 
-import java.lang.reflect.Array;
+import jakarta.persistence.EntityNotFoundException;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.modelmapper.ModelMapper;
@@ -189,4 +191,43 @@ public Boolean isValidBooking(BookingDto bookingDto) {
 
     return bookingsInfo;
   }
+
+  // En BookingService.java (o BookingServiceImpl)
+@Override
+public BookingChatbotDto createBookingFromChatbot(BookingChatbotDto dto) {
+
+    Apartment apartment = apartmentRepository.findById(dto.getApartmentId())
+        .orElseThrow(() -> new EntityNotFoundException(
+            "Apartamento " + dto.getApartmentId() + " no encontrado"));
+
+    // Calcular precio usando la lógica ya existente
+    BigDecimal totalPrice = getTotalPrice(dto.getApartmentId(), dto.getStartDate(), dto.getEndDate());
+
+    Booking booking = new Booking();
+    booking.setApartment(apartment);
+    booking.setStartDate(dto.getStartDate());
+    booking.setEndDate(dto.getEndDate());
+    booking.setGuests(dto.getGuests() != null ? dto.getGuests() : 1);
+    booking.setTotalPrice(totalPrice);
+    booking.setStatus(Booking.Status.PENDING);
+    booking.setMethodPayment(dto.getMethodPayment());
+    booking.setNotes(dto.getNotes());
+    // client queda null — el bot no gestiona login
+
+    Booking saved = bookingRepository.save(booking);
+
+    // Devolver solo lo que el bot necesita
+    BookingChatbotDto response = new BookingChatbotDto();
+    response.setBookingId(saved.getId());
+    response.setApartmentId(dto.getApartmentId());
+    response.setStartDate(saved.getStartDate());
+    response.setEndDate(saved.getEndDate());
+    response.setGuests(saved.getGuests());
+    response.setTotalPrice(saved.getTotalPrice());
+    response.setStatus(saved.getStatus());
+    response.setMethodPayment(saved.getMethodPayment());
+    response.setNotes(saved.getNotes());
+
+    return response;
+}
 }

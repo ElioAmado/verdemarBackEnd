@@ -2,47 +2,53 @@ services:
   # ---------------------
   # Backend (Spring Boot)
   # ---------------------
-  backend:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    container_name: verdemar-backend-dev
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./src:/app/src
-      - ./pom.xml:/app/pom.xml
-      - ./mvnw:/app/mvnw
-    env_file:
-      - .env
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/verdemar
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
-      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}   # ← Asegúrate de definirlo en tu .env
-
-    depends_on:
-      mysql:
-        condition: service_healthy
-    networks:
-      - verdemar
-    restart: on-failure
-
+  # backend:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.dev
+  #   container_name: verdemar-backend-dev
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - ./src:/app/src
+  #     - ./pom.xml:/app/pom.xml
+  #     - ./mvnw:/app/mvnw
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/verdemar
+  #     SPRING_DATASOURCE_USERNAME: root
+  #     SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+  #
+  #     # MongoDB
+  #     SPRING_DATA_MONGODB_URI: mongodb://root:${MONGO_PASSWORD}@mongo:27017/verdemar?authSource=admin
+  #
+  #     STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+  #
+  #   depends_on:
+  #     mysql:
+  #       condition: service_healthy
+  #     mongo:
+  #       condition: service_healthy
+  #   networks:
+  #     - verdemar
+  #   restart: on-failure
 
   # ---------------------
   # Frontend (Next.js)
   # ---------------------
-  frontend:
-    image: verdemar-app-frontend
-    container_name: verdemar-frontend-dev
-    ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=development
-      - NEXT_PUBLIC_API_URL=http://localhost:8080  # URL del backend
-    networks:
-      - verdemar
-    restart: on-failure
+  # frontend:
+  #   image: verdemar-app-frontend
+  #   container_name: verdemar-frontend-dev
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - NODE_ENV=development
+  #     - NEXT_PUBLIC_API_URL=http://localhost:8080
+  #   networks:
+  #     - verdemar
+  #   restart: on-failure
+
   # ---------------------
   # Base de datos (MySQL)
   # ---------------------
@@ -68,11 +74,38 @@ services:
     networks:
       - verdemar
 
+  # ---------------------
+  # Base de datos (MongoDB)
+  # ---------------------
+  mongo:
+    image: mongo:latest
+    container_name: verdemar-mongo
+    restart: on-failure
+    ports:
+      - "27017:27017"
+    env_file:
+      - .env
+    environment:
+      MONGO_INITDB_DATABASE: verdemar
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - verdemar-mongo-dev:/data/db
+    networks:
+      - verdemar
+
 # ---------------------
 # Volúmenes persistentes
 # ---------------------
 volumes:
   verdemar-db-dev:
+  verdemar-mongo-dev:
 
 # ---------------------
 # Redes

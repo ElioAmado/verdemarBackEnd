@@ -1,6 +1,7 @@
 package com.verdemar.controller;
 
 import com.verdemar.domain.booking.Booking;
+import com.verdemar.domain.booking.BookingChatbotDto;
 import com.verdemar.domain.booking.BookingDto;
 import com.verdemar.domain.booking.BookingInfo;
 import com.verdemar.domain.dto.BookingDateRange;
@@ -8,6 +9,8 @@ import com.verdemar.service.booking.BookingService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -97,4 +100,79 @@ public class BookingController {
     bookingService.deleteBooking(id);
     return ResponseEntity.noContent().build();
   }
+
+  // En BookingController.java
+
+/**
+ * Endpoint exclusivo para el chatbot de Amazon Lex.
+ * Recibe únicamente los campos que el bot puede recoger y
+ * devuelve solo lo que el bot necesita mostrar al usuario.
+ */
+@PostMapping("/chatbot")
+public ResponseEntity<BookingChatbotDto> createBookingFromChatbot(
+        @RequestBody BookingChatbotDto dto) {
+    BookingChatbotDto created = bookingService.createBookingFromChatbot(dto);
+    return ResponseEntity.ok(created);
+}
+
+private String getSlotValue(Map<String, Object> slots, String slotName) {
+  if (slots == null || !slots.containsKey(slotName))
+    return null;
+
+  // Estructura real de Lex v2:
+  // slots → { "apartmentId": { "value": { "interpretedValue": "3" } } }
+  Map<String, Object> slot = (Map<String, Object>) slots.get(slotName);
+  if (slot == null)
+    return null;
+
+  Map<String, Object> value = (Map<String, Object>) slot.get("value");
+  if (value == null)
+    return null;
+
+  return (String) value.get("interpretedValue");
+}
+
+private Map<String, Object> buildLexResponse(String message) {
+  return Map.of(
+      "sessionState", Map.of(
+          "dialogAction", Map.of("type", "Close"),
+          "intent", Map.of(
+              "name", "ReservarApartamento",
+              "state", "Fulfilled")),
+      "messages", List.of(
+          Map.of(
+              "contentType", "PlainText",
+              "content", message)));
+}
+
+private Map<String, Object> extractSlots(Map<String, Object> lexEvent) {
+  // Estructura real del payload Lex v2:
+  // { "sessionState": { "intent": { "slots": { ... } } } }
+  Map<String, Object> sessionState = (Map<String, Object>) lexEvent.get("sessionState");
+  Map<String, Object> intent = (Map<String, Object>) sessionState.get("intent");
+  return (Map<String, Object>) intent.get("slots");
+}
+
+@PostMapping("/lex-webhook")
+public ResponseEntity<Map<String, Object>> lexWebhook(@RequestBody Map<String, Object> lexEvent) {
+
+  // 1. Extraer slots del payload de Lex v2
+  Map<String, Object> slots = extractSlots(lexEvent);
+
+  // 2. Construir tu DTO
+  BookingChatbotDto dto = new BookingChatbotDto();
+  dto.setApartmentId(Short.parseShort(getSlotValue(slots, "apartmentId")));
+  dto.setStartDate(LocalDate.parse(getSlotValue(slots, "startDate")));
+  dto.setEndDate(LocalDate.parse(getSlotValue(slots, "endDate")));
+  dto.setGuests(Byte.parseByte(getSlotValue(slots, "guests")));
+  dto.setMethodPayment(getSlotValue(slots, "methodPayment"));
+
+  // 3. Llamar al servicio
+  BookingChatbotDto created = bookingService.createBookingFromChatbot(dto);
+
+  // 4. Devolver respuesta en formato Lex v2
+  return ResponseEntity.ok(buildLexResponse(
+      "Tu reserva #" + created.getBookingId() + " está confirmada. " +
+          "Total: " + created.getTotalPrice() + "€. Estado: " + created.getStatus()));
+}
 }

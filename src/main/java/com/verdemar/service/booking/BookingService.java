@@ -2,6 +2,7 @@ package com.verdemar.service.booking;
 
 import com.verdemar.domain.booking.Booking;
 import com.verdemar.domain.booking.Booking.Status;
+import com.verdemar.domain.booking.BookingChatbotDto;
 import com.verdemar.domain.booking.BookingDto;
 import com.verdemar.domain.booking.BookingInfo;
 import com.verdemar.domain.dto.BookingDateRange;
@@ -34,4 +35,6 @@ public interface BookingService {
   List<BookingDateRange> getAllDatesByApartment(Short apartmentId);
 
   List<BookingInfo> getBookingInfosByMounthAndAparment(short apartmentId, int mounth, int year);
+
+  BookingChatbotDto createBookingFromChatbot(BookingChatbotDto dto);
 }
