@@ -31,4 +31,5 @@ public interface ApartmentService {
       LocalDate startDate, LocalDate endDate, ApartmentType apartmentType);
 
   List<ApartmentAvailabilityDTO> getAvailabilityListWithoutType(LocalDate start, LocalDate end);
+  public List<Apartment> apartmentCSVReader(String path);
 }

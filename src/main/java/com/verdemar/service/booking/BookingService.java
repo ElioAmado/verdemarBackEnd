@@ -37,4 +37,6 @@ public interface BookingService {
   List<BookingInfo> getBookingInfosByMounthAndAparment(short apartmentId, int mounth, int year);
 
   BookingChatbotDto createBookingFromChatbot(BookingChatbotDto dto);
+
+  List<BookingDto> createBookingsFromCSV(String path);
 }

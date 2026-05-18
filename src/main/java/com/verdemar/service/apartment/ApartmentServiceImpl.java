@@ -1,13 +1,19 @@
 package com.verdemar.service.apartment;
 
+import com.opencsv.bean.CsvToBeanBuilder;
 import com.verdemar.domain.apartment.Apartment;
+import com.verdemar.domain.apartment.ApartmentRow;
 import com.verdemar.domain.apartment.ApartmentType;
 import com.verdemar.domain.dto.ApartmentAvailabilityDTO;
 import com.verdemar.domain.dto.BookingDateRange;
 import com.verdemar.exception.apartment.ApartmentNotFoundException;
 import com.verdemar.repository.ApartmentRepository;
 import com.verdemar.repository.BookingRepository;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -125,4 +131,31 @@ public class ApartmentServiceImpl implements ApartmentService {
             })
         .collect(Collectors.toList());
   }
+
+  public List<Apartment> apartmentCSVReader(String path) {
+    try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path)) {
+        if (inputStream == null) throw new RuntimeException("Archivo no encontrado: " + path);
+
+        InputStreamReader reader = new InputStreamReader(inputStream);
+
+        List<ApartmentRow> rows = new CsvToBeanBuilder<ApartmentRow>(reader)
+                .withType(ApartmentRow.class)
+                .withIgnoreLeadingWhiteSpace(true)
+                .build()
+                .parse();
+
+        return rows.stream().map(row -> {
+            Apartment apartment = new Apartment();
+            apartment.setId(row.getId());
+            apartment.setApartmentType(ApartmentType.valueOf(row.getType())); // Convierte String a Enum
+            apartment.setCapacity(row.getCapacity());
+            apartment.setFloor(row.getFloor());
+            apartment.setDescription(row.getDescription());
+            return apartment;
+        }).toList();
+
+    } catch (Exception e) {
+        throw new RuntimeException("Error leyendo CSV de apartamentos: " + e.getMessage());
+    }
+}
 }

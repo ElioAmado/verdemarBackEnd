@@ -13,6 +13,7 @@ import com.verdemar.repository.BookingRepository;
 import com.verdemar.service.price.PriceService;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -33,6 +34,7 @@ public class BookingServiceImpl implements BookingService {
 
   @Autowired private ApartmentRepository apartmentRepository;
 
+  @Autowired private BookingCSVReader bookingCSVReader;
   // Devuelve todos los bookings
   @Override
   public List<Booking> getAllBookings() {
@@ -229,5 +231,45 @@ public BookingChatbotDto createBookingFromChatbot(BookingChatbotDto dto) {
     response.setNotes(saved.getNotes());
 
     return response;
+}
+
+@Override
+@Transactional // Recomendado para procesamientos por lotes
+public List<BookingDto> createBookingsFromCSV(String path) {
+  // 1. Leer los DTOs desde el CSV usando tu utilidad existente
+  List<BookingDto> dtosFromCsv = bookingCSVReader.bookingCSVReader(path);
+  List<BookingDto> savedBookings = new java.util.ArrayList<>();
+
+  for (BookingDto dto : dtosFromCsv) {
+    try {
+      // 2. Validar disponibilidad (reutilizando tu lógica de overlaps)
+      isValidBooking(dto);
+
+      // 3. Calcular el precio total (reutilizando tu lógica de PriceService)
+      BigDecimal total = getTotalPrice(
+          dto.getApartmentId(),
+          dto.getStartDate(),
+          dto.getEndDate());
+
+      // 4. Mapear a entidad y configurar campos faltantes
+      Booking booking = modelMapper.map(dto, Booking.class);
+      booking.setTotalPrice(total);
+
+      // Si el ID viene del CSV y quieres forzar una creación nueva,
+      // asegúrate de cómo maneja JPA el ID manual.
+      // Si quieres que la DB genere uno nuevo, haz booking.setId(null);
+
+      // 5. Guardar
+      Booking saved = bookingRepository.save(booking);
+      savedBookings.add(modelMapper.map(saved, BookingDto.class));
+
+    } catch (Exception e) {
+      // Logueamos el error de una fila específica y continuamos con las demás
+      System.err.println("❌ Error procesando fila de reserva para apto "
+          + dto.getApartmentId() + ": " + e.getMessage());
+    }
+  }
+
+  return savedBookings;
 }
 }

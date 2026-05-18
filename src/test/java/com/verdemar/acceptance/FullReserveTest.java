@@ -2,8 +2,8 @@ package com.verdemar.acceptance;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import com.verdemar.csvReader.BookingCSVReader;
 import com.verdemar.domain.booking.BookingDto;
+import com.verdemar.service.booking.BookingCSVReader;
 import com.verdemar.service.booking.BookingService;
 import java.util.List;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.verdemar.csvReader;
+package com.verdemar.service.booking;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.verdemar.domain.booking.BookingDto;
@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /** Utility class for reading initial prices from a CSV file and saving them to the database. */
@@ -19,6 +20,8 @@ public class BookingCSVReader {
   private final ModelMapper modelMapper;
   private final ClientRepository clientRepository;
   private final ApartmentRepository apartmentRepository;
+
+  
 
   public BookingCSVReader(
       ModelMapper modelMapper,

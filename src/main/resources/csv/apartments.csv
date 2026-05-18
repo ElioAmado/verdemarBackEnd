@@ -1,0 +1,101 @@
+id,type,capacity,floor,description
+1,ONE_BEDROOM,2,9,Práctico piso de un dormitorio en planta baja con acceso directo.
+2,ONE_BEDROOM,2,1,Luminoso estudio de una habitación con vistas al jardín interior.
+3,ONE_BEDROOM,2,5,Práctico piso de un dormitorio en planta baja con acceso directo.
+4,TWO_BEDROOM,4,1,Cómodo apartamento de dos dormitorios ideal para familias.
+5,ONE_BEDROOM,2,1,Moderno apartamento de una habitación con cocina americana integrada.
+6,ONE_BEDROOM,2,0,Moderno apartamento de una habitación con cocina americana integrada.
+7,TWO_BEDROOM,4,5,Disfruta de un espacioso apartamento de dos habitaciones con vistas panorámicas.
+8,ONE_BEDROOM,2,0,Compacto pero elegante apartamento de un dormitorio perfectamente equipado.
+9,TWO_BEDROOM,4,10,Amplio apartamento de dos dormitorios con terraza y cocina moderna.
+10,TWO_BEDROOM,4,6,Disfruta de un espacioso apartamento de dos habitaciones con vistas panorámicas.
+11,ONE_BEDROOM,2,9,Compacto pero elegante apartamento de un dormitorio perfectamente equipado.
+12,TWO_BEDROOM,4,5,Cómodo apartamento de dos dormitorios ideal para familias.
+13,TWO_BEDROOM,4,5,Cómodo apartamento de dos dormitorios ideal para familias.
+14,ONE_BEDROOM,2,2,Práctico piso de un dormitorio en planta baja con acceso directo.
+15,ONE_BEDROOM,2,1,Acogedor apartamento de una habitación con diseño moderno y funcional.
+16,TWO_BEDROOM,4,2,Cómodo apartamento de dos dormitorios ideal para familias.
+17,ONE_BEDROOM,2,7,Compacto pero elegante apartamento de un dormitorio perfectamente equipado.
+18,TWO_BEDROOM,4,2,Disfruta de un espacioso apartamento de dos habitaciones con vistas panorámicas.
+19,TWO_BEDROOM,4,4,Espacioso piso de dos habitaciones con acabados de alta calidad.
+20,TWO_BEDROOM,4,7,Cómodo apartamento de dos dormitorios ideal para familias.
+21,TWO_BEDROOM,4,8,Elegante unidad de dos habitaciones con salón luminoso y baño completo.
+22,TWO_BEDROOM,4,3,Espacioso piso de dos habitaciones con acabados de alta calidad.
+23,ONE_BEDROOM,2,9,Moderno apartamento de una habitación con cocina americana integrada.
+24,ONE_BEDROOM,2,7,Acogedor apartamento de una habitación con diseño moderno y funcional.
+25,TWO_BEDROOM,4,4,Cómodo apartamento de dos dormitorios ideal para familias.
+26,TWO_BEDROOM,4,8,Amplio apartamento de dos dormitorios con terraza y cocina moderna.
+27,ONE_BEDROOM,2,10,Práctico piso de un dormitorio en planta baja con acceso directo.
+28,ONE_BEDROOM,2,9,Luminoso estudio de una habitación con vistas al jardín interior.
+29,TWO_BEDROOM,4,8,Disfruta de un espacioso apartamento de dos habitaciones con vistas panorámicas.
+30,ONE_BEDROOM,2,3,Acogedor apartamento de una habitación con diseño moderno y funcional.
+31,ONE_BEDROOM,2,7,Moderno apartamento de una habitación con cocina americana integrada.
+32,ONE_BEDROOM,2,1,Práctico piso de un dormitorio en planta baja con acceso directo.
+33,TWO_BEDROOM,4,3,Disfruta de un espacioso apartamento de dos habitaciones con vistas panorámicas.
+34,ONE_BEDROOM,2,8,Práctico piso de un dormitorio en planta baja con acceso directo.
+35,ONE_BEDROOM,2,3,Compacto pero elegante apartamento de un dormitorio perfectamente equipado.
+36,TWO_BEDROOM,4,10,Disfruta de un espacioso apartamento de dos habitaciones con vistas panorámicas.
+37,TWO_BEDROOM,4,10,Amplio apartamento de dos dormitorios con terraza y cocina moderna.
+38,TWO_BEDROOM,4,1,Cómodo apartamento de dos dormitorios ideal para familias.
+39,TWO_BEDROOM,4,8,Cómodo apartamento de dos dormitorios ideal para familias.
+40,ONE_BEDROOM,2,5,Acogedor apartamento de una habitación con diseño moderno y funcional.
+41,ONE_BEDROOM,2,8,Compacto pero elegante apartamento de un dormitorio perfectamente equipado.
+42,TWO_BEDROOM,4,7,Cómodo apartamento de dos dormitorios ideal para familias.
+43,ONE_BEDROOM,2,2,Acogedor apartamento de una habitación con diseño moderno y funcional.
+44,TWO_BEDROOM,4,8,Cómodo apartamento de dos dormitorios ideal para familias.
+45,TWO_BEDROOM,4,2,Elegante unidad de dos habitaciones con salón luminoso y baño completo.
+46,TWO_BEDROOM,4,8,Elegante unidad de dos habitaciones con salón luminoso y baño completo.
+47,TWO_BEDROOM,4,0,Cómodo apartamento de dos dormitorios ideal para familias.
+48,ONE_BEDROOM,2,10,Luminoso estudio de una habitación con vistas al jardín interior.
+49,ONE_BEDROOM,2,6,Luminoso estudio de una habitación con vistas al jardín interior.
+50,ONE_BEDROOM,2,9,Acogedor apartamento de una habitación con diseño moderno y funcional.
+51,TWO_BEDROOM,4,8,Disfruta de un espacioso apartamento de dos habitaciones con vistas panorámicas.
+52,ONE_BEDROOM,2,4,Moderno apartamento de una habitación con cocina americana integrada.
+53,ONE_BEDROOM,2,10,Práctico piso de un dormitorio en planta baja con acceso directo.
+54,TWO_BEDROOM,4,3,Disfruta de un espacioso apartamento de dos habitaciones con vistas panorámicas.
+55,ONE_BEDROOM,2,9,Acogedor apartamento de una habitación con diseño moderno y funcional.
+56,ONE_BEDROOM,2,5,Práctico piso de un dormitorio en planta baja con acceso directo.
+57,ONE_BEDROOM,2,3,Compacto pero elegante apartamento de un dormitorio perfectamente equipado.
+58,ONE_BEDROOM,2,7,Compacto pero elegante apartamento de un dormitorio perfectamente equipado.
+59,ONE_BEDROOM,2,6,Acogedor apartamento de una habitación con diseño moderno y funcional.
+60,ONE_BEDROOM,2,5,Moderno apartamento de una habitación con cocina americana integrada.
+61,ONE_BEDROOM,2,8,Moderno apartamento de una habitación con cocina americana integrada.
+62,TWO_BEDROOM,4,7,Espacioso piso de dos habitaciones con acabados de alta calidad.
+63,ONE_BEDROOM,2,9,Luminoso estudio de una habitación con vistas al jardín interior.
+64,TWO_BEDROOM,4,7,Disfruta de un espacioso apartamento de dos habitaciones con vistas panorámicas.
+65,TWO_BEDROOM,4,2,Disfruta de un espacioso apartamento de dos habitaciones con vistas panorámicas.
+66,ONE_BEDROOM,2,10,Luminoso estudio de una habitación con vistas al jardín interior.
+67,ONE_BEDROOM,2,1,Moderno apartamento de una habitación con cocina americana integrada.
+68,ONE_BEDROOM,2,6,Acogedor apartamento de una habitación con diseño moderno y funcional.
+69,TWO_BEDROOM,4,4,Espacioso piso de dos habitaciones con acabados de alta calidad.
+70,TWO_BEDROOM,4,6,Elegante unidad de dos habitaciones con salón luminoso y baño completo.
+71,ONE_BEDROOM,2,7,Compacto pero elegante apartamento de un dormitorio perfectamente equipado.
+72,TWO_BEDROOM,4,4,Amplio apartamento de dos dormitorios con terraza y cocina moderna.
+73,TWO_BEDROOM,4,1,Amplio apartamento de dos dormitorios con terraza y cocina moderna.
+74,TWO_BEDROOM,4,9,Elegante unidad de dos habitaciones con salón luminoso y baño completo.
+75,ONE_BEDROOM,2,9,Luminoso estudio de una habitación con vistas al jardín interior.
+76,ONE_BEDROOM,2,2,Luminoso estudio de una habitación con vistas al jardín interior.
+77,ONE_BEDROOM,2,10,Moderno apartamento de una habitación con cocina americana integrada.
+78,ONE_BEDROOM,2,5,Luminoso estudio de una habitación con vistas al jardín interior.
+79,ONE_BEDROOM,2,5,Compacto pero elegante apartamento de un dormitorio perfectamente equipado.
+80,ONE_BEDROOM,2,0,Luminoso estudio de una habitación con vistas al jardín interior.
+81,ONE_BEDROOM,2,6,Moderno apartamento de una habitación con cocina americana integrada.
+82,TWO_BEDROOM,4,8,Cómodo apartamento de dos dormitorios ideal para familias.
+83,ONE_BEDROOM,2,6,Práctico piso de un dormitorio en planta baja con acceso directo.
+84,TWO_BEDROOM,4,6,Elegante unidad de dos habitaciones con salón luminoso y baño completo.
+85,ONE_BEDROOM,2,7,Luminoso estudio de una habitación con vistas al jardín interior.
+86,ONE_BEDROOM,2,3,Práctico piso de un dormitorio en planta baja con acceso directo.
+87,ONE_BEDROOM,2,7,Acogedor apartamento de una habitación con diseño moderno y funcional.
+88,ONE_BEDROOM,2,4,Acogedor apartamento de una habitación con diseño moderno y funcional.
+89,ONE_BEDROOM,2,7,Práctico piso de un dormitorio en planta baja con acceso directo.
+90,ONE_BEDROOM,2,0,Acogedor apartamento de una habitación con diseño moderno y funcional.
+91,ONE_BEDROOM,2,10,Compacto pero elegante apartamento de un dormitorio perfectamente equipado.
+92,TWO_BEDROOM,4,3,Disfruta de un espacioso apartamento de dos habitaciones con vistas panorámicas.
+93,ONE_BEDROOM,2,8,Luminoso estudio de una habitación con vistas al jardín interior.
+94,ONE_BEDROOM,2,0,Acogedor apartamento de una habitación con diseño moderno y funcional.
+95,TWO_BEDROOM,4,3,Disfruta de un espacioso apartamento de dos habitaciones con vistas panorámicas.
+96,TWO_BEDROOM,4,7,Espacioso piso de dos habitaciones con acabados de alta calidad.
+97,TWO_BEDROOM,4,2,Cómodo apartamento de dos dormitorios ideal para familias.
+98,TWO_BEDROOM,4,4,Espacioso piso de dos habitaciones con acabados de alta calidad.
+99,ONE_BEDROOM,2,3,Práctico piso de un dormitorio en planta baja con acceso directo.
+100,TWO_BEDROOM,4,5,Espacioso piso de dos habitaciones con acabados de alta calidad.

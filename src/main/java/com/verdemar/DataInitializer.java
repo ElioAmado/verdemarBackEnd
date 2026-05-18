@@ -9,6 +9,9 @@ import com.verdemar.domain.price.Price;
 import com.verdemar.repository.ApartmentRepository;
 import com.verdemar.repository.ClientRepository;
 import com.verdemar.repository.PriceRepository;
+import com.verdemar.service.apartment.ApartmentService;
+import com.verdemar.service.booking.BookingCSVReader;
+
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -17,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +31,14 @@ public class DataInitializer implements CommandLineRunner {
   private final ClientRepository clientRepository;
   private final PriceRepository priceRepository;
   private final ModelMapper modelMapper;
+
+
+
+  @Autowired
+  private BookingCSVReader bookingCSVReader; // ¡Sin el = new BookingCSVReader()!
+
+  @Autowired
+  private ApartmentService apartmentService;
 
   public DataInitializer(
       ApartmentRepository apartmentRepository,
@@ -103,55 +115,13 @@ public class DataInitializer implements CommandLineRunner {
 
   private void createInitialApartments() {
     if (apartmentRepository.count() == 0) {
-      List<Apartment> apartments =
-          List.of(
-              new Apartment(
-                  (short) 1,
-                  ApartmentType.TWO_BEDROOM,
-                  (short) 4,
-                  (short) 0,
-                  "Disfruta de un espacioso apartamento de dos dormitorios en planta baja, ideal para familias o grupos de hasta 4 personas. Su ubicación facilita el acceso sin escaleras, perfecto para todas las edades.",
-                  Collections.emptyList()),
-              new Apartment(
-                  (short) 2,
-                  ApartmentType.TWO_BEDROOM,
-                  (short) 4,
-                  (short) 0,
-                  "Confort y funcionalidad se combinan en este acogedor apartamento de dos dormitorios situado en planta baja. Apto para hasta 4 huéspedes, es una excelente opción para unas vacaciones tranquilas y cómodas.",
-                  Collections.emptyList()),
-              new Apartment(
-                  (short) 3,
-                  ApartmentType.TWO_BEDROOM,
-                  (short) 4,
-                  (short) 1,
-                  "Este apartamento de dos dormitorios en primera planta ofrece vistas elevadas y un ambiente luminoso. Con capacidad para 4 personas, es ideal para quienes buscan un espacio acogedor y tranquilo.",
-                  Collections.emptyList()),
-              new Apartment(
-                  (short) 4,
-                  ApartmentType.TWO_BEDROOM,
-                  (short) 4,
-                  (short) 1,
-                  "Ubicado en la primera planta, este apartamento de dos dormitorios es perfecto para familias o grupos de amigos que deseen privacidad y comodidad durante su estancia. Acomoda hasta 4 personas.",
-                  Collections.emptyList()),
-              new Apartment(
-                  (short) 5,
-                  ApartmentType.ONE_BEDROOM,
-                  (short) 2,
-                  (short) 0,
-                  "Este encantador apartamento de un dormitorio en planta baja es ideal para parejas o viajeros individuales. Cómodo y accesible, es una opción perfecta para una escapada relajante.",
-                  Collections.emptyList()),
-              new Apartment(
-                  (short) 6,
-                  ApartmentType.ONE_BEDROOM,
-                  (short) 2,
-                  (short) 1,
-                  "Disfruta de un ambiente íntimo y acogedor en este apartamento de un dormitorio en primera planta. Con capacidad para 2 personas, es ideal para una estancia tranquila en pareja.",
-                  Collections.emptyList()));
-
-      apartmentRepository.saveAll(apartments);
-      System.out.println("Apartamentos iniciales creados.");
+        // Llamamos al reader (asegúrate de tenerlo inyectado o accesible)
+        List<Apartment> apartments = apartmentService.apartmentCSVReader("csv/apartaments.csv");
+        
+        apartmentRepository.saveAll(apartments);
+        System.out.println("✅ " + apartments.size() + " apartamentos cargados desde el CSV.");
     }
-  }
+}
 
   private void createInitialClients() {
     if (clientRepository.count() == 0) {
