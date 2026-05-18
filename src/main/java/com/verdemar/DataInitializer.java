@@ -42,7 +42,7 @@ public class DataInitializer implements CommandLineRunner {
   @Override
   public void run(String... args) {
     createInitialApartments();
-    createInitialClients();
+    //createInitialClients();
     createInitialPrices();
     // createInitialPricesCSV();
 
@@ -53,7 +53,7 @@ public class DataInitializer implements CommandLineRunner {
     if (priceRepository.count() == 0) { // Prices already exist, no need to create them again
 
       // List<Price> priceList;
-      for (int i = 1; i <= 6; i++) {
+      for (int i = 1; i <= 100; i++) {
         LocalDate startDate = LocalDate.of(2026, 4, 14);
         LocalDate endDate = LocalDate.of(2026, 10, 28);
         LocalDate currentDate = startDate;
@@ -103,6 +103,7 @@ public class DataInitializer implements CommandLineRunner {
 
   private void createInitialApartments() {
     if (apartmentRepository.count() == 0) {
+<<<<<<< Updated upstream
       List<Apartment> apartments =
           List.of(
               new Apartment(
@@ -150,6 +151,13 @@ public class DataInitializer implements CommandLineRunner {
 
       apartmentRepository.saveAll(apartments);
       System.out.println("Apartamentos iniciales creados.");
+=======
+        // Llamamos al reader (asegúrate de tenerlo inyectado o accesible)
+        List<Apartment> apartments = apartmentService.apartmentCSVReader("csv/apartments.csv");
+        
+        apartmentRepository.saveAll(apartments);
+        System.out.println("✅ " + apartments.size() + " apartamentos cargados desde el CSV.");
+>>>>>>> Stashed changes
     }
   }
 
