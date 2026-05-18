@@ -61,7 +61,8 @@ services:
     env_file:
       - .env
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      # CORREGIDO: Ahora usa root y la contraseña del .env para no fallar el ping
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_PASSWORD}"]
       interval: 10s
       timeout: 5s
       retries: 5
