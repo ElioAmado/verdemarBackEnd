@@ -11,13 +11,13 @@ public interface ApartmentService {
 
   List<Apartment> getAllApartments();
 
-  Apartment getApartmentById(Short id);
+  Apartment getApartmentById(Integer id);
 
   Apartment createApartment(Apartment apartment);
 
-  Apartment updateApartment(Short id, Apartment apartment);
+  Apartment updateApartment(Integer id, Apartment apartment);
 
-  void deleteApartment(Short id);
+  void deleteApartment(Integer id);
 
   ApartmentType[] getApartmentTypes();
 
@@ -25,7 +25,7 @@ public interface ApartmentService {
   List<Apartment> getAvailableApartments(
       LocalDate startDate, LocalDate endDate, ApartmentType apartmentType);
 
-  List<Short> getAllIds();
+  List<Integer> getAllIds();
 
   List<ApartmentAvailabilityDTO> getAvailabilityList(
       LocalDate startDate, LocalDate endDate, ApartmentType apartmentType);

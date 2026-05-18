@@ -16,7 +16,7 @@ public class Apartment {
 
   @Id
   @Column(name = "apartment_id", columnDefinition = "TINYINT")
-  private Short id;
+  private Integer id;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "type", nullable = false)

@@ -11,6 +11,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +29,11 @@ public class BookingController {
   // Gets
 
   // Obtener todas las reservas
-  @GetMapping
-  public ResponseEntity<List<Booking>> getAllBookings() {
-    List<Booking> bookings = bookingService.getAllBookings();
+  @GetMapping() // O la ruta que estés utilizando
+  public ResponseEntity<Page<Booking>> getAllBookings(
+      @PageableDefault(size = 10, page = 0) Pageable pageable) {
+
+    Page<Booking> bookings = bookingService.getAllBookings(pageable);
     return ResponseEntity.ok(bookings);
   }
 
@@ -47,7 +53,7 @@ public class BookingController {
 
   @GetMapping("/check")
   public ResponseEntity<BigDecimal> checkPrice(
-      @RequestParam("apartmentId") short apartmentId,
+      @RequestParam("apartmentId") Integer apartmentId,
       @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
       @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
 
@@ -57,7 +63,7 @@ public class BookingController {
 
   @GetMapping("/getDates/{apartmentId}")
   public ResponseEntity<List<BookingDateRange>> getDates(
-      @PathVariable("apartmentId") short apartmentId) {
+      @PathVariable("apartmentId") Integer apartmentId) {
 
     List<BookingDateRange> dates = bookingService.getAllDatesByApartment(apartmentId);
     return ResponseEntity.ok(dates);
@@ -66,7 +72,7 @@ public class BookingController {
   // Devuelve las reservas de un mes
   @GetMapping("/getDates/{apartmentId}/{mounth}/{year}")
   public ResponseEntity<List<BookingInfo>> getDatesByMounth(
-    @PathVariable("apartmentId") short apartmentId,
+    @PathVariable("apartmentId") Integer apartmentId,
     @PathVariable("mounth") int mounth,
     @PathVariable("year") int year) {
       return ResponseEntity.ok(bookingService.getBookingInfosByMounthAndAparment(apartmentId, mounth, year));
@@ -161,7 +167,7 @@ public ResponseEntity<Map<String, Object>> lexWebhook(@RequestBody Map<String, O
 
   // 2. Construir tu DTO
   BookingChatbotDto dto = new BookingChatbotDto();
-  dto.setApartmentId(Short.parseShort(getSlotValue(slots, "apartmentId")));
+  dto.setApartmentId(Integer.parseInteger(getSlotValue(slots, "apartmentId")));
   dto.setStartDate(LocalDate.parse(getSlotValue(slots, "startDate")));
   dto.setEndDate(LocalDate.parse(getSlotValue(slots, "endDate")));
   dto.setGuests(Byte.parseByte(getSlotValue(slots, "guests")));

@@ -16,9 +16,9 @@ public class ModelMapperConfig {
       ClientRepository clientRepository, ApartmentRepository apartmentRepository) {
     ModelMapper modelMapper = new ModelMapper();
     modelMapper.addConverter(
-        new AbstractConverter<Short, Apartment>() {
+        new AbstractConverter<Integer, Apartment>() {
           @Override
-          protected Apartment convert(Short source) {
+          protected Apartment convert(Integer source) {
             if (source == null) return null;
             return apartmentRepository
                 .findById(source)

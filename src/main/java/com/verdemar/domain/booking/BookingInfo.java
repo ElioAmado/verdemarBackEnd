@@ -15,7 +15,7 @@ private Long id; // ID opcional para actualizaciones
   private String clientLastName;
   private String clientPhone;
   private byte guests;
-  private Short apartmentId;
+  private Integer apartmentId;
   private LocalDate startDate;
   private LocalDate endDate;
   private BigDecimal totalPrice; // Se genera al crear la reserva

@@ -36,7 +36,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 
   // Devuelve un apartmento por su ID
   @Override
-  public Apartment getApartmentById(Short id) {
+  public Apartment getApartmentById(Integer id) {
     // Obtiene un apartmento por ID
     Optional<Apartment> apartment = apartmentRepository.findById(id);
     return apartment.orElseThrow(() -> new ApartmentNotFoundException(id));
@@ -51,7 +51,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 
   // Actualiza un apartmento existente
   @Override
-  public Apartment updateApartment(Short id, Apartment apartment) {
+  public Apartment updateApartment(Integer id, Apartment apartment) {
     // Verifica si el apartmento existe antes de actualizar
     if (!apartmentRepository.existsById(id)) {
       throw new RuntimeException("Apartment not found with id: " + id);
@@ -62,7 +62,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 
   // Elimina un apartmento por su ID
   @Override
-  public void deleteApartment(Short id) {
+  public void deleteApartment(Integer id) {
     // Elimina un apartmento por ID
     if (!apartmentRepository.existsById(id)) {
       throw new RuntimeException("Apartment not found with id: " + id);
@@ -86,7 +86,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 
   // Devuelve todos los IDs de los apartmentos
   @Override
-  public List<Short> getAllIds() {
+  public List<Integer> getAllIds() {
     // Devuelve una lista de todos los IDs de los apartmentos
     return apartmentRepository.findAllIds();
   }

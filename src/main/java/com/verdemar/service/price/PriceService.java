@@ -15,17 +15,17 @@ public interface PriceService {
 
   List<PriceResponseDTO> getAllPriceDto();
 
-  Price getPriceById(Short apartment, LocalDate date);
+  Price getPriceById(Integer apartment, LocalDate date);
 
-  List<Price> getPricesByMounth(short apartmentId, int month, int year);
+  List<Price> getPricesByMounth(Integer apartmentId, int month, int year);
 
   Price createPrice(PriceResponseDTO price);
 
   List<Price> createPrice(List<PriceResponseDTO> prices);
 
-  Price updatePrice(Short apartment, LocalDate date, PriceRequestDTO price);
+  Price updatePrice(Integer apartment, LocalDate date, PriceRequestDTO price);
 
   List<Price> bulkUpdatePrices(List<PriceResponseDTO> prices);
 
-  void deletePrice(Short apartment, LocalDate date);
+  void deletePrice(Integer apartment, LocalDate date);
 }

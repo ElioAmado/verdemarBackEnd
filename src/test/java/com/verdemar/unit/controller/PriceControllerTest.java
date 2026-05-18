@@ -37,7 +37,7 @@
 //   @DisplayName("GET /api/prices should return all prices")
 //   void testGetAllPrices() throws Exception {
 //     Apartment apt = new Apartment();
-//     apt.setId((short) 1);
+//     apt.setId((Integer) 1);
 
 //     Price price = new Price(apt, LocalDate.of(2025, 1, 1), new BigDecimal("150.00"));
 
@@ -55,7 +55,7 @@
 //   @DisplayName("GET /api/prices/dto should return all prices DTO")
 //   void testGetAllPricesDto() throws Exception {
 //     PriceResponseDTO dto =
-//         new PriceResponseDTO((short) 2, LocalDate.of(2025, 2, 1), new BigDecimal("200.00"));
+//         new PriceResponseDTO((Integer) 2, LocalDate.of(2025, 2, 1), new BigDecimal("200.00"));
 
 //     Mockito.when(priceService.getAllPriceDto()).thenReturn(List.of(dto));
 
@@ -66,11 +66,11 @@
 //   @DisplayName("GET /api/prices/{apartment}/{date} should return a price by id")
 //   void testGetPriceById() throws Exception {
 //     Apartment apt = new Apartment();
-//     apt.setId((short) 3);
+//     apt.setId((Integer) 3);
 
 //     Price price = new Price(apt, LocalDate.of(2025, 3, 1), new BigDecimal("180.00"));
 
-//     Mockito.when(priceService.getPriceById((short) 3, LocalDate.of(2025, 3, 1))).thenReturn(price);
+//     Mockito.when(priceService.getPriceById((Integer) 3, LocalDate.of(2025, 3, 1))).thenReturn(price);
 
 //     mockMvc
 //         .perform(get("/api/price/3/2025-03-01"))
@@ -84,13 +84,13 @@
 //   @DisplayName("PUT /api/prices/{apartment}/{date} should update a price")
 //   void testUpdatePrice() throws Exception {
 //     Apartment apt = new Apartment();
-//     apt.setId((short) 4);
+//     apt.setId((Integer) 4);
 
 //     Price updatedPrice = new Price(apt, LocalDate.of(2025, 4, 1), new BigDecimal("220.00"));
 
 //     Mockito.when(
 //             priceService.updatePrice(
-//                 eq((short) 4), eq(LocalDate.of(2025, 4, 1)), any(PriceRequestDTO.class)))
+//                 eq((Integer) 4), eq(LocalDate.of(2025, 4, 1)), any(PriceRequestDTO.class)))
 //         .thenReturn(updatedPrice);
 
 //     mockMvc

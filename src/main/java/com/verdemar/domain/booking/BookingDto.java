@@ -12,7 +12,7 @@ public class BookingDto {
   private Long id = null; // ID opcional para actualizaciones
   private Integer clientId;
   private byte guests;
-  private Short apartmentId;
+  private Integer apartmentId;
   private LocalDate startDate;
   private LocalDate endDate;
   private BigDecimal totalPrice; // Se genera al crear la reserva

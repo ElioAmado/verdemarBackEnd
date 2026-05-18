@@ -6,25 +6,25 @@ import java.util.Objects;
 
 public class PriceId implements Serializable {
 
-  private Short apartment;
+  private Integer apartment;
   private LocalDate date;
 
   // Constructor, equals y hashCode
 
   public PriceId() {}
 
-  public PriceId(Short apartment, LocalDate date) {
+  public PriceId(Integer apartment, LocalDate date) {
     this.apartment = apartment;
     this.date = date;
   }
 
   // Getters y Setters
 
-  public Short getApartment() {
+  public Integer getApartment() {
     return apartment;
   }
 
-  public void setApartment(Short apartment) {
+  public void setApartment(Integer apartment) {
     this.apartment = apartment;
   }
 

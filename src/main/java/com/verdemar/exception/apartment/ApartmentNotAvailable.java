@@ -1,7 +1,7 @@
 package com.verdemar.exception.apartment;
 
 public class ApartmentNotAvailable extends ApartmentException {
-  public ApartmentNotAvailable(Short id) {
+  public ApartmentNotAvailable(Integer id) {
     super("Apartment with id " + id + " is not available for the selected dates.");
   }
 

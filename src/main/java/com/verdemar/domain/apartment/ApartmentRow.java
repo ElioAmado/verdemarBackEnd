@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ApartmentRow {
-    private short id;
+    private Integer id;
     private String type; // Lo leemos como String para convertirlo luego
     private short capacity;
     private short floor;

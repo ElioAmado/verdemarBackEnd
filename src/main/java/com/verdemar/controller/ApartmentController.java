@@ -36,14 +36,14 @@ public class ApartmentController {
 
   // Devuelve un apartamento por su ID
   @GetMapping("/{id}")
-  public ResponseEntity<Apartment> getApartmentById(@PathVariable Short id) {
+  public ResponseEntity<Apartment> getApartmentById(@PathVariable Integer id) {
     Apartment apartment = apartmentService.getApartmentById(id);
     return ResponseEntity.ok(apartment);
   }
 
     // Devuelve todos los IDs de los apartamentos
   @GetMapping("/ids")
-  public List<Short> getAllIds() {
+  public List<Integer> getAllIds() {
     return apartmentService.getAllIds();
   }
 
@@ -99,7 +99,7 @@ public class ApartmentController {
   // Actualiza un apartamento existente
   @PutMapping("/{id}")
   public ResponseEntity<Apartment> updateApartment(
-      @PathVariable Short id, @RequestBody Apartment apartment) {
+      @PathVariable Integer id, @RequestBody Apartment apartment) {
     Apartment updatedApartment = apartmentService.updateApartment(id, apartment);
     return ResponseEntity.ok(updatedApartment);
   }
@@ -107,7 +107,7 @@ public class ApartmentController {
   // Deletes
 
   // @DeleteMapping("/{id}")
-  // public ResponseEntity<Void> deleteApartment(@PathVariable Short id) {
+  // public ResponseEntity<Void> deleteApartment(@PathVariable Integer id) {
   //     apartmentService.deleteApartment(id);
   //     return ResponseEntity.noContent().build();
   // }

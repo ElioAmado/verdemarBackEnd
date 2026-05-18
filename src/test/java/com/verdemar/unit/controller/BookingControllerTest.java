@@ -140,7 +140,7 @@ class BookingControllerTest {
     BookingDateRange range =
         new BookingDateRange(LocalDate.parse("2025-10-01"), LocalDate.parse("2025-10-10"));
 
-    Mockito.when(bookingService.getAllDatesByApartment((short) 2)).thenReturn(List.of(range));
+    Mockito.when(bookingService.getAllDatesByApartment((Integer) 2)).thenReturn(List.of(range));
 
     mockMvc
         .perform(get("/api/bookings/getDates/2"))

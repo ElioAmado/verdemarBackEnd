@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.verdemar.domain.discount.Discount;
 
 public interface DiscountRepository extends JpaRepository<Discount, Long> {
-    List<Discount> findByApartmentsId(Short apartmentId);
+    List<Discount> findByApartmentsId(Integer apartmentId);
 }

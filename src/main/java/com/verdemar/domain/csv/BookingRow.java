@@ -19,7 +19,7 @@ public class BookingRow {
   private byte guests;
 
   @CsvBindByName(column = "apartment_id")
-  private Short apartmentId;
+  private Integer apartmentId;
 
   @CsvCustomBindByName(column = "startDate", converter = LocalDateConverter.class)
   private LocalDate startDate;

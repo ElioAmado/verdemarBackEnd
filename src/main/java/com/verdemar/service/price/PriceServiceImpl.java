@@ -39,13 +39,13 @@ public class PriceServiceImpl implements PriceService {
 
   // Devuelve un precio por su ID (apartment, date)
   @Override
-  public Price getPriceById(Short apartment, LocalDate date) {
+  public Price getPriceById(Integer apartment, LocalDate date) {
     Optional<Price> price = priceRepository.findById(new PriceId(apartment, date));
     return price.orElseThrow(() -> new ApartmentNotAvailable(apartment));
   }
 
   @Override
-  public List<Price> getPricesByMounth(short apartmentId , int month, int year) {
+  public List<Price> getPricesByMounth(Integer apartmentId , int month, int year) {
     LocalDate startDate = LocalDate.of(year, month, 1);
     LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
     return priceRepository.findByApartmentIdAndDateBetween(apartmentId, startDate, endDate);
@@ -69,7 +69,7 @@ public class PriceServiceImpl implements PriceService {
 
   // Actualiza un precio existente
   @Override
-  public Price updatePrice(Short apartmentId, LocalDate date, PriceRequestDTO priceDto) {
+  public Price updatePrice(Integer apartmentId, LocalDate date, PriceRequestDTO priceDto) {
     PriceId priceId = new PriceId(apartmentId, date);
 
     Price price =
@@ -105,7 +105,7 @@ public class PriceServiceImpl implements PriceService {
 
   // Elimina un precio por su ID (apartment, date)
   @Override
-  public void deletePrice(Short apartment, LocalDate date) {
+  public void deletePrice(Integer apartment, LocalDate date) {
     if (!priceRepository.existsById(new PriceId(apartment, date))) {
       throw new RuntimeException(
           "Price not found for apartment " + apartment + " and date " + date);

@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class PriceResponseDTO {
-  private Short apartmentId;
+  private Integer apartmentId;
   private LocalDate date;
   private BigDecimal price;
 }

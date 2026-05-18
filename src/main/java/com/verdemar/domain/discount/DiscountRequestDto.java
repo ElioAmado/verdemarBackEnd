@@ -12,5 +12,5 @@ public class DiscountRequestDto {
     private LocalDate endDate;
     private int discount;
     private Boolean isPercentage;
-    private List<Short> apartmentIds;
+    private List<Integer> apartmentIds;
 }

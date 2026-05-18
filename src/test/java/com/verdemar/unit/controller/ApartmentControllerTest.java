@@ -37,7 +37,7 @@ class ApartmentControllerTest {
   void testGetAllApartments() throws Exception {
     Apartment apt =
         new Apartment(
-            (short) 1, ApartmentType.ONE_BEDROOM, (short) 2, (short) 1, "Bonito estudio", null);
+            (Integer) 1, ApartmentType.ONE_BEDROOM, (Integer) 2, (Integer) 1, "Bonito estudio", null);
 
     Mockito.when(apartmentService.getAllApartments()).thenReturn(List.of(apt));
 
@@ -56,9 +56,9 @@ class ApartmentControllerTest {
   void testGetApartmentById() throws Exception {
     Apartment apt =
         new Apartment(
-            (short) 2, ApartmentType.ONE_BEDROOM, (short) 4, (short) 2, "Duplex con vistas", null);
+            (Integer) 2, ApartmentType.ONE_BEDROOM, (Integer) 4, (Integer) 2, "Duplex con vistas", null);
 
-    Mockito.when(apartmentService.getApartmentById((short) 2)).thenReturn(apt);
+    Mockito.when(apartmentService.getApartmentById((Integer) 2)).thenReturn(apt);
 
     mockMvc
         .perform(get("/api/apartment/2"))
@@ -75,10 +75,10 @@ class ApartmentControllerTest {
   void testUpdateApartment() throws Exception {
     Apartment apt =
         new Apartment(
-            (short) 3, ApartmentType.ONE_BEDROOM, (short) 3, (short) 1, "Suite reformada", null);
+            (Integer) 3, ApartmentType.ONE_BEDROOM, (Integer) 3, (Integer) 1, "Suite reformada", null);
 
     Mockito.when(
-            apartmentService.updateApartment(Mockito.eq((short) 3), Mockito.any(Apartment.class)))
+            apartmentService.updateApartment(Mockito.eq((Integer) 3), Mockito.any(Apartment.class)))
         .thenReturn(apt);
 
     mockMvc
@@ -109,7 +109,7 @@ class ApartmentControllerTest {
   @Test
   @DisplayName("GET /api/apartments/available should return availability list")
   void testGetAvailableApartments() throws Exception {
-    ApartmentAvailabilityDTO dto = new ApartmentAvailabilityDTO((short) 1, true);
+    ApartmentAvailabilityDTO dto = new ApartmentAvailabilityDTO((Integer) 1, true);
 
     Mockito.when(
             apartmentService.getAvailabilityList(
@@ -132,7 +132,7 @@ class ApartmentControllerTest {
   @Test
   @DisplayName("GET /api/apartments/ids should return all ids")
   void testGetAllIds() throws Exception {
-    Mockito.when(apartmentService.getAllIds()).thenReturn(Arrays.asList((short) 1, (short) 2));
+    Mockito.when(apartmentService.getAllIds()).thenReturn(Arrays.asList((Integer) 1, (Integer) 2));
 
     mockMvc
         .perform(get("/api/apartments/ids"))

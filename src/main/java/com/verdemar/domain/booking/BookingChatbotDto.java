@@ -19,7 +19,7 @@ public class BookingChatbotDto {
     // ── Slots que Lex recoge del usuario ──────────────────────────────
 
     /** ID del apartamento (slot: apartmentId) */
-    private Short apartmentId;
+    private Integer apartmentId;
 
     /** Fecha de entrada en formato ISO: 2025-06-15 (slot: startDate) */
     private LocalDate startDate;

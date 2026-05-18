@@ -43,7 +43,7 @@ public class DiscountController {
     }
 
     @GetMapping("/apartment/{apartmentId}")
-    public ResponseEntity<List<Discount>> getDiscountsByApartmentId(@PathVariable Short apartmentId) {
+    public ResponseEntity<List<Discount>> getDiscountsByApartmentId(@PathVariable Integer apartmentId) {
         List<Discount> discounts = discountService.getDiscountsByApartmentId(apartmentId);
         return ResponseEntity.ok(discounts);
     }

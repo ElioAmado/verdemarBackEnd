@@ -50,14 +50,14 @@ public class PriceController {
   // Obtener un precio por ID (apartment, date)
   @GetMapping("/{apartment}/{date}")
   public ResponseEntity<Price> getPriceById(
-      @PathVariable Short apartment, @PathVariable LocalDate date) {
+      @PathVariable Integer apartment, @PathVariable LocalDate date) {
     Price price = priceService.getPriceById(apartment, date);
     return ResponseEntity.ok(price);
   }
 
   @GetMapping("/bymonth")
   public ResponseEntity<List<Price>> getPricesByMounth(
-    @RequestParam short apartmentId,
+    @RequestParam Integer apartmentId,
       @RequestParam int month, @RequestParam int year) {
     List<Price> prices = priceService.getPricesByMounth(apartmentId, month, year);
     return ResponseEntity.ok(prices);
@@ -81,7 +81,7 @@ public class PriceController {
   // Actualizar un precio
   @PutMapping("/{apartment}/{date}")
   public ResponseEntity<Price> updatePrice(
-      @PathVariable Short apartment,
+      @PathVariable Integer apartment,
       @PathVariable LocalDate date,
       @RequestBody PriceRequestDTO priceDto) {
     Price updatedPrice = priceService.updatePrice(apartment, date, priceDto);
@@ -99,7 +99,7 @@ public class PriceController {
   // Eliminar un precio
    @DeleteMapping("/{apartment}/{date}")
    public ResponseEntity<Void> deletePrice(
-   @PathVariable Short apartment,
+   @PathVariable Integer apartment,
    @PathVariable LocalDate date) {
    priceService.deletePrice(apartment, date);
    return ResponseEntity.noContent().build();

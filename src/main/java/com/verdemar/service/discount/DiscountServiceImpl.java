@@ -65,8 +65,8 @@ public class DiscountServiceImpl implements DiscountService {
     public Discount createDiscount(DiscountRequestDto discountDto) { //Tiene que comprobat que esten disponibles els apartaments
         
         Set<Apartment> apartments = new java.util.HashSet<>();
-        for (Short apartmentId : discountDto.getApartmentIds()) {
-            apartments.add(apartmentService.getApartmentById(apartmentId.shortValue()));
+        for (Integer apartmentId : discountDto.getApartmentIds()) {
+            apartments.add(apartmentService.getApartmentById(apartmentId.IntegerValue()));
             
         }
         
@@ -76,7 +76,7 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public List<Discount> getDiscountsByApartmentId(Short apartmentId) {
+    public List<Discount> getDiscountsByApartmentId(Integer apartmentId) {
         return discountRepository.findByApartmentsId(apartmentId);
     }
 

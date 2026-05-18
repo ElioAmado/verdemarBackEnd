@@ -6,12 +6,12 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface ApartmentRepository extends JpaRepository<Apartment, Short> {
+public interface ApartmentRepository extends JpaRepository<Apartment, Integer> {
   // Encuentra apartamentos por su tipo
   public List<Apartment> findByApartmentType(ApartmentType apartmentType);
 
   @Query("SELECT a.id FROM Apartment a")
-  List<Short> findAllIds();
+  List<Integer> findAllIds();
 
   // Custom query methods can be defined here if needed
   // For example, you can add methods to find apartments by specific criteria

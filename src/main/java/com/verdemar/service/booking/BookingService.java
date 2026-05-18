@@ -10,6 +10,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 public interface BookingService {
 
   List<Booking> getAllBookings();
@@ -30,13 +33,15 @@ public interface BookingService {
 
   void deleteBooking(Long id);
 
-  BigDecimal getTotalPrice(Short apartmentId, LocalDate startDate, LocalDate endDate);
+  BigDecimal getTotalPrice(Integer apartmentId, LocalDate startDate, LocalDate endDate);
 
-  List<BookingDateRange> getAllDatesByApartment(Short apartmentId);
+  List<BookingDateRange> getAllDatesByApartment(Integer apartmentId);
 
-  List<BookingInfo> getBookingInfosByMounthAndAparment(short apartmentId, int mounth, int year);
+  List<BookingInfo> getBookingInfosByMounthAndAparment(Integer apartmentId, int mounth, int year);
 
   BookingChatbotDto createBookingFromChatbot(BookingChatbotDto dto);
 
   List<BookingDto> createBookingsFromCSV(String path);
+
+  Page<Booking> getAllBookings(Pageable pageable);
 }

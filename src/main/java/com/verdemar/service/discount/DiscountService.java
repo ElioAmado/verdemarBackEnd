@@ -25,7 +25,7 @@ public interface DiscountService {
      */
     Discount getDiscountById(Long id);
 
-    List<Discount> getDiscountsByApartmentId(Short apartmentId);
+    List<Discount> getDiscountsByApartmentId(Integer apartmentId);
 
     /**
      * Creates a new discount.

@@ -15,6 +15,9 @@ import com.verdemar.service.price.PriceService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -39,6 +42,14 @@ public class BookingServiceImpl implements BookingService {
   @Override
   public List<Booking> getAllBookings() {
     List<Booking> bookings = bookingRepository.findAll();
+
+    return bookings;
+  }
+
+  @Override
+  public Page<Booking> getAllBookings(Pageable pageable) {
+    // JpaRepository ya se encarga de todo cuando le pasas el objeto pageable
+    Page<Booking> bookings = bookingRepository.findAll(pageable);
 
     return bookings;
   }
@@ -149,7 +160,7 @@ public Boolean isValidBooking(BookingDto bookingDto) {
 
   // Calcula el precio total de una reserva
   @Override
-  public BigDecimal getTotalPrice(Short apartmentId, LocalDate startDate, LocalDate endDate) {
+  public BigDecimal getTotalPrice(Integer apartmentId, LocalDate startDate, LocalDate endDate) {
     if (startDate.isAfter(endDate)) {
       throw new IllegalArgumentException("Start date must be before end date");
     }
@@ -177,12 +188,12 @@ public Boolean isValidBooking(BookingDto bookingDto) {
 
   // Devuelve todas las fechas de reserva para un apartamento específico
   @Override
-  public List<BookingDateRange> getAllDatesByApartment(Short apartmentId) {
+  public List<BookingDateRange> getAllDatesByApartment(Integer apartmentId) {
     return bookingRepository.findAllDatesByApartment(apartmentId);
   }
 
   @Override
-  public List<BookingInfo> getBookingInfosByMounthAndAparment(short apartmentId, int mounth, int year) {
+  public List<BookingInfo> getBookingInfosByMounthAndAparment(Integer apartmentId, int mounth, int year) {
     // Obtener bookings desde el repositorio
     List<Booking> bookings = bookingRepository.findBookingsByApartmentAndMonth(apartmentId, mounth, year);
 
