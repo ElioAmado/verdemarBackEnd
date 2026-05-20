@@ -167,7 +167,7 @@ public ResponseEntity<Map<String, Object>> lexWebhook(@RequestBody Map<String, O
 
   // 2. Construir tu DTO
   BookingChatbotDto dto = new BookingChatbotDto();
-  dto.setApartmentId(Integer.parseInteger(getSlotValue(slots, "apartmentId")));
+  dto.setApartmentId(Integer.parseInt(getSlotValue(slots, "apartmentId")));
   dto.setStartDate(LocalDate.parse(getSlotValue(slots, "startDate")));
   dto.setEndDate(LocalDate.parse(getSlotValue(slots, "endDate")));
   dto.setGuests(Byte.parseByte(getSlotValue(slots, "guests")));

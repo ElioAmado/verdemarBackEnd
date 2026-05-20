@@ -66,7 +66,7 @@ public class DiscountServiceImpl implements DiscountService {
         
         Set<Apartment> apartments = new java.util.HashSet<>();
         for (Integer apartmentId : discountDto.getApartmentIds()) {
-            apartments.add(apartmentService.getApartmentById(apartmentId.IntegerValue()));
+            apartments.add(apartmentService.getApartmentById(apartmentId));
             
         }
         

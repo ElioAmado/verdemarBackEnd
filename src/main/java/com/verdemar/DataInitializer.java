@@ -139,6 +139,19 @@ public class DataInitializer implements CommandLineRunner {
   private void createInitialBookings() {
     if (bookingRepository.count() > 0) return;
 
+    if (bookingRepository.count() > 0)
+      return;
+
+    List<Client> clients = clientRepository.findAll();
+    List<Apartment> apartments = apartmentRepository.findAll();
+
+    // 🔥 CONTROL DE SEGURIDAD: Si alguna lista está vacía, evitamos el crash
+    if (clients.isEmpty() || apartments.isEmpty()) {
+      System.err.println(
+          "⚠️ No se pueden crear reservas iniciales: Asegúrate de que las tablas de Clientes y Apartamentos tengan datos primero.");
+      return;
+    }
+
     Random random = new Random(42);
 
     String[] notes = {
@@ -173,8 +186,6 @@ public class DataInitializer implements CommandLineRunner {
     LocalDateTime maxCreatedAt  = LocalDateTime.of(2026, 1, 31, 23, 59, 59);
     long secondsRange = ChronoUnit.SECONDS.between(baseCreatedAt, maxCreatedAt);
 
-    List<Client> clients = clientRepository.findAll();
-    List<Apartment> apartments = apartmentRepository.findAll();
 
     List<Booking> bookings = new ArrayList<>(500);
 

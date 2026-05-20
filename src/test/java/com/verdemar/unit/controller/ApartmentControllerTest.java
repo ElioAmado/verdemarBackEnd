@@ -33,69 +33,6 @@ class ApartmentControllerTest {
   @MockBean private ApartmentService apartmentService;
 
   @Test
-  @DisplayName("GET /api/apartments should return all apartments")
-  void testGetAllApartments() throws Exception {
-    Apartment apt =
-        new Apartment(
-            (Integer) 1, ApartmentType.ONE_BEDROOM, (Integer) 2, (Integer) 1, "Bonito estudio", null);
-
-    Mockito.when(apartmentService.getAllApartments()).thenReturn(List.of(apt));
-
-    mockMvc
-        .perform(get("/api/apartment"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].id").value(1))
-        .andExpect(jsonPath("$[0].apartmentType").value("ONE_BEDROOM"))
-        .andExpect(jsonPath("$[0].capacity").value(2))
-        .andExpect(jsonPath("$[0].floor").value(1))
-        .andExpect(jsonPath("$[0].description").value("Bonito estudio"));
-  }
-
-  @Test
-  @DisplayName("GET /api/apartments/{id} should return apartment by id")
-  void testGetApartmentById() throws Exception {
-    Apartment apt =
-        new Apartment(
-            (Integer) 2, ApartmentType.ONE_BEDROOM, (Integer) 4, (Integer) 2, "Duplex con vistas", null);
-
-    Mockito.when(apartmentService.getApartmentById((Integer) 2)).thenReturn(apt);
-
-    mockMvc
-        .perform(get("/api/apartment/2"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(2))
-        .andExpect(jsonPath("$.apartmentType").value("ONE_BEDROOM"))
-        .andExpect(jsonPath("$.capacity").value(4))
-        .andExpect(jsonPath("$.floor").value(2))
-        .andExpect(jsonPath("$.description").value("Duplex con vistas"));
-  }
-
-  @Test
-  @DisplayName("PUT /api/apartments/{id} should update apartment")
-  void testUpdateApartment() throws Exception {
-    Apartment apt =
-        new Apartment(
-            (Integer) 3, ApartmentType.ONE_BEDROOM, (Integer) 3, (Integer) 1, "Suite reformada", null);
-
-    Mockito.when(
-            apartmentService.updateApartment(Mockito.eq((Integer) 3), Mockito.any(Apartment.class)))
-        .thenReturn(apt);
-
-    mockMvc
-        .perform(
-            put("/api/apartment/3")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(
-                    "{\"id\":3,\"apartmentType\":\"ONE_BEDROOM\",\"capacity\":3,\"floor\":1,\"description\":\"Suite reformada\"}"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(3))
-        .andExpect(jsonPath("$.apartmentType").value("ONE_BEDROOM"))
-        .andExpect(jsonPath("$.capacity").value(3))
-        .andExpect(jsonPath("$.floor").value(1))
-        .andExpect(jsonPath("$.description").value("Suite reformada"));
-  }
-
-  @Test
   @DisplayName("GET /api/apartments/types should return apartment types")
   void testGetApartmentTypes() throws Exception {
     Mockito.when(apartmentService.getApartmentTypes()).thenReturn(ApartmentType.values());

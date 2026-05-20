@@ -63,10 +63,10 @@ public class Booking {
   @Column(name = "updated_at", nullable = false)
   private LocalDateTime updatedAt;
 
-  @PrePersist
-  protected void onCreate() {
-      createdAt = updatedAt = LocalDateTime.now();
-  }
+  // @PrePersist
+  // protected void onCreate() {
+  //     createdAt = updatedAt = LocalDateTime.now();
+  // }
 
   @PreUpdate
   protected void onUpdate() {

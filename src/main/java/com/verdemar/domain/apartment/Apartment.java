@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class Apartment {
 
   @Id
-  @Column(name = "apartment_id", columnDefinition = "TINYINT")
+  @Column(name = "apartment_id")
   private Integer id;
 
   @Enumerated(EnumType.STRING)

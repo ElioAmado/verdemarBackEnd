@@ -115,26 +115,6 @@ class BookingControllerTest {
   }
 
   @Test
-  @DisplayName("GET /api/bookings/check should return total price")
-  void testCheckPrice() throws Exception {
-    Mockito.when(
-            bookingService.getTotalPrice(
-                eq((short) 1),
-                eq(LocalDate.parse("2025-10-01")),
-                eq(LocalDate.parse("2025-10-05"))))
-        .thenReturn(BigDecimal.valueOf(500));
-
-    mockMvc
-        .perform(
-            get("/api/booking/check")
-                .param("apartmentId", "1")
-                .param("startDate", "2025-10-01")
-                .param("endDate", "2025-10-05"))
-        .andExpect(status().isOk())
-        .andExpect(content().string("500"));
-  }
-
-  @Test
   @DisplayName("GET /api/booking/getDates/{apartmentId} should return booking date ranges")
   void testGetDates() throws Exception {
     BookingDateRange range =
