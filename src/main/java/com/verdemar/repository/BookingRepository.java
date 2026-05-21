@@ -1,5 +1,6 @@
 package com.verdemar.repository;
 
+import com.verdemar.domain.apartment.ApartmentType;
 import com.verdemar.domain.booking.Booking;
 import com.verdemar.domain.dto.BookingDateRange;
 import java.time.LocalDate;
@@ -33,5 +34,16 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
       @Param("apartmentId") Integer apartmentId,
       @Param("month") int month,
       @Param("year") int year);
-
+    
+// Encuentra reservas en un rango de fechas y filtrado por tipo de apartamento
+// Si apartmentType es null, trae todos ('ALL')
+@Query("""
+    SELECT b FROM Booking b
+    WHERE b.startDate <= :endDate AND b.endDate >= :startDate
+      AND (:apartmentType IS NULL OR b.apartment.apartmentType = :apartmentType)
+    """)
+List<Booking> findBookingsForKPIs(
+    @Param("startDate") LocalDate startDate,
+    @Param("endDate") LocalDate endDate,
+    @Param("apartmentType") ApartmentType apartmentType); // <- Cambiado a ApartmentType
 }

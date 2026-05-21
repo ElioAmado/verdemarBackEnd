@@ -9,6 +9,7 @@ import com.verdemar.domain.dto.BookingDateRange;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,4 +45,12 @@ public interface BookingService {
   List<BookingDto> createBookingsFromCSV(String path);
 
   Page<Booking> getAllBookings(Pageable pageable);
+
+  public Map<String, Object> getKPIs(LocalDate startDate, LocalDate endDate, String apartmentType);
+
+  public Map<String, Object> getOccupancyData(LocalDate startDate, LocalDate endDate, String apartmentType);
+
+  public List<BookingDto> getRecentBookings(int limit);
+  public List<Map<String, Object>> getApartmentsSummary();
+  
 }

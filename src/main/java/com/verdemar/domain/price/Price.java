@@ -24,7 +24,7 @@ public class Price {
 
   @Id
   @ManyToOne
-  @JoinColumn(name = "apartment_id", columnDefinition = "TINYINT", nullable = false)
+  @JoinColumn(name = "apartment_id", nullable = false)
   private Apartment apartment;
 
   @Id private LocalDate date;

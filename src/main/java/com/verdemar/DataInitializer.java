@@ -20,7 +20,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import org.modelmapper.ModelMapper;
@@ -63,7 +65,7 @@ public class DataInitializer implements CommandLineRunner {
 
   public void createInitialPrices() {
     if (priceRepository.count() == 0) {
-      for (int i = 1; i <= 100; i++) {
+      for (int i = 1; i <= 300; i++) {
         LocalDate startDate = LocalDate.of(2026, 4, 14);
         LocalDate endDate = LocalDate.of(2026, 10, 28);
         LocalDate currentDate = startDate;
@@ -137,92 +139,102 @@ public class DataInitializer implements CommandLineRunner {
   }
 
   private void createInitialBookings() {
-    if (bookingRepository.count() > 0) return;
-
     if (bookingRepository.count() > 0)
       return;
 
     List<Client> clients = clientRepository.findAll();
     List<Apartment> apartments = apartmentRepository.findAll();
 
-    // 🔥 CONTROL DE SEGURIDAD: Si alguna lista está vacía, evitamos el crash
     if (clients.isEmpty() || apartments.isEmpty()) {
-      System.err.println(
-          "⚠️ No se pueden crear reservas iniciales: Asegúrate de que las tablas de Clientes y Apartamentos tengan datos primero.");
+      System.err.println("⚠️ No se pueden crear reservas iniciales: Faltan clientes o apartamentos.");
       return;
     }
 
     Random random = new Random(42);
 
-    String[] notes = {
-        "Esperando el comprobante de transferencia.",
-        "Niños pequeños, necesita protecciones.",
-        "Solicita desayuno incluido.",
-        "Visita médica, estancia extendida posible.",
-        "Requiere parking disponible.",
-        "Familia numerosa.",
-        "Necesita camas separadas.",
-        "Check-in tardío solicitado.",
-        "Celebración de aniversario.",
-        "Primera visita a la ciudad.",
-        "Mascota pequeña, necesita confirmación.",
-        "Solicita toallas extra.",
-        "Viaje de negocios.",
-        "Estancia de luna de miel.",
-        "Requiere factura de empresa.",
-        "Alérgico al polvo, solicita limpieza extra.",
-        "Llegan en grupo, posible ruido.",
-        "Solicita cuna para bebé.",
-        "Necesita acceso para silla de ruedas.",
-        "Turistas, primera vez en el país."
-    };
+    Map<Integer, List<LocalDate[]>> ocupacionesPorApartamento = new HashMap<>();
+    for (Apartment apt : apartments) {
+      ocupacionesPorApartamento.put(apt.getId(), new ArrayList<>());
+    }
 
-    String[] paymentMethods = {"CREDIT_CARD", "BANK_TRANSFER", "STRIPE", "PAYPAL"};
+    String[] notes = { "Esperando comprobante.", "Solicita desayuno.", "Requiere parking.", "Viaje de negocios." };
+    String[] paymentMethods = { "CREDIT_CARD", "BANK_TRANSFER", "STRIPE", "PAYPAL" };
     Booking.Status[] statuses = Booking.Status.values();
 
-    LocalDate baseStartDate = LocalDate.of(2025, 1, 1);
+    // 📅 RANGO DINÁMICO PARA LAS RESERVAS
+    LocalDate baseStartDate = LocalDate.of(2022, 1, 1);
+    LocalDate maxStartDate = LocalDate.of(2027, 1, 1); // Hoy (Año 2026)
+    // Calculamos cuántos días reales hay entre 2022 y hoy para usarlos de límite
+    long totalDaysRange = ChronoUnit.DAYS.between(baseStartDate, maxStartDate);
 
+    // Fechas de creación de auditoría
     LocalDateTime baseCreatedAt = LocalDateTime.of(2020, 1, 1, 0, 0, 0);
-    LocalDateTime maxCreatedAt  = LocalDateTime.of(2026, 1, 31, 23, 59, 59);
+    LocalDateTime maxCreatedAt = LocalDateTime.now();
     long secondsRange = ChronoUnit.SECONDS.between(baseCreatedAt, maxCreatedAt);
 
-
     List<Booking> bookings = new ArrayList<>(500);
+    int creadasExitosamente = 0;
 
-    for (int i = 0; i < 30000; i++) {
-        Booking booking = new Booking();
+    // 🔥 Subimos los intentos máximos. Al validar solapamientos, el algoritmo
+    // necesitará más margen para encontrar huecos libres en 30,000 registros.
+    int intentos_Maximos = 300000;
+    int intentos = 0;
 
-        booking.setClient(clients.get(random.nextInt(clients.size())));
-        booking.setApartment(apartments.get(random.nextInt(apartments.size())));
-        booking.setGuests((byte) (random.nextInt(8) + 1));
+    while (creadasExitosamente < 30000 && intentos < intentos_Maximos) {
+      intentos++;
 
-        LocalDate startDate = baseStartDate.plusDays(random.nextInt(365 * 3));
-        booking.setStartDate(startDate);
-        booking.setEndDate(startDate.plusDays(random.nextInt(30) + 1));
+      Apartment selectedApartment = apartments.get(random.nextInt(apartments.size()));
 
-        double price = 100 + (random.nextDouble() * 4900);
-        booking.setTotalPrice(BigDecimal.valueOf(Math.round(price * 100.0) / 100.0));
+      // ✨ CORRECCIÓN: Ahora el número aleatorio abarca desde 2022 hasta el día de hoy
+      // en 2026
+      LocalDate startDate = baseStartDate.plusDays(random.nextLong(totalDaysRange));
+      LocalDate endDate = startDate.plusDays(random.nextInt(30) + 1);
 
-        booking.setStatus(statuses[random.nextInt(statuses.length)]);
-        booking.setMethodPayment(paymentMethods[random.nextInt(paymentMethods.length)]);
-        booking.setNotes(notes[random.nextInt(notes.length)]);
+      // 🔍 COMPROBACIÓN DE DISPONIBILIDAD EN MEMORIA
+      List<LocalDate[]> rangosOcupados = ocupacionesPorApartamento.get(selectedApartment.getId());
+      boolean estaOcupado = rangosOcupados.stream()
+          .anyMatch(rango -> !startDate.isAfter(rango[1]) && !endDate.isBefore(rango[0]));
 
-        // Fechas manuales (requiere el cambio en @PrePersist)
-        LocalDateTime createdAt = baseCreatedAt.plusSeconds((long)(random.nextDouble() * secondsRange));
-        booking.setCreatedAt(createdAt);
-        booking.setUpdatedAt(createdAt.plusSeconds((long)(random.nextDouble() * 60 * 24 * 60 * 60)));
+      if (estaOcupado) {
+        continue;
+      }
 
-        bookings.add(booking);
+      rangosOcupados.add(new LocalDate[] { startDate, endDate });
 
-        if (bookings.size() == 500) {
-            bookingRepository.saveAll(bookings);
-            bookings.clear();
-        }
+      Booking booking = new Booking();
+      booking.setClient(clients.get(random.nextInt(clients.size())));
+      booking.setApartment(selectedApartment);
+      booking.setGuests((byte) (random.nextInt(8) + 1));
+      booking.setStartDate(startDate);
+      booking.setEndDate(endDate);
+
+      double price = 100 + (random.nextDouble() * 4900);
+      booking.setTotalPrice(BigDecimal.valueOf(Math.round(price * 100.0) / 100.0));
+      booking.setStatus(statuses[random.nextInt(statuses.length)]);
+      booking.setMethodPayment(paymentMethods[random.nextInt(paymentMethods.length)]);
+      booking.setNotes(notes[random.nextInt(notes.length)]);
+
+      LocalDateTime createdAt = baseCreatedAt.plusSeconds((long) (random.nextDouble() * secondsRange));
+      booking.setCreatedAt(createdAt);
+      booking.setUpdatedAt(createdAt.plusSeconds((long) (random.nextDouble() * 60 * 24 * 60 * 60)));
+
+      bookings.add(booking);
+      creadasExitosamente++;
+
+      if (bookings.size() == 500) {
+        bookingRepository.saveAll(bookings);
+        bookings.clear();
+      }
     }
 
     if (!bookings.isEmpty()) {
-        bookingRepository.saveAll(bookings);
+      bookingRepository.saveAll(bookings);
     }
 
-    System.out.println("✅ 30.000 bookings creados correctamente.");
-}}
+    System.out.println("✅ " + creadasExitosamente + " bookings reales (sin solapamientos) creados correctamente.");
+    if (intentos >= intentos_Maximos) {
+      System.out.println("⚠️ Se alcanzó el límite de intentos (" + intentos + "). El calendario se ha saturado con "
+          + creadasExitosamente + " reservas.");
+    }
+  }
+}

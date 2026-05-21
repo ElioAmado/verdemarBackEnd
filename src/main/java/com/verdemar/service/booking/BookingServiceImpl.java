@@ -20,7 +20,10 @@ import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -283,4 +286,82 @@ public List<BookingDto> createBookingsFromCSV(String path) {
 
   return savedBookings;
 }
+
+@Override
+public Map<String, Object> getKPIs(LocalDate startDate, LocalDate endDate, String apartmentType) {
+  // 1. Convertir el String a Enum (o null si es "ALL")
+  com.verdemar.domain.apartment.ApartmentType tipoFiltro = null;
+  if (apartmentType != null && !apartmentType.equalsIgnoreCase("ALL")) {
+    tipoFiltro = com.verdemar.domain.apartment.ApartmentType.valueOf(apartmentType);
+  }
+
+  // 2. Recuperar las reservas filtradas desde la BD usando el Enum
+  List<Booking> bookings = bookingRepository.findBookingsForKPIs(startDate, endDate, tipoFiltro);
+
+  // 3. Calcular las métricas (Tu lógica se mantiene exactamente igual)
+  long totalBookings = bookings.size();
+  long totalNights = 0;
+  double totalRevenue = 0.0;
+
+  for (Booking booking : bookings) {
+    if (booking.getStartDate() != null && booking.getEndDate() != null) {
+      long nights = ChronoUnit.DAYS.between(booking.getStartDate(), booking.getEndDate());
+      totalNights += nights;
+    }
+    if (booking.getTotalPrice() != null) {
+      totalRevenue += booking.getTotalPrice().doubleValue();
+    }
+  }
+
+  double averageRevenuePerBooking = totalBookings > 0 ? totalRevenue / totalBookings : 0.0;
+
+  // 4. Empaquetar los resultados en el Map
+  Map<String, Object> kpis = new HashMap<>();
+  kpis.put("totalBookings", totalBookings);
+  kpis.put("totalNights", totalNights);
+  kpis.put("totalRevenue", totalRevenue);
+  kpis.put("averageRevenuePerBooking", Math.round(averageRevenuePerBooking * 100.0) / 100.0);
+  kpis.put("startDateFiltered", startDate);
+  kpis.put("endDateFiltered", endDate);
+  // Mantenemos el String original aquí para que la vista/frontend sepa qué se
+  // filtró
+  kpis.put("apartmentTypeFiltered", apartmentType);
+
+  return kpis;
+}
+
+    public Map<String, Object> getOccupancyData(LocalDate startDate, LocalDate endDate, String apartmentType) {
+        // Implementa la lógica para calcular la tasa de ocupación
+        // Esto puede implicar contar las noches reservadas vs las noches disponibles
+        // para el tipo de apartamento y rango de fechas dado.
+
+        // Por simplicidad, aquí solo devolvemos un ejemplo estático.
+        Map<String, Object> occupancyData = new HashMap<>();
+        occupancyData.put("occupancyRate", 75.0); // Ejemplo: 75% de ocupación
+        occupancyData.put("startDateFiltered", startDate);
+        occupancyData.put("endDateFiltered", endDate);
+        occupancyData.put("apartmentTypeFiltered", apartmentType);
+
+        return occupancyData;
+    }
+
+    @Override
+    public List<BookingDto> getRecentBookings(int limit) {
+        // Implementa la lógica para recuperar las reservas más recientes
+        // Esto puede implicar ordenar las reservas por fecha de creación o fecha de inicio
+        // y limitar el resultado al número especificado.
+        // Por simplicidad, aquí solo devolvemos una lista vacía.
+        return List.of(); // Reemplaza con la lógica real para obtener las reservas recientes
+    }
+
+    @Override
+    public List<Map<String, Object>> getApartmentsSummary() {
+        // Implementa la lógica para recuperar un resumen de los apartamentos activos
+        // Esto puede implicar contar el número de reservas por apartamento, su tasa de ocupación
+
+        // Por simplicidad, aquí solo devolvemos una lista vacía.
+        return List.of(); // Reemplaza con la lógica real para obtener el resumen de apartamentos
+    }
+
+
 }
