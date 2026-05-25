@@ -48,6 +48,8 @@ public interface BookingService {
 
   public Map<String, Object> getKPIs(LocalDate startDate, LocalDate endDate, String apartmentType);
 
+  public Map<String, Object> getKPIs(LocalDate startDate, LocalDate endDate);
+
   public Map<String, Object> getOccupancyData(LocalDate startDate, LocalDate endDate, String apartmentType);
 
   public List<BookingDto> getRecentBookings(int limit);

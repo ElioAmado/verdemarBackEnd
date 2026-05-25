@@ -58,14 +58,14 @@ public class DataInitializer implements CommandLineRunner {
   public void run(String... args) {
     // createInitialApartments();
    // createInitialClients();
-    // createInitialPrices();
+    createInitialPrices();
     // createInitialPricesCSV();
     createInitialBookings();
   }
 
   public void createInitialPrices() {
     if (priceRepository.count() == 0) {
-      for (int i = 1; i <= 300; i++) {
+      for (int i = 1; i <= 6; i++) {
         LocalDate startDate = LocalDate.of(2026, 4, 14);
         LocalDate endDate = LocalDate.of(2026, 10, 28);
         LocalDate currentDate = startDate;

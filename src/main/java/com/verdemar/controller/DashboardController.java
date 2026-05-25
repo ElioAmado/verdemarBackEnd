@@ -24,9 +24,12 @@ public class DashboardController {
         public ResponseEntity<Map<String, Object>> getDashboardKPIs(
                 @RequestParam(name = "start_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                 @RequestParam(name = "end_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-                @RequestParam(name = "apartment_type", defaultValue = "ALL") String apartmentType) {
-
+                @RequestParam(name = "apartment_type", defaultValue = " ") String apartmentType) {
+        
             // Spring ya parseó las fechas automáticamente a LocalDate de forma segura
+            if (apartmentType == " ") {
+                Map<String, Object> kpis = bookingService.getKPIs(startDate, endDate);
+            }
             Map<String, Object> kpis = bookingService.getKPIs(startDate, endDate, apartmentType);
             return ResponseEntity.ok(kpis);
         }

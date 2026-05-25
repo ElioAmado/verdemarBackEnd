@@ -1,6 +1,7 @@
 package com.verdemar.service.booking;
 
 import com.verdemar.domain.apartment.Apartment;
+import com.verdemar.domain.apartment.ApartmentType;
 import com.verdemar.domain.booking.Booking;
 import com.verdemar.domain.booking.BookingChatbotDto;
 import com.verdemar.domain.booking.BookingDto;
@@ -32,15 +33,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class BookingServiceImpl implements BookingService {
 
-  @Autowired private ModelMapper modelMapper;
+  @Autowired
+  private ModelMapper modelMapper;
 
-  @Autowired private BookingRepository bookingRepository;
+  @Autowired
+  private BookingRepository bookingRepository;
 
-  @Autowired private PriceService priceService;
+  @Autowired
+  private PriceService priceService;
 
-  @Autowired private ApartmentRepository apartmentRepository;
+  @Autowired
+  private ApartmentRepository apartmentRepository;
 
-  @Autowired private BookingCSVReader bookingCSVReader;
+  @Autowired
+  private BookingCSVReader bookingCSVReader;
+
   // Devuelve todos los bookings
   @Override
   public List<Booking> getAllBookings() {
@@ -134,32 +141,29 @@ public class BookingServiceImpl implements BookingService {
     bookingRepository.deleteById(id);
   }
 
-
-  // Verifica si una reserva es válida (comprueba que no se solapa con otras reservas)
-@Override
-public Boolean isValidBooking(BookingDto bookingDto) {
+  // Verifica si una reserva es válida (comprueba que no se solapa con otras
+  // reservas)
+  @Override
+  public Boolean isValidBooking(BookingDto bookingDto) {
     apartmentRepository.findById(bookingDto.getApartmentId())
         .orElseThrow(() -> new ApartmentNotFoundException(
             bookingDto.getApartmentId()));
 
-    List<BookingDateRange> existingBookings =
-        bookingRepository.findAllDatesByApartment(bookingDto.getApartmentId());
+    List<BookingDateRange> existingBookings = bookingRepository.findAllDatesByApartment(bookingDto.getApartmentId());
 
     for (BookingDateRange existingBooking : existingBookings) {
-        boolean overlaps =
-            !(bookingDto.getEndDate().isBefore(existingBooking.getFrom()) ||
-              bookingDto.getStartDate().isAfter(existingBooking.getTo()));
+      boolean overlaps = !(bookingDto.getEndDate().isBefore(existingBooking.getFrom()) ||
+          bookingDto.getStartDate().isAfter(existingBooking.getTo()));
 
-        if (overlaps) {
-            throw new BookingException(
-                "The requested booking dates overlap with an existing booking from "
+      if (overlaps) {
+        throw new BookingException(
+            "The requested booking dates overlap with an existing booking from "
                 + existingBooking.getFrom() + " to " + existingBooking.getTo() + ".");
-        }
+      }
     }
 
     return true;
-}
-
+  }
 
   // Calcula el precio total de una reserva
   @Override
@@ -209,8 +213,8 @@ public Boolean isValidBooking(BookingDto bookingDto) {
   }
 
   // En BookingService.java (o BookingServiceImpl)
-@Override
-public BookingChatbotDto createBookingFromChatbot(BookingChatbotDto dto) {
+  @Override
+  public BookingChatbotDto createBookingFromChatbot(BookingChatbotDto dto) {
 
     Apartment apartment = apartmentRepository.findById(dto.getApartmentId())
         .orElseThrow(() -> new EntityNotFoundException(
@@ -245,123 +249,170 @@ public BookingChatbotDto createBookingFromChatbot(BookingChatbotDto dto) {
     response.setNotes(saved.getNotes());
 
     return response;
-}
-
-@Override
-@Transactional // Recomendado para procesamientos por lotes
-public List<BookingDto> createBookingsFromCSV(String path) {
-  // 1. Leer los DTOs desde el CSV usando tu utilidad existente
-  List<BookingDto> dtosFromCsv = bookingCSVReader.bookingCSVReader(path);
-  List<BookingDto> savedBookings = new java.util.ArrayList<>();
-
-  for (BookingDto dto : dtosFromCsv) {
-    try {
-      // 2. Validar disponibilidad (reutilizando tu lógica de overlaps)
-      isValidBooking(dto);
-
-      // 3. Calcular el precio total (reutilizando tu lógica de PriceService)
-      BigDecimal total = getTotalPrice(
-          dto.getApartmentId(),
-          dto.getStartDate(),
-          dto.getEndDate());
-
-      // 4. Mapear a entidad y configurar campos faltantes
-      Booking booking = modelMapper.map(dto, Booking.class);
-      booking.setTotalPrice(total);
-
-      // Si el ID viene del CSV y quieres forzar una creación nueva,
-      // asegúrate de cómo maneja JPA el ID manual.
-      // Si quieres que la DB genere uno nuevo, haz booking.setId(null);
-
-      // 5. Guardar
-      Booking saved = bookingRepository.save(booking);
-      savedBookings.add(modelMapper.map(saved, BookingDto.class));
-
-    } catch (Exception e) {
-      // Logueamos el error de una fila específica y continuamos con las demás
-      System.err.println("❌ Error procesando fila de reserva para apto "
-          + dto.getApartmentId() + ": " + e.getMessage());
-    }
   }
 
-  return savedBookings;
-}
+  @Override
+  @Transactional // Recomendado para procesamientos por lotes
+  public List<BookingDto> createBookingsFromCSV(String path) {
+    // 1. Leer los DTOs desde el CSV usando tu utilidad existente
+    List<BookingDto> dtosFromCsv = bookingCSVReader.bookingCSVReader(path);
+    List<BookingDto> savedBookings = new java.util.ArrayList<>();
 
-@Override
-public Map<String, Object> getKPIs(LocalDate startDate, LocalDate endDate, String apartmentType) {
-  // 1. Convertir el String a Enum (o null si es "ALL")
-  com.verdemar.domain.apartment.ApartmentType tipoFiltro = null;
-  if (apartmentType != null && !apartmentType.equalsIgnoreCase("ALL")) {
-    tipoFiltro = com.verdemar.domain.apartment.ApartmentType.valueOf(apartmentType);
+    for (BookingDto dto : dtosFromCsv) {
+      try {
+        // 2. Validar disponibilidad (reutilizando tu lógica de overlaps)
+        isValidBooking(dto);
+
+        // 3. Calcular el precio total (reutilizando tu lógica de PriceService)
+        BigDecimal total = getTotalPrice(
+            dto.getApartmentId(),
+            dto.getStartDate(),
+            dto.getEndDate());
+
+        // 4. Mapear a entidad y configurar campos faltantes
+        Booking booking = modelMapper.map(dto, Booking.class);
+        booking.setTotalPrice(total);
+
+        // Si el ID viene del CSV y quieres forzar una creación nueva,
+        // asegúrate de cómo maneja JPA el ID manual.
+        // Si quieres que la DB genere uno nuevo, haz booking.setId(null);
+
+        // 5. Guardar
+        Booking saved = bookingRepository.save(booking);
+        savedBookings.add(modelMapper.map(saved, BookingDto.class));
+
+      } catch (Exception e) {
+        // Logueamos el error de una fila específica y continuamos con las demás
+        System.err.println("❌ Error procesando fila de reserva para apto "
+            + dto.getApartmentId() + ": " + e.getMessage());
+      }
+    }
+
+    return savedBookings;
+  }
+  
+  @Override
+  public Map<String, Object> getKPIs(LocalDate startDate, LocalDate endDate, String apartmentType) {
+
+    ApartmentType tipoFiltro = null;
+
+    // 1. Validar y convertir de forma segura para evitar el
+    // IllegalArgumentException
+    if (apartmentType != null && !apartmentType.trim().isEmpty() && !apartmentType.equalsIgnoreCase("ALL")) {
+      try {
+        tipoFiltro = ApartmentType.valueOf(apartmentType.trim());
+      } catch (IllegalArgumentException e) {
+        tipoFiltro = null;
+      }
+    }
+
+    // 2. Recuperar las reservas de la BD
+    List<Booking> bookings = bookingRepository.findBookingsForKPIs(startDate, endDate, tipoFiltro);
+
+    // 3. Calcular las métricas
+    long totalBookings = bookings.size();
+    long totalNights = 0;
+    double totalRevenue = 0.0;
+
+    for (Booking booking : bookings) {
+      if (booking.getStartDate() != null && booking.getEndDate() != null) {
+        long nights = ChronoUnit.DAYS.between(booking.getStartDate(), booking.getEndDate());
+        totalNights += nights;
+      }
+      if (booking.getTotalPrice() != null) {
+        totalRevenue += booking.getTotalPrice().doubleValue();
+      }
+    }
+
+    // 4. Construir y devolver el mapa con los resultados EXACTOS que espera el
+    // Frontend
+    Map<String, Object> kpis = new HashMap<>();
+    kpis.put("totalBookings", totalBookings);
+    kpis.put("totalNights", totalNights);
+    kpis.put("totalRevenue", totalRevenue);
+
+    // CORRECCIÓN AQUÍ: Cambiado a promedio por RESERVA
+    kpis.put("averageRevenuePerBooking", totalBookings > 0 ? totalRevenue / totalBookings : 0.0);
+
+    // Campos informativos que requiere tu interfaz TypeScript:
+    kpis.put("apartmentTypeFiltered", apartmentType != null ? apartmentType : "ALL");
+    kpis.put("startDateFiltered", startDate.toString());
+    kpis.put("endDateFiltered", endDate.toString());
+
+    return kpis;
   }
 
-  // 2. Recuperar las reservas filtradas desde la BD usando el Enum
-  List<Booking> bookings = bookingRepository.findBookingsForKPIs(startDate, endDate, tipoFiltro);
+  @Override
+  public Map<String, Object> getKPIs(LocalDate startDate, LocalDate endDate) {
+    // 1. Recuperar todas las reservas en el rango de fechas
+    List<Booking> bookings = bookingRepository.findBookingsForKPIs(startDate, endDate, null);
 
-  // 3. Calcular las métricas (Tu lógica se mantiene exactamente igual)
-  long totalBookings = bookings.size();
-  long totalNights = 0;
-  double totalRevenue = 0.0;
+    // 2. Inicializar contadores para las métricas
+    long totalBookings = bookings.size();
+    long totalNights = 0;
+    double totalRevenue = 0.0;
 
-  for (Booking booking : bookings) {
-    if (booking.getStartDate() != null && booking.getEndDate() != null) {
-      long nights = ChronoUnit.DAYS.between(booking.getStartDate(), booking.getEndDate());
-      totalNights += nights;
+    // 3. Calcular noches totales e ingresos totales acumulados
+    for (Booking booking : bookings) {
+      if (booking.getStartDate() != null && booking.getEndDate() != null) {
+        long nights = ChronoUnit.DAYS.between(booking.getStartDate(), booking.getEndDate());
+        totalNights += nights;
+      }
+      if (booking.getTotalPrice() != null) {
+        totalRevenue += booking.getTotalPrice().doubleValue();
+      }
     }
-    if (booking.getTotalPrice() != null) {
-      totalRevenue += booking.getTotalPrice().doubleValue();
-    }
+
+    // 4. Construir el mapa de resultados con los KPIs globales EXACTOS
+    Map<String, Object> kpis = new HashMap<>();
+    kpis.put("totalBookings", totalBookings);
+    kpis.put("totalNights", totalNights);
+    kpis.put("totalRevenue", totalRevenue);
+
+    // CORRECCIÓN AQUÍ: Cambiado a promedio por RESERVA
+    kpis.put("averageRevenuePerBooking", totalBookings > 0 ? totalRevenue / totalBookings : 0.0);
+
+    // Campos informativos que requiere tu interfaz TypeScript:
+    kpis.put("apartmentTypeFiltered", "ALL");
+    kpis.put("startDateFiltered", startDate.toString());
+    kpis.put("endDateFiltered", endDate.toString());
+
+    return kpis;
+  }
+  @Override
+  public Map<String, Object> getOccupancyData(LocalDate startDate, LocalDate endDate, String apartmentType) {
+    // Implementa la lógica para calcular la tasa de ocupación
+    // Esto puede implicar contar las noches reservadas vs las noches disponibles
+    // para el tipo de apartamento y rango de fechas dado.
+
+    // Por simplicidad, aquí solo devolvemos un ejemplo estático.
+    Map<String, Object> occupancyData = new HashMap<>();
+    occupancyData.put("occupancyRate", 75.0); // Ejemplo: 75% de ocupación
+    occupancyData.put("startDateFiltered", startDate);
+    occupancyData.put("endDateFiltered", endDate);
+    occupancyData.put("apartmentTypeFiltered", apartmentType);
+
+    return occupancyData;
   }
 
-  double averageRevenuePerBooking = totalBookings > 0 ? totalRevenue / totalBookings : 0.0;
+  @Override
+  public List<BookingDto> getRecentBookings(int limit) {
+    // Implementa la lógica para recuperar las reservas más recientes
+    // Esto puede implicar ordenar las reservas por fecha de creación o fecha de
+    // inicio
+    // y limitar el resultado al número especificado.
+    // Por simplicidad, aquí solo devolvemos una lista vacía.
+    return List.of(); // Reemplaza con la lógica real para obtener las reservas recientes
+  }
 
-  // 4. Empaquetar los resultados en el Map
-  Map<String, Object> kpis = new HashMap<>();
-  kpis.put("totalBookings", totalBookings);
-  kpis.put("totalNights", totalNights);
-  kpis.put("totalRevenue", totalRevenue);
-  kpis.put("averageRevenuePerBooking", Math.round(averageRevenuePerBooking * 100.0) / 100.0);
-  kpis.put("startDateFiltered", startDate);
-  kpis.put("endDateFiltered", endDate);
-  // Mantenemos el String original aquí para que la vista/frontend sepa qué se
-  // filtró
-  kpis.put("apartmentTypeFiltered", apartmentType);
+  @Override
+  public List<Map<String, Object>> getApartmentsSummary() {
+    // Implementa la lógica para recuperar un resumen de los apartamentos activos
+    // Esto puede implicar contar el número de reservas por apartamento, su tasa de
+    // ocupación
 
-  return kpis;
-}
-
-    public Map<String, Object> getOccupancyData(LocalDate startDate, LocalDate endDate, String apartmentType) {
-        // Implementa la lógica para calcular la tasa de ocupación
-        // Esto puede implicar contar las noches reservadas vs las noches disponibles
-        // para el tipo de apartamento y rango de fechas dado.
-
-        // Por simplicidad, aquí solo devolvemos un ejemplo estático.
-        Map<String, Object> occupancyData = new HashMap<>();
-        occupancyData.put("occupancyRate", 75.0); // Ejemplo: 75% de ocupación
-        occupancyData.put("startDateFiltered", startDate);
-        occupancyData.put("endDateFiltered", endDate);
-        occupancyData.put("apartmentTypeFiltered", apartmentType);
-
-        return occupancyData;
-    }
-
-    @Override
-    public List<BookingDto> getRecentBookings(int limit) {
-        // Implementa la lógica para recuperar las reservas más recientes
-        // Esto puede implicar ordenar las reservas por fecha de creación o fecha de inicio
-        // y limitar el resultado al número especificado.
-        // Por simplicidad, aquí solo devolvemos una lista vacía.
-        return List.of(); // Reemplaza con la lógica real para obtener las reservas recientes
-    }
-
-    @Override
-    public List<Map<String, Object>> getApartmentsSummary() {
-        // Implementa la lógica para recuperar un resumen de los apartamentos activos
-        // Esto puede implicar contar el número de reservas por apartamento, su tasa de ocupación
-
-        // Por simplicidad, aquí solo devolvemos una lista vacía.
-        return List.of(); // Reemplaza con la lógica real para obtener el resumen de apartamentos
-    }
-
+    // Por simplicidad, aquí solo devolvemos una lista vacía.
+    return List.of(); // Reemplaza con la lógica real para obtener el resumen de apartamentos
+  }
 
 }
