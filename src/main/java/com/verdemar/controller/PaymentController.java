@@ -19,6 +19,9 @@ public class PaymentController {
   @Value("${stripe.secret.key}")
   String stripeSecretKey;
 
+  @Value("${urlspringboot}")
+  private String url;
+
   public PaymentController() {
     // Inicializar la API key de Stripe (en producción, usa una variable de entorno)
     Stripe.apiKey = stripeSecretKey;
@@ -45,8 +48,8 @@ public class PaymentController {
       SessionCreateParams params =
           SessionCreateParams.builder()
               .setMode(SessionCreateParams.Mode.PAYMENT)
-              .setSuccessUrl("http://localhost:3000/confirmation")
-              .setCancelUrl("http://localhost:3000/cancel")
+              .setSuccessUrl(url + "/confirmation")
+              .setCancelUrl(url + "/cancel")
               .addLineItem(lineItem)
               .build();
 
