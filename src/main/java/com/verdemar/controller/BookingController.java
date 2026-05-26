@@ -8,6 +8,8 @@ import com.verdemar.domain.dto.BookingDateRange;
 import com.verdemar.service.booking.BookingService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -165,23 +167,51 @@ private Map<String, Object> extractSlots(Map<String, Object> lexEvent) {
 @PostMapping("/lex-webhook")
 public ResponseEntity<Map<String, Object>> lexWebhook(@RequestBody Map<String, Object> lexEvent) {
 
-  // 1. Extraer slots del payload de Lex v2
-  Map<String, Object> slots = extractSlots(lexEvent);
+    // 1. Extraer datos y procesar con tu servicio
+    Map<String, Object> slots = extractSlots(lexEvent);
+    
+    // Extraemos el nombre del intent actual dinámicamente para no romper la sesión
+    Map<String, Object> sessionStateIn = (Map<String, Object>) lexEvent.get("sessionState");
+    Map<String, Object> intentIn = (Map<String, Object>) sessionStateIn.get("intent");
+    String intentName = (String) intentIn.get("name");
 
-  // 2. Construir tu DTO
-  BookingChatbotDto dto = new BookingChatbotDto();
-  dto.setApartmentId(1);
-  dto.setStartDate(LocalDate.parse(getSlotValue(slots, "startDate")));
-  dto.setEndDate(LocalDate.parse(getSlotValue(slots, "endDate")));
-  dto.setGuests(Byte.parseByte(getSlotValue(slots, "guests")));
-  dto.setMethodPayment(null);
+    BookingChatbotDto dto = new BookingChatbotDto();
+    dto.setApartmentId(1);
+    dto.setStartDate(LocalDate.parse(getSlotValue(slots, "startDate")));
+    dto.setEndDate(LocalDate.parse(getSlotValue(slots, "endDate")));
+    dto.setGuests(Byte.parseByte(getSlotValue(slots, "guests")));
+    dto.setMethodPayment(null);
 
-  // 3. Llamar al servicio
-  BookingChatbotDto created = bookingService.createBookingFromChatbot(dto);
+    BookingChatbotDto created = bookingService.createBookingFromChatbot(dto);
 
-  // 4. Devolver respuesta en formato Lex v2
-  return ResponseEntity.ok(buildLexResponse(
-      "Tu reserva #" + created.getBookingId() + " entre a este enlace: " + url + "/booking/" + created.getBookingId() +
-          " Total: " + created.getTotalPrice() + "€. Estado: " + created.getStatus()));
+    String mensajeRespuesta = "Entre a este enlace para realizar el pago: " + url + "/booking/" + created.getBookingId() +
+                              " Total: " + created.getTotalPrice() + "€. Estado: " + created.getStatus();
+
+    // 2. Construir la respuesta válida para Amazon Lex V2
+    Map<String, Object> responseBody = new HashMap<>();
+
+    // Bloque OBLIGATORIO: sessionState
+    Map<String, Object> sessionState = new HashMap<>();
+    
+    Map<String, Object> dialogAction = new HashMap<>();
+    dialogAction.put("type", "Close"); // "Close" le dice a Lex que el bot ya terminó satisfactoriamente
+    
+    Map<String, Object> intent = new HashMap<>();
+    intent.put("name", intentName);
+    intent.put("state", "Fulfilled");
+
+    sessionState.put("dialogAction", dialogAction);
+    sessionState.put("intent", intent);
+    responseBody.put("sessionState", sessionState);
+
+    // Bloque: messages
+    List<Map<String, Object>> messages = new ArrayList<>();
+    Map<String, Object> message = new HashMap<>();
+    message.put("contentType", "PlainText");
+    message.put("content", mensajeRespuesta);
+    messages.add(message);
+    responseBody.put("messages", messages);
+
+    return ResponseEntity.ok(responseBody);
 }
 }
