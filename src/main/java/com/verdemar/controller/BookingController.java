@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,8 @@ public class BookingController {
 
   @Autowired private BookingService bookingService;
 
+  @Value("${urlspringboot}")
+  private String url;
   // Gets
 
   // Obtener todas las reservas
@@ -167,18 +170,18 @@ public ResponseEntity<Map<String, Object>> lexWebhook(@RequestBody Map<String, O
 
   // 2. Construir tu DTO
   BookingChatbotDto dto = new BookingChatbotDto();
-  dto.setApartmentId(Integer.parseInt(getSlotValue(slots, "apartmentId")));
+  dto.setApartmentId(1);
   dto.setStartDate(LocalDate.parse(getSlotValue(slots, "startDate")));
   dto.setEndDate(LocalDate.parse(getSlotValue(slots, "endDate")));
   dto.setGuests(Byte.parseByte(getSlotValue(slots, "guests")));
-  dto.setMethodPayment(getSlotValue(slots, "methodPayment"));
+  dto.setMethodPayment(null);
 
   // 3. Llamar al servicio
   BookingChatbotDto created = bookingService.createBookingFromChatbot(dto);
 
   // 4. Devolver respuesta en formato Lex v2
   return ResponseEntity.ok(buildLexResponse(
-      "Tu reserva #" + created.getBookingId() + " está confirmada. " +
-          "Total: " + created.getTotalPrice() + "€. Estado: " + created.getStatus()));
+      "Tu reserva #" + created.getBookingId() + " entre a este enlace: " + url + "/booking/" + created.getBookingId() +
+          " Total: " + created.getTotalPrice() + "€. Estado: " + created.getStatus()));
 }
 }

@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
@@ -213,14 +214,13 @@ public class BookingServiceImpl implements BookingService {
   }
 
   // En BookingService.java (o BookingServiceImpl)
-  @Override
-  public BookingChatbotDto createBookingFromChatbot(BookingChatbotDto dto) {
+@Override
+public BookingChatbotDto createBookingFromChatbot(BookingChatbotDto dto) {
 
     Apartment apartment = apartmentRepository.findById(dto.getApartmentId())
         .orElseThrow(() -> new EntityNotFoundException(
             "Apartamento " + dto.getApartmentId() + " no encontrado"));
 
-    // Calcular precio usando la lógica ya existente
     BigDecimal totalPrice = getTotalPrice(dto.getApartmentId(), dto.getStartDate(), dto.getEndDate());
 
     Booking booking = new Booking();
@@ -232,7 +232,10 @@ public class BookingServiceImpl implements BookingService {
     booking.setStatus(Booking.Status.PENDING);
     booking.setMethodPayment(dto.getMethodPayment());
     booking.setNotes(dto.getNotes());
-    // client queda null — el bot no gestiona login
+    
+    // ── 🔥 EL ESCUDO MANUAL: Forzamos los valores para evitar el "null" en BD ──
+    booking.setCreatedAt(LocalDateTime.now());
+    booking.setUpdatedAt(LocalDateTime.now());
 
     Booking saved = bookingRepository.save(booking);
 
@@ -249,7 +252,7 @@ public class BookingServiceImpl implements BookingService {
     response.setNotes(saved.getNotes());
 
     return response;
-  }
+}
 
   @Override
   @Transactional // Recomendado para procesamientos por lotes
