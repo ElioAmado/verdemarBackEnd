@@ -180,8 +180,10 @@ public ResponseEntity<Map<String, Object>> lexWebhook(@RequestBody Map<String, O
   BookingChatbotDto created = bookingService.createBookingFromChatbot(dto);
 
   // 4. Devolver respuesta en formato Lex v2
-  return ResponseEntity.ok(buildLexResponse(
-      "Entre a este enlace para realizar el pago: " + url + "/booking/" + created.getBookingId() +
-          " Total: " + created.getTotalPrice() + "€. Estado: " + created.getStatus()));
-}
-}
+return ResponseEntity.ok(buildLexResponse(
+    "Entre a este enlace para realizar el pago: " +
+    "<a href=\"" + url + "/booking/" + created.getBookingId() + "\">pagar reserva</a>" +
+    " | Total: " + created.getTotalPrice() +
+    "€ | Estado: " + created.getStatus()
+));
+}}
