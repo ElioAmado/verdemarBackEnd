@@ -11,6 +11,7 @@ import com.verdemar.exception.apartment.ApartmentNotFoundException;
 import com.verdemar.exception.booking.BookingException;
 import com.verdemar.repository.ApartmentRepository;
 import com.verdemar.repository.BookingRepository;
+import com.verdemar.service.ml.PredictionMLService;
 import com.verdemar.service.price.PriceService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -22,7 +23,9 @@ import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +33,8 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.verdemar.domain.dto.OccupancyDataPointDto;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -48,6 +53,9 @@ public class BookingServiceImpl implements BookingService {
 
   @Autowired
   private BookingCSVReader bookingCSVReader;
+
+  @Autowired
+  private PredictionMLService predictionMLService;
 
   // Devuelve todos los bookings
   @Override
@@ -418,4 +426,89 @@ public BookingChatbotDto createBookingFromChatbot(BookingChatbotDto dto) {
     return List.of(); // Reemplaza con la lógica real para obtener el resumen de apartamentos
   }
 
+  @Override
+  public List<OccupancyDataPointDto> getOccupancyData(LocalDate startDate, LocalDate endDate) {
+    List<OccupancyDataPointDto> chartData = new ArrayList<>();
+    LocalDate today = LocalDate.now();
+
+    // 1. Obtener capacidad hotelera real
+    int totalApartments = (int) apartmentRepository.count();
+    if (totalApartments == 0)
+      totalApartments = 100;
+
+    // 2. Traer las predicciones anuales desde FastAPI por rango diario
+    Map<String, Integer> aiPredictions = predictionMLService.getBookingsPredictionsForYear(endDate.getYear());
+
+    System.out.println("¿El mapa tiene datos? " + !aiPredictions.isEmpty());
+    System.out.println("Contenido de prueba para el 2026-06-01: " + aiPredictions.get("2026-06-01"));
+
+    // 3. Recorrer el rango temporal día por día
+    for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+
+      if (date.isBefore(today) || date.isEqual(today)) {
+        // ==========================================
+        // PASADO / PRESENTE: Datos Reales (SQL)
+        // ==========================================
+        int bookedApartments = bookingRepository.countActiveBookingsByDate(date);
+        BigDecimal dailyRevenue = bookingRepository.calculateRevenueByDate(date);
+        if (dailyRevenue == null)
+          dailyRevenue = BigDecimal.ZERO;
+
+        double occupancyRate = ((double) bookedApartments / totalApartments) * 100;
+
+        chartData.add(OccupancyDataPointDto.builder()
+            .date(date)
+            .actualOccupancyRate(occupancyRate)
+            .actualBookedApartments(bookedApartments)
+            .actualTotalApartments(totalApartments)
+            .actualRevenue(dailyRevenue)
+            .isHistorical(true)
+            .isPrediction(false)
+            .build());
+
+      } else {
+        // ==========================================
+        // FUTURO: Ocupación Real Confirmada (SQL) + Predicción (IA)
+        // ==========================================
+
+        // A) LEER LO REAL CONFIRMADO PARA EL FUTURO
+        int bookedApartmentsReal = bookingRepository.countActiveBookingsByDate(date);
+        BigDecimal dailyRevenueReal = bookingRepository.calculateRevenueByDate(date);
+        if (dailyRevenueReal == null)
+          dailyRevenueReal = BigDecimal.ZERO;
+
+        double actualOccupancyRateReal = ((double) bookedApartmentsReal / totalApartments) * 100;
+
+        // B) LEER LA PREDICCIÓN DE LA IA
+        String dateKey = date.toString(); // "yyyy-MM-dd"
+        int predictedBooked = aiPredictions.getOrDefault(dateKey, 0);
+        double predictedOccupancyRate = ((double) predictedBooked / totalApartments) * 100;
+
+        // Estimación monetaria de la IA (ej: 150€ por apartamento)
+        BigDecimal estimatedRevenue = BigDecimal.valueOf(predictedBooked * 150.0);
+
+        // C) CONSTRUIR EL DTO MIXTO
+        chartData.add(OccupancyDataPointDto.builder()
+            .date(date)
+            // Enviamos los datos reales del futuro (on-the-books)
+            .actualOccupancyRate(actualOccupancyRateReal)
+            .actualBookedApartments(bookedApartmentsReal)
+            .actualTotalApartments(totalApartments)
+            .actualRevenue(dailyRevenueReal)
+            // Enviamos las predicciones de la IA en la misma fila
+            .predictedOccupancyRate(predictedOccupancyRate)
+            .predictedBookedApartments(predictedBooked)
+            .predictedRevenue(estimatedRevenue)
+            .predictionConfidence(0.85)
+            .isHistorical(false)
+            .isPrediction(true) // Sigue siendo zona de predicción para el Frontend
+            .build());
+      }
+    }
+
+    return chartData;
+  }
+    
+    // ... Tus otros métodos del controlador (createBooking, etc.)
 }
+

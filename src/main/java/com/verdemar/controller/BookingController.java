@@ -5,6 +5,7 @@ import com.verdemar.domain.booking.BookingChatbotDto;
 import com.verdemar.domain.booking.BookingDto;
 import com.verdemar.domain.booking.BookingInfo;
 import com.verdemar.domain.dto.BookingDateRange;
+import com.verdemar.domain.dto.OccupancyDataPointDto;
 import com.verdemar.service.booking.BookingService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -188,5 +189,16 @@ public ResponseEntity<Map<String, Object>> lexWebhook(@RequestBody Map<String, O
       "• Estado: " + created.getStatus();
 
   return ResponseEntity.ok(buildLexResponse(mensaje));
+}
+
+// ... tus otros imports
+
+@GetMapping("/dashboard/occupancy")
+public ResponseEntity<List<com.verdemar.domain.dto.OccupancyDataPointDto>> getOccupancyDashboardData(
+        @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+        @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+    
+    List<OccupancyDataPointDto> data = bookingService.getOccupancyData(startDate, endDate);
+    return ResponseEntity.ok(data);
 }
 }

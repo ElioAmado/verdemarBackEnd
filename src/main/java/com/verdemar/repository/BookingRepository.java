@@ -3,6 +3,8 @@ package com.verdemar.repository;
 import com.verdemar.domain.apartment.ApartmentType;
 import com.verdemar.domain.booking.Booking;
 import com.verdemar.domain.dto.BookingDateRange;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -46,4 +48,12 @@ List<Booking> findBookingsForKPIs(
     @Param("startDate") LocalDate startDate,
     @Param("endDate") LocalDate endDate,
     @Param("apartmentType") ApartmentType apartmentType); // <- Cambiado a ApartmentType
+
+    // Cuenta reservas activas donde el día evaluado cae dentro de la estancia
+    @Query("SELECT COUNT(b) FROM Booking b WHERE b.status = 1 AND :targetDate >= b.startDate AND :targetDate < b.endDate")
+    int countActiveBookingsByDate(@Param("targetDate") LocalDate targetDate);
+
+    // Calcula el proporcional de ingresos o suma el total asignado a ese día
+    @Query("SELECT SUM(b.totalPrice) FROM Booking b WHERE b.status = 1 AND :targetDate >= b.startDate AND :targetDate < b.endDate")
+    BigDecimal calculateRevenueByDate(@Param("targetDate") LocalDate targetDate);
 }

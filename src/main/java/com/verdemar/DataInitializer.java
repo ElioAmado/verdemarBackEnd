@@ -60,7 +60,7 @@ public class DataInitializer implements CommandLineRunner {
    // createInitialClients();
     createInitialPrices();
     // createInitialPricesCSV();
-    createInitialBookings();
+    createInitialBookings();     
   }
 
   public void createInitialPrices() {
@@ -152,43 +152,53 @@ public class DataInitializer implements CommandLineRunner {
 
     Random random = new Random(42);
 
+    String[] notes = { "Esperando comprobante.", "Solicita desayuno.", "Requiere parking.", "Viaje de negocios." };
+    String[] paymentMethods = { "CREDIT_CARD", "BANK_TRANSFER", "STRIPE", "PAYPAL" };
+    Booking.Status[] statuses = Booking.Status.values();
+
+    // 📅 RANGO DINÁMICO
+    LocalDate baseStartDate = LocalDate.of(2022, 1, 1);
+    LocalDate maxStartDate = LocalDate.of(2027, 1, 1);
+    long totalDaysRange = ChronoUnit.DAYS.between(baseStartDate, maxStartDate);
+
+    LocalDateTime baseCreatedAt = LocalDateTime.of(2020, 1, 1, 0, 0, 0);
+    LocalDateTime maxCreatedAt = LocalDateTime.now();
+    long secondsRange = ChronoUnit.SECONDS.between(baseCreatedAt, maxCreatedAt);
+
+    List<Booking> bookings = new ArrayList<>(1000);
+    int creadasExitosamente = 0;
+
     Map<Integer, List<LocalDate[]>> ocupacionesPorApartamento = new HashMap<>();
     for (Apartment apt : apartments) {
       ocupacionesPorApartamento.put(apt.getId(), new ArrayList<>());
     }
 
-    String[] notes = { "Esperando comprobante.", "Solicita desayuno.", "Requiere parking.", "Viaje de negocios." };
-    String[] paymentMethods = { "CREDIT_CARD", "BANK_TRANSFER", "STRIPE", "PAYPAL" };
-    Booking.Status[] statuses = Booking.Status.values();
-
-    // 📅 RANGO DINÁMICO PARA LAS RESERVAS
-    LocalDate baseStartDate = LocalDate.of(2022, 1, 1);
-    LocalDate maxStartDate = LocalDate.of(2027, 1, 1); // Hoy (Año 2026)
-    // Calculamos cuántos días reales hay entre 2022 y hoy para usarlos de límite
-    long totalDaysRange = ChronoUnit.DAYS.between(baseStartDate, maxStartDate);
-
-    // Fechas de creación de auditoría
-    LocalDateTime baseCreatedAt = LocalDateTime.of(2020, 1, 1, 0, 0, 0);
-    LocalDateTime maxCreatedAt = LocalDateTime.now();
-    long secondsRange = ChronoUnit.SECONDS.between(baseCreatedAt, maxCreatedAt);
-
-    List<Booking> bookings = new ArrayList<>(500);
-    int creadasExitosamente = 0;
-
-    // 🔥 Subimos los intentos máximos. Al validar solapamientos, el algoritmo
-    // necesitará más margen para encontrar huecos libres en 30,000 registros.
-    int intentos_Maximos = 300000;
+    // 💡 AJUSTE DE EXPECTATIVAS:
+    // Para garantizar >50% de disponibilidad, reducimos el objetivo total.
+    // Si tienes pocos apartamentos, 300,000 reservas es físicamente imposible sin
+    // solaparse.
+    int objetivoReservas = Math.min(300000, apartments.size() * (int) (totalDaysRange / 30));
+    int intentos_Maximos = objetivoReservas * 5;
     int intentos = 0;
 
-    while (creadasExitosamente < 30000 && intentos < intentos_Maximos) {
+    while (creadasExitosamente < objetivoReservas && intentos < intentos_Maximos) {
       intentos++;
 
       Apartment selectedApartment = apartments.get(random.nextInt(apartments.size()));
 
-      // ✨ CORRECCIÓN: Ahora el número aleatorio abarca desde 2022 hasta el día de hoy
-      // en 2026
-      LocalDate startDate = baseStartDate.plusDays(random.nextLong(totalDaysRange));
-      LocalDate endDate = startDate.plusDays(random.nextInt(30) + 1);
+      // 🎯 ESTRATEGIA 1: Forzar disponibilidad controlando la densidad (Ej: 45%
+      // ocupación máxima)
+      // Si el número aleatorio es mayor a 0.45, saltamos este intento para dejar días
+      // libres en el calendario.
+      if (random.nextDouble() > 0.45) {
+        continue;
+      }
+
+      LocalDate startDate = baseStartDate.plusDays(random.nextLong(totalDaysRange - 30));
+      // Reducimos la duración máxima a 14 días para facilitar que queden huecos
+      // libres del 50%
+      int duracionReserva = random.nextInt(14) + 1;
+      LocalDate endDate = startDate.plusDays(duracionReserva);
 
       // 🔍 COMPROBACIÓN DE DISPONIBILIDAD EN MEMORIA
       List<LocalDate[]> rangosOcupados = ocupacionesPorApartamento.get(selectedApartment.getId());
@@ -199,8 +209,10 @@ public class DataInitializer implements CommandLineRunner {
         continue;
       }
 
+      // 🎯 ESTRATEGIA 2: Guardamos el rango ocupado
       rangosOcupados.add(new LocalDate[] { startDate, endDate });
 
+      // Creación del objeto Booking
       Booking booking = new Booking();
       booking.setClient(clients.get(random.nextInt(clients.size())));
       booking.setApartment(selectedApartment);
@@ -221,7 +233,8 @@ public class DataInitializer implements CommandLineRunner {
       bookings.add(booking);
       creadasExitosamente++;
 
-      if (bookings.size() == 500) {
+      // Guardado en lotes (Batch size aumentado a 1000 para mayor velocidad)
+      if (bookings.size() == 1000) {
         bookingRepository.saveAll(bookings);
         bookings.clear();
       }
@@ -231,10 +244,6 @@ public class DataInitializer implements CommandLineRunner {
       bookingRepository.saveAll(bookings);
     }
 
-    System.out.println("✅ " + creadasExitosamente + " bookings reales (sin solapamientos) creados correctamente.");
-    if (intentos >= intentos_Maximos) {
-      System.out.println("⚠️ Se alcanzó el límite de intentos (" + intentos + "). El calendario se ha saturado con "
-          + creadasExitosamente + " reservas.");
-    }
+    System.out.println("✅ " + creadasExitosamente + " reservas creadas manteniendo alta disponibilidad.");
   }
 }

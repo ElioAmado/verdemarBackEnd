@@ -6,6 +6,8 @@ import com.verdemar.domain.booking.BookingChatbotDto;
 import com.verdemar.domain.booking.BookingDto;
 import com.verdemar.domain.booking.BookingInfo;
 import com.verdemar.domain.dto.BookingDateRange;
+import com.verdemar.domain.dto.OccupancyDataPointDto;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -54,5 +56,7 @@ public interface BookingService {
 
   public List<BookingDto> getRecentBookings(int limit);
   public List<Map<String, Object>> getApartmentsSummary();
+
+  List<OccupancyDataPointDto> getOccupancyData(LocalDate startDate, LocalDate endDate);
   
 }
